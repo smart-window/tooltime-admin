@@ -15,21 +15,6 @@ export const getMenuData = [
         key: 'dashboard',
         url: '/dashboard/alpha',
       },
-      {
-        title: 'Dashboard Beta',
-        key: 'dashboardBeta',
-        url: '/dashboard/beta',
-      },
-      {
-        title: 'Dashboard Gamma',
-        key: 'dashboardGamma',
-        url: '/dashboard/gamma',
-      },
-      {
-        title: 'Crypto Terminal',
-        key: 'dashboardCrypto',
-        url: '/dashboard/crypto',
-      },
     ],
   },
   {
@@ -65,73 +50,6 @@ export const getMenuData = [
         title: 'Mail',
         key: 'appsMail',
         url: '/apps/mail',
-      },
-    ],
-  },
-  {
-    title: 'Extra Apps',
-    key: 'extraApps',
-    icon: 'fe fe-hard-drive',
-    children: [
-      {
-        title: 'Github Explore',
-        key: 'extraAppsGithubExplore',
-        url: '/apps/github-explore',
-      },
-      {
-        title: 'Github Discuss',
-        key: 'extraAppsGithubDiscuss',
-        url: '/apps/github-discuss',
-      },
-      {
-        title: 'Digitalocean Droplets',
-        key: 'extraAppsDigitaloceanDroplets',
-        url: '/apps/digitalocean-droplets',
-      },
-      {
-        title: 'Digitalocean Create',
-        key: 'extraAppsDigitaloceanCreate',
-        url: '/apps/digitalocean-create',
-      },
-      {
-        title: 'Google Analytics',
-        key: 'extraAppsGoogleAnalytis',
-        url: '/apps/google-analytics',
-      },
-      {
-        title: 'Wordpress Post',
-        key: 'extraAppsWordpressPost',
-        url: '/apps/wordpress-post',
-      },
-      {
-        title: 'Wordpress Posts',
-        key: 'extraAppsWordpressPosts',
-        url: '/apps/wordpress-posts',
-      },
-      {
-        title: 'Wordpress Add',
-        key: 'extraAppsWordpressAdd',
-        url: '/apps/wordpress-add',
-      },
-      {
-        title: 'Todoist List',
-        key: 'extraAppsTodoistList',
-        url: '/apps/todoist-list',
-      },
-      {
-        title: 'Jira Dashboard',
-        key: 'extraAppsJiraDashboard',
-        url: '/apps/jira-dashboard',
-      },
-      {
-        title: 'Jira Agile Board',
-        key: 'extraAppsJiraAgileBoard',
-        url: '/apps/jira-agile-board',
-      },
-      {
-        title: 'Helpdesk Dashboard',
-        key: 'extraAppsHelpdeskDashboard',
-        url: '/apps/helpdesk-dashboard',
       },
     ],
   },

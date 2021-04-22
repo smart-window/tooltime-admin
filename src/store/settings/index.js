@@ -4,9 +4,9 @@ import store from 'store'
 
 Vue.use(Vuex)
 
-const STORED_SETTINGS = storedSettings => {
+const STORED_SETTINGS = (storedSettings) => {
   const settings = {}
-  Object.keys(storedSettings).forEach(key => {
+  Object.keys(storedSettings).forEach((key) => {
     const item = store.get(`app.settings.${key}`)
     settings[key] = typeof item !== 'undefined' ? item : storedSettings[key]
   })
@@ -17,13 +17,13 @@ export default {
   state: {
     ...STORED_SETTINGS({
       authProvider: 'firebase', // firebase, jwt
-      logo: 'Clean UI Pro',
+      logo: 'Tooltime Admindashboard',
       locale: 'en-US',
       isSidebarOpen: false,
       isSupportChatOpen: false,
       isMobileView: false,
       isMobileMenuOpen: false,
-      isMenuCollapsed: false,
+      isMenuCollapsed: true,
       menuLayoutType: 'left', // left, top, nomenu
       routerAnimation: 'slide-fadein-up', // none, slide-fadein-up, slide-fadein-right, fadein, zoom-fadein
       menuColor: 'white', // white, dark, gray
@@ -32,9 +32,9 @@ export default {
       primaryColor: '#4b7cf3',
       leftMenuWidth: 256,
       isMenuUnfixed: false,
-      isMenuShadow: false,
+      isMenuShadow: true,
       isTopbarFixed: false,
-      isGrayTopbar: false,
+      isGrayTopbar: true,
       isContentMaxWidth: false,
       isAppMaxWidth: false,
       isGrayBackground: false,
@@ -55,13 +55,17 @@ export default {
         const str = payload.redirect
         const subs = str.substring(str.indexOf('?') + 1)
         if (str.indexOf('?') >= 0) {
-          queryParams = JSON.parse('{"' + decodeURI(subs).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
+          queryParams = JSON.parse(
+            '{"' +
+              decodeURI(subs).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') +
+              '"}',
+          )
         }
       }
       delete queryParams.redirect
       keys = Object.keys(queryParams)
       if (keys.length) {
-        keys.forEach(key => {
+        keys.forEach((key) => {
           let value
           switch (queryParams[key]) {
             case 'false':
@@ -74,7 +78,9 @@ export default {
               value = queryParams[key]
               break
           }
-          if (key in state) { state[key] = value }
+          if (key in state) {
+            state[key] = value
+          }
         })
       }
     },
@@ -106,6 +112,6 @@ export default {
   },
   actions: {},
   getters: {
-    state: state => state,
+    state: (state) => state,
   },
 }

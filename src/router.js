@@ -30,27 +30,6 @@ const router = new Router({
           },
           component: () => import('./views/dashboard/alpha'),
         },
-        {
-          path: '/dashboard/beta',
-          meta: {
-            title: 'Dashboard Beta',
-          },
-          component: () => import('./views/dashboard/beta'),
-        },
-        {
-          path: '/dashboard/crypto',
-          meta: {
-            title: 'Dashboard Crypto',
-          },
-          component: () => import('./views/dashboard/crypto'),
-        },
-        {
-          path: '/dashboard/gamma',
-          meta: {
-            title: 'Dashboard Gamma',
-          },
-          component: () => import('./views/dashboard/gamma'),
-        },
         // Ecommerce
         {
           path: '/ecommerce/dashboard',
@@ -445,13 +424,15 @@ const router = new Router({
 
     // Redirect to 404
     {
-      path: '*', redirect: 'auth/404', hidden: true,
+      path: '*',
+      redirect: 'auth/404',
+      hidden: true,
     },
   ],
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.authRequired)) {
+  if (to.matched.some((record) => record.meta.authRequired)) {
     if (!store.state.user.authorized) {
       next({
         path: '/auth/login',

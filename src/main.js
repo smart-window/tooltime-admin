@@ -24,7 +24,7 @@ Vue.use(VueLayers)
 
 Vue.use(NProgress)
 Vue.use(VuePageTitle, {
-  prefix: 'Clean UI Pro Vue | ',
+  prefix: 'Tooltime Admindashboard | ',
   router,
 })
 
@@ -36,5 +36,5 @@ new Vue({
   store,
   nprogress,
   i18n,
-  render: h => h(App),
+  render: (h) => h(App),
 }).$mount('#app')

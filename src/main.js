@@ -2,6 +2,7 @@ import 'ant-design-vue/lib/style/index.less' // antd core styles
 import './components/kit/vendors/antd/themes/default.less' // default theme antd components
 import './components/kit/vendors/antd/themes/dark.less' // dark theme antd components
 import './global.scss' // app & third-party component styles
+import '@fortawesome/fontawesome-free/css/all.css'
 
 import Vue from 'vue'
 import VuePageTitle from 'vue-page-title'

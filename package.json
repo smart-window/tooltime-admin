@@ -9,6 +9,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.3",
     "ant-design-vue": "^1.5.4",
     "axios": "^0.19.2",
     "axios-mock-adapter": "^1.18.1",

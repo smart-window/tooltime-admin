@@ -38,7 +38,7 @@
                               [$style.setIcon]: true,
                               [$style.setIconActive]: item.isActive,
                             }"
-                            @click="e => setFav(e, item)"
+                            @click="(e) => setFav(e, item)"
                           >
                             <i class="fe fe-star" />
                           </div>
@@ -96,11 +96,12 @@ export default {
             if (item.category) {
               return flattenedItems
             }
-            if (item.key === 'nestedItem1' || item.disabled) { // skip unwanted items
+            if (item.key === 'nestedItem1' || item.disabled) {
+              // skip unwanted items
               return flattenedItems
             }
             if (Array.isArray(item[key])) {
-              const items = item[key].map(child => {
+              const items = item[key].map((child) => {
                 child.icon = item.icon
                 return child
               })
@@ -119,8 +120,8 @@ export default {
       const _searchText = this.searchText ? this.searchText.toUpperCase() : ''
       const getFilteredPageList = () => {
         const list = []
-        pagesList.forEach(item => {
-          const isActive = favs.some(child => child.url === item.url)
+        pagesList.forEach((item) => {
+          const isActive = favs.some((child) => child.url === item.url)
           if (!item.title.toUpperCase().includes(_searchText) && _searchText) {
             return null
           }
@@ -139,9 +140,9 @@ export default {
       e.preventDefault()
       e.stopPropagation()
       const favs = this.favs
-      const isActive = favs.some(child => child.url === item.url)
+      const isActive = favs.some((child) => child.url === item.url)
       if (isActive) {
-        const filtered = favs.filter(child => child.url !== item.url)
+        const filtered = favs.filter((child) => child.url !== item.url)
         store.set('app.topbar.favs', filtered)
         this.favs = filtered
         this.filterPagesList()
@@ -162,5 +163,5 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import "./style.module.scss";
+@import './style.module.scss';
 </style>

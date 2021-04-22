@@ -18,6 +18,12 @@ export const getMenuData = [
     ],
   },
   {
+    title: 'Location',
+    icon: 'fas fa-map-marker-alt',
+    key: 'appsProfile',
+    url: '/apps/profile',
+  },
+  {
     category: true,
     title: 'Apps & Pages',
   },

@@ -12,13 +12,18 @@
           [$style.white]: settings.authPagesColor === 'white',
           [$style.gray]: settings.authPagesColor === 'gray',
         }"
-        :style="{backgroundImage: settings.authPagesColor === 'image' ? `url(resources/images/content/photos/7.jpg)` : 'none'}"
+        :style="{
+          backgroundImage:
+            settings.authPagesColor === 'image'
+              ? `url(resources/images/content/photos/7.jpg)`
+              : 'none',
+        }"
       >
         <div
           :class="{
-          [$style.topbar]: true,
-          [$style.topbarGray]: settings.isGrayTopbar,
-        }"
+            [$style.topbar]: true,
+            [$style.topbarGray]: settings.isGrayTopbar,
+          }"
         >
           <div :class="$style.logoContainer">
             <div :class="$style.logo">
@@ -29,7 +34,9 @@
           </div>
           <div class="d-none d-sm-block">
             <span class="mr-2">Don't have an account?</span>
-            <router-link to="/auth/register" class="font-size-16 kit__utils__link">Sign up</router-link>
+            <router-link to="/auth/register" class="font-size-16 kit__utils__link"
+              >Sign up</router-link
+            >
           </div>
         </div>
         <div :class="$style.containerInner">
@@ -38,34 +45,7 @@
           </transition>
         </div>
         <div class="mt-auto pb-5 pt-5">
-          <ul
-            class="list-unstyled d-flex mb-0 flex-wrap justify-content-center"
-            :class="[$style.footerNav]"
-          >
-            <li class="list-inline-item">
-              <a href="javascript: void(0);">Terms of Use</a>
-            </li>
-            <li class="active list-inline-item">
-              <a href="javascript: void(0);">Compliance</a>
-            </li>
-            <li class="list-inline-item">
-              <a href="javascript: void(0);">Confidential Information</a>
-            </li>
-            <li class="list-inline-item">
-              <a href="javascript: void(0);">Support</a>
-            </li>
-            <li class="list-inline-item">
-              <a href="javascript: void(0);">Contacts</a>
-            </li>
-          </ul>
-          <div class="text-center">
-            Copyright © 2017-2020 Mdtk Soft |
-            <a
-              href="https://www.mediatec.org/privacy"
-              target="_blank"
-              rel="noopener noreferrer"
-            >Privacy Policy</a>
-          </div>
+          <div class="text-center">Copyright © 2021</div>
         </div>
       </div>
     </a-layout-content>
@@ -85,5 +65,5 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import "./style.module.scss";
+@import './style.module.scss';
 </style>

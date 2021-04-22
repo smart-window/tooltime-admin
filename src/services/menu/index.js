@@ -4,24 +4,16 @@ export const getMenuData = [
     title: 'Dashboards',
   },
   {
-    title: 'Dashboards',
-    key: 'dashboards',
+    title: 'Dashboard Alpha',
     icon: 'fe fe-home',
-    // roles: ['admin'], // set user roles with access to this route
-    count: 4,
-    children: [
-      {
-        title: 'Dashboard Alpha',
-        key: 'dashboard',
-        url: '/dashboard/alpha',
-      },
-    ],
+    key: 'dashboard',
+    url: '/dashboard/alpha',
   },
   {
     title: 'Location',
     icon: 'fas fa-map-marker-alt',
-    key: 'appsProfile',
-    url: '/apps/profile',
+    key: 'location',
+    url: '/location',
   },
   {
     category: true,

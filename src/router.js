@@ -30,6 +30,14 @@ const router = new Router({
           },
           component: () => import('./views/dashboard/alpha'),
         },
+
+        {
+          path: '/location',
+          meta: {
+            title: 'Location Dashboard',
+          },
+          component: () => import('./views/location'),
+        },
         // Ecommerce
         {
           path: '/ecommerce/dashboard',

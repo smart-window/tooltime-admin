@@ -1,14 +1,8 @@
 <template>
   <div>
     <div class="text-center mb-5">
-      <h1 class="mb-5">
-        <strong>Welcome to {{ settings.logo }}</strong>
-      </h1>
       <p>
-        Pluggable enterprise-level application framework.
-        <br />An excellent front-end solution for web applications built upon Ant Design.
-        <br />Credentials for testing purposes -
-        <strong>demo@sellpixels.com</strong> /
+        <br />Credentials for testing purposes - <strong>demo@sellpixels.com</strong> /
         <strong>demo123</strong>
       </p>
     </div>
@@ -19,7 +13,7 @@
       <div class="mb-4">
         <a-radio-group
           :value="settings.authProvider"
-          @change="e => changeAuthProvider(e.target.value)"
+          @change="(e) => changeAuthProvider(e.target.value)"
         >
           <a-radio value="firebase">Firebase</a-radio>
           <a-radio value="jwt">JWT</a-radio>
@@ -42,7 +36,13 @@
           <a-input
             size="large"
             placeholder="Email"
-            v-decorator="['email', { initialValue: 'demo@sellpixels.com', rules: [{ required: true, message: 'Please input your username!' }]}]"
+            v-decorator="[
+              'email',
+              {
+                initialValue: 'demo@sellpixels.com',
+                rules: [{ required: true, message: 'Please input your username!' }],
+              },
+            ]"
           />
         </a-form-item>
         <a-form-item>
@@ -50,7 +50,13 @@
             size="large"
             placeholder="Password"
             type="password"
-            v-decorator="['password', {initialValue: 'demo123', rules: [{ required: true, message: 'Please input your Password!' }]}]"
+            v-decorator="[
+              'password',
+              {
+                initialValue: 'demo123',
+                rules: [{ required: true, message: 'Please input your Password!' }],
+              },
+            ]"
           />
         </a-form-item>
         <a-button
@@ -63,7 +69,9 @@
           <strong>Sign in</strong>
         </a-button>
       </a-form>
-      <router-link to="/auth/forgot-password" class="kit__utils__link font-size-16">Forgot Password?</router-link>
+      <router-link to="/auth/forgot-password" class="kit__utils__link font-size-16"
+        >Forgot Password?</router-link
+      >
     </div>
     <div class="text-center pt-2 mb-auto">
       <span class="mr-2">Don't have an account?</span>
@@ -103,5 +111,5 @@ export default {
 }
 </script>
 <style lang="scss" module>
-@import "@/components/cleanui/system/Auth/style.module.scss";
+@import '@/components/cleanui/system/Auth/style.module.scss';
 </style>

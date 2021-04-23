@@ -38,11 +38,18 @@ const router = new Router({
           component: () => import('./views/location'),
         },
         {
-          path: '/orders',
+          path: '/order/list',
           meta: {
             title: 'Orders Dashboard',
           },
           component: () => import('./views/order'),
+        },
+        {
+          path: '/order/create',
+          meta: {
+            title: 'Orders Creation Board',
+          },
+          component: () => import('./views/order/create'),
         },
         // Ecommerce
         {

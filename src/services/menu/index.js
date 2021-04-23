@@ -19,7 +19,7 @@ export const getMenuData = [
     title: 'Orders',
     icon: 'fas fa-bookmark',
     key: 'orders',
-    url: '/orders',
+    url: '/order/list',
   },
   {
     category: true,

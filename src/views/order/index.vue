@@ -9,7 +9,7 @@
           <h5 class="mb-0">Latest Orders</h5>
         </div>
         <div class="d-flex flex-column justify-content-center">
-          <a class="btn btn-primary" href="javascript: void(0);">New Order</a>
+          <a class="btn btn-primary" @click="handleNewOrder">New Order</a>
         </div>
       </div>
       <div class="card-body">
@@ -110,6 +110,7 @@
   </div>
 </template>
 <script>
+import router from '@/router'
 import data from './data.json'
 const columns = [
   {
@@ -185,6 +186,10 @@ export default {
     handleReset(clearFilters) {
       clearFilters()
       this.searchText = ''
+    },
+    handleNewOrder(event) {
+      event.preventDefault()
+      router.push('/order/create')
     },
   },
 }

@@ -30,13 +30,19 @@ const router = new Router({
           },
           component: () => import('./views/dashboard/alpha'),
         },
-
         {
           path: '/location',
           meta: {
             title: 'Location Dashboard',
           },
           component: () => import('./views/location'),
+        },
+        {
+          path: '/orders',
+          meta: {
+            title: 'Orders Dashboard',
+          },
+          component: () => import('./views/order'),
         },
         // Ecommerce
         {

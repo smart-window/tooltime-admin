@@ -16,6 +16,12 @@ export const getMenuData = [
     url: '/location',
   },
   {
+    title: 'Orders',
+    icon: 'fas fa-bookmark',
+    key: 'orders',
+    url: '/orders',
+  },
+  {
     category: true,
     title: 'Apps & Pages',
   },

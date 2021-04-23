@@ -1,19 +1,20 @@
 <template>
-  <div :class="{
-    'cui__layout__grayBackground': settings.isGrayBackground,
-  }">
+  <div
+    :class="{
+      cui__layout__grayBackground: settings.isGrayBackground,
+    }"
+  >
     <a-layout
       :class="{
-      'cui__layout__contentMaxWidth': settings.isContentMaxWidth,
-      'cui__layout__appMaxWidth': settings.isAppMaxWidth,
-      'cui__layout__grayBackground': settings.isGrayBackground,
-      'cui__layout__squaredBorders': settings.isSquaredBorders,
-      'cui__layout__cardsShadow': settings.isCardShadow,
-      'cui__layout__borderless': settings.isBorderless,
-    }"
+        cui__layout__contentMaxWidth: settings.isContentMaxWidth,
+        cui__layout__appMaxWidth: settings.isAppMaxWidth,
+        cui__layout__grayBackground: settings.isGrayBackground,
+        cui__layout__squaredBorders: settings.isSquaredBorders,
+        cui__layout__cardsShadow: settings.isCardShadow,
+        cui__layout__borderless: settings.isBorderless,
+      }"
     >
       <cui-sidebar />
-      <cui-support-chat />
 
       <!-- left menu -->
       <cui-menu-left v-if="settings.menuLayoutType === 'left' && !settings.isMobileView" />
@@ -40,15 +41,15 @@
       <a-layout>
         <a-layout-header
           :class="{
-          'cui__layout__header': true,
-          'cui__layout__fixedHeader': settings.isTopbarFixed,
-          'cui__layout__headerGray': settings.isGrayTopbar,
-        }"
+            cui__layout__header: true,
+            cui__layout__fixedHeader: settings.isTopbarFixed,
+            cui__layout__headerGray: settings.isGrayTopbar,
+          }"
         >
           <cui-topbar />
         </a-layout-header>
         <cui-breadcrumbs />
-        <a-layout-content style="height: '100%';  position: 'relative'">
+        <a-layout-content style="height: '100%'; position: 'relative'">
           <div class="cui__utils__content">
             <transition :name="settings.routerAnimation" mode="out-in">
               <router-view />
@@ -69,13 +70,19 @@ import CuiTopbar from '@/components/cleanui/layout/Topbar'
 import CuiBreadcrumbs from '@/components/cleanui/layout/Breadcrumbs'
 import CuiFooter from '@/components/cleanui/layout/Footer'
 import CuiSidebar from '@/components/cleanui/layout/Sidebar'
-import CuiSupportChat from '@/components/cleanui/layout/SupportChat'
 import CuiMenuLeft from '@/components/cleanui/layout/Menu/MenuLeft'
 import CuiMenuTop from '@/components/cleanui/layout/Menu/MenuTop'
 
 export default {
   name: 'MainLayout',
-  components: { CuiFooter, CuiTopbar, CuiMenuLeft, CuiMenuTop, CuiBreadcrumbs, CuiSidebar, CuiSupportChat },
+  components: {
+    CuiFooter,
+    CuiTopbar,
+    CuiMenuLeft,
+    CuiMenuTop,
+    CuiBreadcrumbs,
+    CuiSidebar,
+  },
   computed: mapState(['settings']),
   data: function () {
     return {
@@ -119,31 +126,35 @@ export default {
         prev: {
           mobile: isMobile,
           tablet: isTablet,
-          desktop: !(isMobile) && !(isTablet),
+          desktop: !isMobile && !isTablet,
         },
       }
       // desktop
-      if (state.next.desktop && ((state.next.desktop !== state.prev.desktop) || firstLoad)) {
+      if (state.next.desktop && (state.next.desktop !== state.prev.desktop || firstLoad)) {
         this.setViewPort(false, false)
       }
       // tablet & collapse menu
-      if (state.next.tablet && !state.next.mobile && ((state.next.tablet !== state.prev.tablet) || firstLoad)) {
+      if (
+        state.next.tablet &&
+        !state.next.mobile &&
+        (state.next.tablet !== state.prev.tablet || firstLoad)
+      ) {
         this.setViewPort(false, true)
         this.$store.commit('CHANGE_SETTING', { setting: 'isMenuCollapsed', value: true })
       }
       // mobile
-      if (state.next.mobile && ((state.next.mobile !== state.prev.mobile) || firstLoad)) {
+      if (state.next.mobile && (state.next.mobile !== state.prev.mobile || firstLoad)) {
         this.setViewPort(true, false)
       }
     },
     bindMobileSlide() {
       // mobile menu touch slide opener
-      const unify = e => {
+      const unify = (e) => {
         return e.changedTouches ? e.changedTouches[0] : e
       }
       document.addEventListener(
         'touchstart',
-        e => {
+        (e) => {
           const x = unify(e).clientX
           this.touchStartPrev = x
           this.touchStartLocked = x > 70
@@ -152,7 +163,7 @@ export default {
       )
       document.addEventListener(
         'touchmove',
-        e => {
+        (e) => {
           const x = unify(e).clientX
           const prev = this.touchStartPrev
           if (x - prev > 50 && !this.touchStartLocked) {
@@ -168,5 +179,5 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import "./style.module.scss";
+@import './style.module.scss';
 </style>

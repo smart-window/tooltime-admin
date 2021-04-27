@@ -10,27 +10,6 @@
       <div class="text-dark font-size-24 mb-3">
         <strong>Sign in to your account</strong>
       </div>
-      <div class="mb-4">
-        <a-radio-group
-          :value="settings.authProvider"
-          @change="(e) => changeAuthProvider(e.target.value)"
-        >
-          <a-radio value="firebase">Firebase</a-radio>
-          <a-radio value="jwt">JWT</a-radio>
-          <a-tooltip>
-            <template slot="title">
-              <span>Read Docs Guide</span>
-            </template>
-            <a-radio value="auth0" disabled>Auth0</a-radio>
-          </a-tooltip>
-          <a-tooltip>
-            <template slot="title">
-              <span>Read Docs Guide</span>
-            </template>
-            <a-radio value="strapi" disabled>Strapi</a-radio>
-          </a-tooltip>
-        </a-radio-group>
-      </div>
       <a-form class="mb-4" :form="form" @submit="handleSubmit">
         <a-form-item>
           <a-input

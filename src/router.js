@@ -45,11 +45,11 @@ const router = new Router({
           component: () => import('./views/order'),
         },
         {
-          path: '/order/create',
+          path: '/offer',
           meta: {
-            title: 'Orders Creation Board',
+            title: 'Offers Dashboard',
           },
-          component: () => import('./views/order/create'),
+          component: () => import('./views/offer'),
         },
         // Ecommerce
         {

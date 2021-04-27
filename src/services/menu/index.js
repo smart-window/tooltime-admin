@@ -22,6 +22,18 @@ export const getMenuData = [
     url: '/order/list',
   },
   {
+    title: 'Offer',
+    icon: 'fas fa-truck-monster',
+    key: 'Offers',
+    url: '/offer',
+  },
+  {
+    title: 'Products',
+    icon: 'fas fa-truck-monster',
+    key: 'Products',
+    url: '/ecommerce/product-catalog',
+  },
+  {
     category: true,
     title: 'Apps & Pages',
   },

@@ -7,7 +7,7 @@ export async function login(email, password) {
       email,
       password,
     })
-    .then(response => {
+    .then((response) => {
       if (response) {
         const { accessToken } = response.data
         if (accessToken) {
@@ -17,7 +17,7 @@ export async function login(email, password) {
       }
       return false
     })
-    .catch(err => console.log(err))
+    .catch((err) => console.log(err))
 }
 
 export async function register(email, password, name) {
@@ -27,7 +27,7 @@ export async function register(email, password, name) {
       password,
       name,
     })
-    .then(response => {
+    .then((response) => {
       if (response) {
         const { accessToken } = response.data
         if (accessToken) {
@@ -37,13 +37,13 @@ export async function register(email, password, name) {
       }
       return false
     })
-    .catch(err => console.log(err))
+    .catch((err) => console.log(err))
 }
 
 export async function currentAccount() {
   return apiClient
     .get('/auth/account')
-    .then(response => {
+    .then((response) => {
       if (response) {
         const { accessToken } = response.data
         if (accessToken) {
@@ -53,7 +53,7 @@ export async function currentAccount() {
       }
       return false
     })
-    .catch(err => console.log(err))
+    .catch((err) => console.log(err))
 }
 
 export async function logout() {
@@ -63,5 +63,5 @@ export async function logout() {
       store.remove('accessToken')
       return true
     })
-    .catch(err => console.log(err))
+    .catch((err) => console.log(err))
 }

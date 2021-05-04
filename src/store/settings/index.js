@@ -16,7 +16,7 @@ const STORED_SETTINGS = (storedSettings) => {
 export default {
   state: {
     ...STORED_SETTINGS({
-      authProvider: 'firebase', // firebase, jwt
+      authProvider: 'jwt', // firebase, jwt
       logo: 'Tooltime Admindashboard',
       locale: 'en-US',
       isSidebarOpen: false,

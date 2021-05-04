@@ -3,12 +3,12 @@ import store from 'store'
 import { notification } from 'ant-design-vue'
 
 const apiClient = axios.create({
-  baseURL: '/api',
+  baseURL: 'http://localhost:3000/admin/',
   // timeout: 1000,
   // headers: { 'X-Custom-Header': 'foobar' }
 })
 
-apiClient.interceptors.request.use(request => {
+apiClient.interceptors.request.use((request) => {
   const accessToken = store.get('accessToken')
   if (accessToken) {
     request.headers.Authorization = `Bearer ${accessToken}`
@@ -17,7 +17,7 @@ apiClient.interceptors.request.use(request => {
   return request
 })
 
-apiClient.interceptors.response.use(undefined, error => {
+apiClient.interceptors.response.use(undefined, (error) => {
   // Errors handling
   const { response } = error
   const { data } = response

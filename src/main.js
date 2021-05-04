@@ -18,7 +18,7 @@ import './antd'
 import './registerServiceWorker'
 
 // mocking api
-import './services/axios/fakeApi'
+// import './services/axios/fakeApi'
 
 Vue.use(BootstrapVue)
 Vue.use(VueLayers)

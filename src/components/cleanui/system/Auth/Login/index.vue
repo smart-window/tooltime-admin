@@ -2,8 +2,8 @@
   <div>
     <div class="text-center mb-5">
       <p>
-        <br />Credentials for testing purposes - <strong>demo@sellpixels.com</strong> /
-        <strong>demo123</strong>
+        <br />Credentials for testing purposes - <strong>admin@tt.com</strong> /
+        <strong>aaa</strong>
       </p>
     </div>
     <div class="card" :class="$style.container">
@@ -18,7 +18,7 @@
             v-decorator="[
               'email',
               {
-                initialValue: 'demo@sellpixels.com',
+                initialValue: 'admin@tt.com',
                 rules: [{ required: true, message: 'Please input your username!' }],
               },
             ]"
@@ -32,7 +32,7 @@
             v-decorator="[
               'password',
               {
-                initialValue: 'demo123',
+                initialValue: 'aaa',
                 rules: [{ required: true, message: 'Please input your Password!' }],
               },
             ]"

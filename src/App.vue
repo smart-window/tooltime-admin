@@ -35,7 +35,7 @@ export default {
         this.$router.replace(this.nextRoute)
       }
     },
-    '$route'(to, from) {
+    $route(to, from) {
       const query = Object.assign({}, to.query)
       this.$store.commit('SETUP_URL_SETTINGS', query)
     },

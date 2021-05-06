@@ -26,7 +26,7 @@ const router = new Router({
         {
           path: '/dashboard/alpha',
           meta: {
-            title: 'Dashboard Alpha',
+            title: 'Dashboard',
           },
           component: () => import('./views/dashboard/alpha'),
         },

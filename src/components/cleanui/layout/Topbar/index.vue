@@ -7,13 +7,7 @@
       <cui-search />
     </div>
     <div class="mr-4 d-none d-md-block">
-      <cui-issues-history />
-    </div>
-    <div class="mb-0 mr-auto d-xl-block d-none">
-      <cui-project-management />
-    </div>
-    <div class="mr-4 d-none d-sm-block">
-      <cui-language-switcher />
+      <location-selector />
     </div>
     <div class="mr-4 d-none d-sm-block">
       <cui-actions />
@@ -25,27 +19,23 @@
 </template>
 
 <script>
-import CuiIssuesHistory from './IssuesHistory'
-import CuiProjectManagement from './ProjectManagement'
 import CuiSearch from './Search'
-import CuiLanguageSwitcher from './LanguageSwitcher'
 import CuiActions from './Actions'
 import CuiUserMenu from './UserMenu'
 import CuiFavPages from './FavPages'
+import LocationSelector from './LocationSelector'
 
 export default {
   components: {
-    CuiIssuesHistory,
-    CuiProjectManagement,
     CuiSearch,
-    CuiLanguageSwitcher,
     CuiActions,
     CuiUserMenu,
     CuiFavPages,
+    LocationSelector,
   },
 }
 </script>
 
 <style lang="scss" module>
-@import "./style.module.scss";
+@import './style.module.scss';
 </style>

@@ -25,11 +25,9 @@ Vue.use(Vuex)
 export default {
   namespaced: true,
   state: {
-    id: '',
     name: '',
     role: '',
     email: '',
-    avatar: '',
     authorized: process.env.VUE_APP_AUTHENTICATED || false, // false is default value
     loading: false,
   },
@@ -48,7 +46,7 @@ export default {
       })
 
       const login = mapAuthProviders[rootState.settings.authProvider].login
-      login(email, password).then(success => {
+      login(email, password).then((success) => {
         if (success) {
           dispatch('LOAD_CURRENT_ACCOUNT')
           Vue.prototype.$notification.success({
@@ -70,7 +68,7 @@ export default {
       })
 
       const register = mapAuthProviders[rootState.settings.authProvider].register
-      register(email, password, name).then(success => {
+      register(email, password, name).then((success) => {
         if (success) {
           dispatch('LOAD_CURRENT_ACCOUNT')
           Vue.prototype.$notification.success({
@@ -91,14 +89,12 @@ export default {
       })
 
       const currentAccount = mapAuthProviders[rootState.settings.authProvider].currentAccount
-      currentAccount().then(response => {
+      currentAccount().then((response) => {
         if (response) {
-          const { id, email, name, avatar, role } = response
+          const { email, name, role } = response
           commit('SET_STATE', {
-            id,
             name,
             email,
-            avatar,
             role,
             authorized: true,
           })
@@ -112,11 +108,9 @@ export default {
       const logout = mapAuthProviders[rootState.settings.authProvider].logout
       logout().then(() => {
         commit('SET_STATE', {
-          id: '',
           name: '',
           role: '',
           email: '',
-          avatar: '',
           authorized: false,
           loading: false,
         })
@@ -125,6 +119,6 @@ export default {
     },
   },
   getters: {
-    user: state => state,
+    user: (state) => state,
   },
 }

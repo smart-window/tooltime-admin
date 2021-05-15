@@ -138,43 +138,6 @@ const columns = [
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'Email',
-    dataIndex: 'email',
-    key: 'email',
-    sorter: (a, b) => (a > b ? 1 : -1),
-  },
-  {
-    title: 'City',
-    dataIndex: 'city',
-    key: 'city',
-    sorter: (a, b) => (a > b ? 1 : -1),
-  },
-  {
-    title: 'State',
-    dataIndex: 'state',
-    key: 'state',
-    sorter: (a, b) => (a > b ? 1 : -1),
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-    sorter: (a, b) => (a > b ? 1 : -1),
-  },
-  {
-    title: 'Zip Code',
-    dataIndex: 'zip',
-    key: 'zip',
-    sorter: (a, b) => (a > b ? 1 : -1),
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    scopedSlots: { customRender: 'status' },
-    sorter: (a, b) => (a > b ? 1 : -1),
-  },
-  {
     title: 'Created',
     dataIndex: 'createdAt',
     key: 'createdAt',

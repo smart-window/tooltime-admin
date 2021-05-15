@@ -23,114 +23,6 @@
           </a-form-item>
         </a-col>
       </a-row>
-      <a-row>
-        <a-col :span="24">
-          <a-form-item label="Email">
-            <a-input
-              v-decorator="[
-                'email',
-                {
-                  initialValue: item.email,
-                  rules: [{ required: true, message: 'Email required' }],
-                },
-              ]"
-              :disabled="!editing"
-            />
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row>
-        <a-col :span="24">
-          <a-form-item label="Phone">
-            <a-input
-              v-decorator="[
-                'phone',
-                {
-                  initialValue: item.phone,
-                  rules: [{ required: true, message: 'Phone required' }],
-                },
-              ]"
-              :disabled="!editing"
-            />
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="16">
-        <a-col :span="24">
-          <a-form-item label="Address">
-            <a-input
-              v-decorator="[
-                'address',
-                {
-                  initialValue: item.address,
-                  rules: [{ required: true, message: 'Address required' }],
-                },
-              ]"
-              :disabled="!editing"
-            />
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="16">
-        <a-col :span="8">
-          <a-form-item label="State">
-            <a-input
-              v-decorator="[
-                'state',
-                {
-                  initialValue: item.state,
-                  rules: [{ required: true, message: 'State required' }],
-                },
-              ]"
-              :disabled="!editing"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item label="City">
-            <a-input
-              v-decorator="[
-                'city',
-                {
-                  initialValue: item.city,
-                  rules: [{ required: true, message: 'City required' }],
-                },
-              ]"
-              :disabled="!editing"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item label="Zip Code">
-            <a-input
-              v-decorator="[
-                'zip',
-                {
-                  zip: item.zip,
-                },
-              ]"
-              :disabled="!editing"
-            />
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="16">
-        <a-col :span="24">
-          <a-form-item label="Notes">
-            <a-textarea
-              v-decorator="[
-                'notes',
-                {
-                  initialValue: item.notes,
-                  rules: [{ required: false }],
-                },
-              ]"
-              :rows="4"
-              :disabled="!editing"
-            />
-          </a-form-item>
-        </a-col>
-      </a-row>
     </a-form>
     <div
       :style="{
@@ -174,7 +66,7 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this, this.item),
-      fields: ['name', 'email', 'address', 'city', 'state', 'zip', 'notes', 'status'],
+      fields: ['name'],
     }
   },
 

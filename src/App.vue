@@ -22,22 +22,25 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch('user/LOAD_CURRENT_ACCOUNT')
     this.$store.commit('SET_PRIMARY_COLOR', { color: this.settings.primaryColor })
     this.$store.commit('SET_THEME', { theme: this.settings.theme })
+    this.$store.dispatch('user/LOAD_CURRENT_ACCOUNT')
   },
   watch: {
     '$store.state.settings.theme'(theme) {
       this.$store.commit('SET_THEME', { theme })
     },
-    authorized(authorized) {
-      if (authorized && this.currentRoute === '/auth/login') {
+    authorized(auth) {
+      if (auth && this.currentRoute === '/auth/login') {
         this.$router.replace(this.nextRoute)
       }
     },
     $route(to, from) {
       const query = Object.assign({}, to.query)
       this.$store.commit('SETUP_URL_SETTINGS', query)
+      if (this.authorized && this.currentRoute === '/auth/login') {
+        this.$router.replace(this.nextRoute)
+      }
     },
   },
 }

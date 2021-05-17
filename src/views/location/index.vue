@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="cui__utils__heading">
-      <strong>Ecommerce: Orders</strong>
+      <strong>Locations</strong>
     </div>
     <div class="card">
       <div class="card-header card-header-flex">
@@ -110,6 +110,7 @@
   </div>
 </template>
 <script>
+import * as API from '@/services/api'
 import data from './data.json'
 const columns = [
   {
@@ -176,6 +177,16 @@ export default {
       columns,
     }
   },
+
+  async mounted() {
+    try {
+      const res = await API.getLocations()
+      this.data = res.data
+    } catch (e) {
+      console.log(e.message)
+    }
+  },
+
   methods: {
     handleSearch(selectedKeys, confirm) {
       confirm()

@@ -1,133 +1,12 @@
 <template>
   <div>
-    <a-drawer
-      :title="panelTitle"
-      :width="720"
-      :visible="showEditPanel"
-      :body-style="{ paddingBottom: '80px' }"
+    <edit-panel
+      title="Edit Location"
+      :showPanel="showEditPanel"
+      :item="selected"
+      @submit="handleSubmit"
       @close="handleCloseEditingPanel"
-    >
-      <a-form :form="form" layout="vertical" hide-required-mark>
-        <a-row :gutter="16">
-          <a-col :span="12">
-            <a-form-item label="Name">
-              <a-input
-                v-decorator="[
-                  'name',
-                  {
-                    rules: [{ required: true, message: 'Location name required' }],
-                  },
-                ]"
-                placeholder="Please enter location name"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="Phone">
-              <a-input
-                v-decorator="[
-                  'phone',
-                  {
-                    rules: [{ required: false }],
-                  },
-                ]"
-                placeholder="Please enter phone"
-              />
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="16">
-          <a-col :span="12">
-            <a-form-item label="Address">
-              <a-input
-                v-decorator="[
-                  'address_1',
-                  {
-                    rules: [{ required: true, message: 'Address required' }],
-                  },
-                ]"
-                placeholder="Please enter Address"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="Address 2">
-              <a-input
-                v-decorator="[
-                  'address_2',
-                  {
-                    rules: [{ required: false }],
-                  },
-                ]"
-                placeholder="Please enter City"
-              />
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="16">
-          <a-col :span="12">
-            <a-form-item label="State">
-              <a-input
-                v-decorator="[
-                  'state',
-                  {
-                    rules: [{ required: true, message: 'State required' }],
-                  },
-                ]"
-                placeholder="Please enter state"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="City">
-              <a-input
-                v-decorator="[
-                  'state',
-                  {
-                    rules: [{ required: true, message: 'City required' }],
-                  },
-                ]"
-                placeholder="Please enter City"
-              />
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="16">
-          <a-col :span="24">
-            <a-form-item label="Description">
-              <a-textarea
-                v-decorator="[
-                  'description',
-                  {
-                    rules: [{ required: true, message: 'Please enter url description' }],
-                  },
-                ]"
-                :rows="4"
-                placeholder="please enter url description"
-              />
-            </a-form-item>
-          </a-col>
-        </a-row>
-      </a-form>
-      <div
-        :style="{
-          position: 'absolute',
-          right: 0,
-          bottom: 0,
-          width: '100%',
-          borderTop: '1px solid #e9e9e9',
-          padding: '10px 16px',
-          background: '#fff',
-          textAlign: 'right',
-          zIndex: 1,
-        }"
-      >
-        <a-button :style="{ marginRight: '8px' }" @click="handleCloseEditingPanel">
-          Cancel
-        </a-button>
-        <a-button type="primary" @click="handleSubmit"> Submit </a-button>
-      </div>
-    </a-drawer>
+    />
     <div class="cui__utils__heading">
       <strong>Locations</strong>
     </div>
@@ -221,8 +100,8 @@
             ]"
             >{{ text }}</span
           >
-          <span slot="action">
-            <a href="javascript: void(0);" class="btn btn-sm btn-light mr-2">
+          <span slot="action" slot-scope="record">
+            <a @click="handleViewRecord(record.id)" class="btn btn-sm btn-light mr-2">
               <i class="fe fe-edit mr-2" />
               View
             </a>
@@ -241,6 +120,8 @@
 <script>
 import * as API from '@/services/api'
 import moment from 'moment'
+import { message } from 'ant-design-vue'
+import EditPanel from './EditPanel'
 
 const columns = [
   {
@@ -272,6 +153,16 @@ const columns = [
     dataIndex: 'updatedAt',
     key: 'updatedAt',
     scopedSlots: { customRender: 'updatedAt' },
+  },
+  {
+    title: 'Zip Code',
+    dataIndex: 'zip',
+    key: 'zip',
+  },
+  {
+    title: 'Phone',
+    dataIndex: 'phone',
+    key: 'phone',
   },
   // {
   //   title: 'Customer',
@@ -319,6 +210,7 @@ const columns = [
   },
 ]
 export default {
+  components: { EditPanel },
   data: function () {
     return {
       searchText: '',
@@ -326,25 +218,20 @@ export default {
       data: [],
       columns,
       showEditPanel: false,
-      isEdit: false,
+      isEditing: false,
+      isCreating: false,
       fetching: false,
-      form: this.$form.createForm(this, {}),
+      selected: {},
     }
   },
 
-  async mounted() {
-    try {
-      const res = await API.getLocations()
-      console.log('API.getLocations =>', res)
-      this.data = res
-    } catch (e) {
-      console.log(e.message)
-    }
+  mounted() {
+    this.fetchLocations()
   },
 
   computed: {
     panelTitle() {
-      return this.isEdit ? 'Edit a location' : 'Create a new location'
+      return this.isEditing ? 'Edit a location' : 'Create a new location'
     },
   },
   methods: {
@@ -363,22 +250,43 @@ export default {
       this.showEditPanel = true
     },
 
-    handleCloseEditingPanel(event) {
-      event.preventDefault()
+    handleCloseEditingPanel() {
       this.showEditPanel = false
     },
 
-    handleSubmit(event) {
-      event.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-          this.showEditPanel = false
-        }
-      })
+    async handleSubmit(values) {
+      try {
+        if (!this.selected.id) await API.createLocation(values)
+        else await API.updateLocation(this.selected.id, values)
+        this.showEditPanel = false
+        message.success('New loation created')
+      } catch (e) {
+        message.error(e.message)
+      }
     },
+
+    handleViewRecord(locationId) {
+      console.log('locationId=>', locationId)
+      this.selected = this.data.find((location) => location.id === locationId)
+      this.showEditPanel = true
+      this.isEditing = false
+    },
+
     formatDate(date) {
       return moment(date).format('YYYY MMM DD HH:mm')
+    },
+
+    async fetchLocations() {
+      this.fetching = true
+      try {
+        const res = await API.getLocations()
+        this.data = res
+        this.fetching = false
+      } catch (e) {
+        console.log(e.message)
+        message.error(e.message)
+        this.fetching = false
+      }
     },
   },
 }

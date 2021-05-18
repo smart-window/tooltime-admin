@@ -12,3 +12,11 @@ const failFunc = (err) => {
 export const getLocations = async () => {
   return axiosClient.get('/location').then(successFunc).catch(failFunc)
 }
+
+export const createLocation = async (newLocation) => {
+  return axiosClient.post('/location', newLocation).then(successFunc).catch(failFunc)
+}
+
+export const updateLocation = async (id, newLocation) => {
+  return axiosClient.patch(`/location/${id}`, newLocation).then(successFunc).catch(failFunc)
+}

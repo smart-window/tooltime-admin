@@ -15,6 +15,7 @@ import router from './router'
 import store from './store'
 import { i18n } from './localization'
 import './antd'
+import './google-map'
 import './registerServiceWorker'
 
 // mocking api

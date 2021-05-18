@@ -15,7 +15,7 @@
                 v-decorator="[
                   'name',
                   {
-                    rules: [{ required: true, message: 'Please location user name' }],
+                    rules: [{ required: true, message: 'Location name required' }],
                   },
                 ]"
                 placeholder="Please enter location name"
@@ -23,16 +23,43 @@
             </a-form-item>
           </a-col>
           <a-col :span="12">
-            <a-form-item label="DateTime">
-              <a-date-picker
+            <a-form-item label="Phone">
+              <a-input
                 v-decorator="[
-                  'dateTime',
+                  'phone',
                   {
-                    rules: [{ required: true, message: 'Please choose the dateTime' }],
+                    rules: [{ required: false }],
                   },
                 ]"
-                style="width: 100%"
-                :get-popup-container="(trigger) => trigger.parentNode"
+                placeholder="Please enter phone"
+              />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="16">
+          <a-col :span="12">
+            <a-form-item label="Address">
+              <a-input
+                v-decorator="[
+                  'address_1',
+                  {
+                    rules: [{ required: true, message: 'Address required' }],
+                  },
+                ]"
+                placeholder="Please enter Address"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="Address 2">
+              <a-input
+                v-decorator="[
+                  'address_2',
+                  {
+                    rules: [{ required: false }],
+                  },
+                ]"
+                placeholder="Please enter City"
               />
             </a-form-item>
           </a-col>
@@ -40,62 +67,28 @@
         <a-row :gutter="16">
           <a-col :span="12">
             <a-form-item label="State">
-              <a-select
-                mode="multiple"
-                label-in-value
-                :value="value"
-                style="width: 100%"
-                :filter-option="false"
-                :not-found-content="fetching ? undefined : null"
-                @search="fetchUser"
-                @change="handleChange"
+              <a-input
                 v-decorator="[
-                  'owner',
+                  'state',
                   {
-                    rules: [{ required: true, message: 'Please select an owner' }],
+                    rules: [{ required: true, message: 'State required' }],
                   },
                 ]"
-                placeholder="Select owner"
-              >
-                <a-spin v-if="fetching" slot="notFoundContent" size="small" />
-                <a-select-option v-for="d in data" :key="d.value">
-                  {{ d.text }}
-                </a-select-option>
-              </a-select>
+                placeholder="Please enter state"
+              />
             </a-form-item>
           </a-col>
           <a-col :span="12">
-            <a-form-item label="Type">
-              <a-select
+            <a-form-item label="City">
+              <a-input
                 v-decorator="[
-                  'type',
+                  'state',
                   {
-                    rules: [{ required: true, message: 'Please choose the type' }],
+                    rules: [{ required: true, message: 'City required' }],
                   },
                 ]"
-                placeholder="Please choose the type"
-              >
-                <a-select-option value="private"> Private </a-select-option>
-                <a-select-option value="public"> Public </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="16">
-          <a-col :span="12">
-            <a-form-item label="Approver">
-              <a-select
-                v-decorator="[
-                  'approver',
-                  {
-                    rules: [{ required: true, message: 'Please choose the approver' }],
-                  },
-                ]"
-                placeholder="Please choose the approver"
-              >
-                <a-select-option value="jack"> Jack Ma </a-select-option>
-                <a-select-option value="tom"> Tom Liu </a-select-option>
-              </a-select>
+                placeholder="Please enter City"
+              />
             </a-form-item>
           </a-col>
         </a-row>
@@ -144,7 +137,7 @@
           <h5 class="mb-0">Latest Orders</h5>
         </div>
         <div class="d-flex flex-column justify-content-center">
-          <a class="btn btn-primary" @click="handleNewOrder">New Order</a>
+          <a class="btn btn-primary" @click="handleNewOrder">New Location</a>
         </div>
       </div>
       <div class="card-body">
@@ -248,15 +241,8 @@
 <script>
 import * as API from '@/services/api'
 import moment from 'moment'
-import debounce from 'lodash/debounce'
 
 const columns = [
-  // {
-  //   title: 'ID',
-  //   dataIndex: 'id',
-  //   scopedSlots: { customRender: 'id' },
-  //   sorter: (a, b) => a.id - b.id,
-  // },
   {
     title: 'Address 1',
     dataIndex: 'address_1',
@@ -334,8 +320,6 @@ const columns = [
 ]
 export default {
   data: function () {
-    this.fetchUser = debounce(this.fetchUser, 800)
-    this.lastFetchId = 0
     return {
       searchText: '',
       searchInput: null,
@@ -344,6 +328,7 @@ export default {
       showEditPanel: false,
       isEdit: false,
       fetching: false,
+      form: this.$form.createForm(this, {}),
     }
   },
 
@@ -385,31 +370,15 @@ export default {
 
     handleSubmit(event) {
       event.preventDefault()
-      this.showEditPanel = false
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          this.showEditPanel = false
+        }
+      })
     },
     formatDate(date) {
       return moment(date).format('YYYY MMM DD HH:mm')
-    },
-    fetchUser(value) {
-      console.log('fetching user', value)
-      this.lastFetchId += 1
-      const fetchId = this.lastFetchId
-      this.data = []
-      this.fetching = true
-      fetch('https://randomuser.me/api/?results=5')
-        .then((response) => response.json())
-        .then((body) => {
-          if (fetchId !== this.lastFetchId) {
-            // for fetch callback order
-            return
-          }
-          const data = body.results.map((user) => ({
-            text: `${user.name.first} ${user.name.last}`,
-            value: user.login.username,
-          }))
-          this.data = data
-          this.fetching = false
-        })
     },
   },
 }

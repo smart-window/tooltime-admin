@@ -4,8 +4,10 @@
       title="Edit Location"
       :showPanel="showEditPanel"
       :item="selected"
+      :editing="isEditing"
       @submit="handleSubmit"
       @close="handleCloseEditingPanel"
+      @onEdit="handleClickEdit"
     />
     <div class="cui__utils__heading">
       <strong>Locations</strong>
@@ -105,7 +107,7 @@
               <i class="fe fe-edit mr-2" />
               View
             </a>
-            <a href="javascript: void(0);" class="btn btn-sm btn-light">
+            <a href="javascript: void(0);" class="btn btn-sm btn-danger">
               <small>
                 <i class="fe fe-trash mr-2" />
               </small>
@@ -247,11 +249,17 @@ export default {
 
     handleNewOrder(event) {
       event.preventDefault()
+      this.isEditing = true
       this.showEditPanel = true
+      this.selected = {}
     },
 
     handleCloseEditingPanel() {
       this.showEditPanel = false
+    },
+
+    handleClickEdit() {
+      this.isEditing = true
     },
 
     async handleSubmit(values) {
@@ -266,7 +274,6 @@ export default {
     },
 
     handleViewRecord(locationId) {
-      console.log('locationId=>', locationId)
       this.selected = this.data.find((location) => location.id === locationId)
       this.showEditPanel = true
       this.isEditing = false

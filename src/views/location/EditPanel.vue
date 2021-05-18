@@ -18,6 +18,7 @@
                 },
               ]"
               placeholder="Please enter location name"
+              :disabled="!editing"
             />
           </a-form-item>
         </a-col>
@@ -31,6 +32,7 @@
                 },
               ]"
               placeholder="Please enter phone"
+              :disabled="!editing"
             />
           </a-form-item>
         </a-col>
@@ -46,6 +48,7 @@
                 },
               ]"
               placeholder="Please enter Address"
+              :disabled="!editing"
             />
           </a-form-item>
         </a-col>
@@ -59,6 +62,7 @@
                 },
               ]"
               placeholder="Please enter City"
+              :disabled="!editing"
             />
           </a-form-item>
         </a-col>
@@ -74,6 +78,7 @@
                 },
               ]"
               placeholder="Please enter state"
+              :disabled="!editing"
             />
           </a-form-item>
         </a-col>
@@ -87,6 +92,7 @@
                 },
               ]"
               placeholder="Please enter City"
+              :disabled="!editing"
             />
           </a-form-item>
         </a-col>
@@ -100,6 +106,7 @@
                 },
               ]"
               placeholder="Please enter Zip Code"
+              :disabled="!editing"
             />
           </a-form-item>
         </a-col>
@@ -116,6 +123,7 @@
               ]"
               :rows="4"
               placeholder="please enter url description"
+              :disabled="!editing"
             />
           </a-form-item>
         </a-col>
@@ -145,8 +153,16 @@
         zIndex: 1,
       }"
     >
+      <a-button
+        type="secondary"
+        @click="handleEdit"
+        v-if="!editing"
+        :style="{ marginRight: 'auto' }"
+      >
+        Edit
+      </a-button>
       <a-button :style="{ marginRight: '8px' }" @click="handleCloseEditingPanel"> Cancel </a-button>
-      <a-button type="primary" @click="handleSubmit"> Submit </a-button>
+      <a-button type="primary" @click="handleSubmit" :disabled="!editing"> Submit </a-button>
     </div>
   </a-drawer>
 </template>
@@ -154,14 +170,23 @@
 <script>
 export default {
   name: 'EditPanel',
-  props: ['title', 'showPanel', 'close', 'submit', 'item'],
+  props: ['showPanel', 'close', 'submit', 'item', 'editing', 'onEdit'],
 
   mounted() {},
 
   data() {
     return {
       form: this.$form.createForm(this, this.item),
+      fields: ['name', 'address_1', 'address_2', 'phone', 'city', 'state', 'zip', 'description'],
     }
+  },
+
+  computed: {
+    title() {
+      if (this.item.id && !this.editing) return 'View Location'
+      else if (this.item.id && this.editing) return 'Edit Location'
+      return 'Create Location'
+    },
   },
   methods: {
     handleSubmit(event) {
@@ -174,6 +199,10 @@ export default {
       })
     },
 
+    handleEdit(event) {
+      event.preventDefault()
+      this.$emit('onEdit')
+    },
     handleCloseEditingPanel() {
       this.$emit('close')
     },
@@ -181,7 +210,10 @@ export default {
 
   watch: {
     item(item) {
-      this.form.setFieldsValue(item)
+      console.log({ item })
+      this.fields.forEach((field) => {
+        this.form.setFieldsValue({ [field]: item[field] })
+      })
     },
   },
 }

@@ -20,3 +20,7 @@ export const createLocation = async (newLocation) => {
 export const updateLocation = async (id, newLocation) => {
   return axiosClient.patch(`/location/${id}`, newLocation).then(successFunc).catch(failFunc)
 }
+
+export const removeLocation = async (id) => {
+  return axiosClient.delete(`/location/${id}`).then(successFunc).catch(failFunc)
+}

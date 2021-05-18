@@ -107,7 +107,7 @@
               <i class="fe fe-edit mr-2" />
               View
             </a>
-            <a href="javascript: void(0);" class="btn btn-sm btn-danger">
+            <a @click="handleRemoveRecord(record.id)" class="btn btn-sm btn-danger">
               <small>
                 <i class="fe fe-trash mr-2" />
               </small>
@@ -124,6 +124,7 @@ import * as API from '@/services/api'
 import moment from 'moment'
 import { message } from 'ant-design-vue'
 import EditPanel from './EditPanel'
+import * as _ from 'lodash'
 
 const columns = [
   {
@@ -268,6 +269,7 @@ export default {
         else await API.updateLocation(this.selected.id, values)
         this.showEditPanel = false
         message.success('New loation created')
+        this.fetchLocations()
       } catch (e) {
         message.error(e.message)
       }
@@ -277,6 +279,16 @@ export default {
       this.selected = this.data.find((location) => location.id === locationId)
       this.showEditPanel = true
       this.isEditing = false
+    },
+
+    async handleRemoveRecord(locationId) {
+      try {
+        await API.removeLocation(locationId)
+        message.info('Location Removed!')
+        this.data = _.cloneDeep(this.data).filter((location) => location.id !== locationId)
+      } catch (e) {
+        message.error(e.message)
+      }
     },
 
     formatDate(date) {

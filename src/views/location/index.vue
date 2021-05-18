@@ -107,12 +107,19 @@
               <i class="fe fe-edit mr-2" />
               View
             </a>
-            <a @click="handleRemoveRecord(record.id)" class="btn btn-sm btn-danger">
-              <small>
-                <i class="fe fe-trash mr-2" />
-              </small>
-              Remove
-            </a>
+            <a-popconfirm
+              title="Are you sure delete this location?"
+              ok-text="Yes"
+              cancel-text="No"
+              @confirm="handleRemoveRecord(record.id)"
+            >
+              <a href="#" class="btn btn-sm btn-danger">
+                <small>
+                  <i class="fe fe-trash mr-2" />
+                </small>
+                Remove
+              </a>
+            </a-popconfirm>
           </span>
         </a-table>
       </div>

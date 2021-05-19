@@ -18,7 +18,7 @@
                   rules: [{ required: true, message: 'order name required' }],
                 },
               ]"
-              :disabled="!editing"
+              disabled
             />
           </a-form-item>
         </a-col>
@@ -46,7 +46,7 @@
         </a-col>
       </a-row>
       <a-row>
-        <a-col :span="12">
+        <a-col :span="24">
           <a-form-item label="Email">
             <a-input
               v-decorator="[
@@ -56,7 +56,7 @@
                   rules: [{ required: false }],
                 },
               ]"
-              :disabled="!editing"
+              disabled
             />
           </a-form-item>
         </a-col>
@@ -72,7 +72,7 @@
                   rules: [{ required: true, message: 'Address required' }],
                 },
               ]"
-              :disabled="!editing"
+              disabled
             />
           </a-form-item>
         </a-col>
@@ -88,7 +88,7 @@
                   rules: [{ required: true, message: 'State required' }],
                 },
               ]"
-              :disabled="!editing"
+              disabled
             />
           </a-form-item>
         </a-col>
@@ -102,7 +102,7 @@
                   rules: [{ required: true, message: 'City required' }],
                 },
               ]"
-              :disabled="!editing"
+              disabled
             />
           </a-form-item>
         </a-col>
@@ -113,10 +113,9 @@
                 'zip',
                 {
                   zip: item.zip,
-                  rules: [{ required: true, message: 'ZipCode required' }],
                 },
               ]"
-              :disabled="!editing"
+              disabled
             />
           </a-form-item>
         </a-col>

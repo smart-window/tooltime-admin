@@ -237,9 +237,9 @@ export default {
     async handleSubmit(values) {
       try {
         if (!this.selected.id) await API.createOrder(values)
-        else await API.updateOrder(this.selected.id, values)
+        else await API.updateOrder(this.selected.id, { ...this.selected, ...values })
         this.showEditPanel = false
-        message.success('New loation created')
+        message.success(this.selected.id ? 'Order has updated' : 'New order has created')
         this.fetchOrders()
       } catch (e) {
         message.error(e.message)

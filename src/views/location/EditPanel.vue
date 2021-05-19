@@ -14,10 +14,10 @@
               v-decorator="[
                 'name',
                 {
+                  initialValue: item.name,
                   rules: [{ required: true, message: 'Location name required' }],
                 },
               ]"
-              placeholder="Please enter location name"
               :disabled="!editing"
             />
           </a-form-item>
@@ -28,6 +28,7 @@
               v-decorator="[
                 'phone',
                 {
+                  initialValue: item.phone,
                   rules: [{ required: false }],
                 },
               ]"
@@ -44,6 +45,7 @@
               v-decorator="[
                 'address_1',
                 {
+                  initialValue: item.address_1,
                   rules: [{ required: true, message: 'Address required' }],
                 },
               ]"
@@ -58,6 +60,7 @@
               v-decorator="[
                 'address_2',
                 {
+                  initialValue: item.address_2,
                   rules: [{ required: false }],
                 },
               ]"
@@ -74,6 +77,7 @@
               v-decorator="[
                 'state',
                 {
+                  initialValue: item.state,
                   rules: [{ required: true, message: 'State required' }],
                 },
               ]"
@@ -88,6 +92,7 @@
               v-decorator="[
                 'city',
                 {
+                  initialValue: item.city,
                   rules: [{ required: true, message: 'City required' }],
                 },
               ]"
@@ -102,6 +107,7 @@
               v-decorator="[
                 'zip',
                 {
+                  initialValue: item.zip,
                   rules: [{ required: true, message: 'ZipCode required' }],
                 },
               ]"
@@ -118,6 +124,7 @@
               v-decorator="[
                 'description',
                 {
+                  initialValue: item.description,
                   rules: [{ required: true, message: 'Please enter url description' }],
                 },
               ]"
@@ -161,7 +168,14 @@
       >
         Edit
       </a-button>
-      <a-button :style="{ marginRight: '8px' }" @click="handleCloseEditingPanel"> Cancel </a-button>
+      <a-button
+        v-if="editing && item.id"
+        :style="{ marginRight: '8px' }"
+        @click="handleCancelEditing"
+      >
+        Cancel
+      </a-button>
+      <a-button :style="{ marginRight: '8px' }" @click="handleCloseEditingPanel"> Close </a-button>
       <a-button type="primary" @click="handleSubmit" :disabled="!editing"> Submit </a-button>
     </div>
   </a-drawer>
@@ -202,6 +216,11 @@ export default {
     handleEdit(event) {
       event.preventDefault()
       this.$emit('onEdit')
+    },
+
+    handleCancelEditing(event) {
+      event.preventDefault()
+      this.$emit('onCancelEdit')
     },
     handleCloseEditingPanel() {
       this.$emit('close')

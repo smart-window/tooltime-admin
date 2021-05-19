@@ -8,6 +8,7 @@
       @submit="handleSubmit"
       @close="handleCloseEditingPanel"
       @onEdit="handleClickEdit"
+      @onCancelEdit="handleClickCancelEdit"
     />
     <div class="cui__utils__heading">
       <strong>Locations</strong>
@@ -135,15 +136,15 @@ import * as _ from 'lodash'
 
 const columns = [
   {
-    title: 'Address 1',
-    dataIndex: 'address_1',
-    key: 'address_1',
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'Address 2',
-    dataIndex: 'address_2',
-    key: 'address_2',
+    title: 'Address 1',
+    dataIndex: 'address_1',
+    key: 'address_1',
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
@@ -174,46 +175,6 @@ const columns = [
     dataIndex: 'phone',
     key: 'phone',
   },
-  // {
-  //   title: 'Customer',
-  //   dataIndex: 'customer',
-  //   sorter: (a, b) => a.customer.length - b.customer.length,
-  //   scopedSlots: {
-  //     filterDropdown: 'filterDropdown',
-  //     filterIcon: 'filterIcon',
-  //     customRender: 'customer',
-  //   },
-  //   onFilter: (value, record) => record.customer.toLowerCase().includes(value.toLowerCase()),
-  // },
-  // {
-  //   title: 'Grand Total',
-  //   dataIndex: 'total',
-  //   sorter: (a, b) => a.total - b.total,
-  //   scopedSlots: { customRender: 'total' },
-  // },
-  // {
-  //   title: 'Tax',
-  //   dataIndex: 'tax',
-  //   sorter: (a, b) => a.tax - b.tax,
-  //   scopedSlots: { customRender: 'tax' },
-  // },
-  // {
-  //   title: 'Shipping',
-  //   dataIndex: 'shipping',
-  //   sorter: (a, b) => a.shipping - b.shipping,
-  //   scopedSlots: { customRender: 'shipping' },
-  // },
-  // {
-  //   title: 'Quantity',
-  //   dataIndex: 'quantity',
-  //   sorter: (a, b) => a.quantity - b.quantity,
-  // },
-  // {
-  //   title: 'Status',
-  //   dataIndex: 'status',
-  //   sorter: (a, b) => a.status.length - b.status.length,
-  //   scopedSlots: { customRender: 'status' },
-  // },
   {
     title: 'Action',
     scopedSlots: { customRender: 'action' },
@@ -268,6 +229,9 @@ export default {
 
     handleClickEdit() {
       this.isEditing = true
+    },
+    handleClickCancelEdit() {
+      this.isEditing = false
     },
 
     async handleSubmit(values) {

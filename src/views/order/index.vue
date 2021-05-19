@@ -7,6 +7,7 @@
       @submit="handleSubmit"
       @close="handleCloseEditingPanel"
       @onEdit="handleClickEdit"
+      @onCancelEdit="handleClickCancelEdit"
     />
     <div class="cui__utils__heading">
       <strong>Orders</strong>
@@ -91,16 +92,7 @@
           <span slot="updatedAt" slot-scope="date">{{ formatDate(date) }}</span>
           <span slot="tax" slot-scope="text">${{ text }}</span>
           <span slot="shipping" slot-scope="text">${{ text }}</span>
-          <span
-            slot="status"
-            slot-scope="text"
-            :class="[
-              text === 'Processing'
-                ? 'font-size-12 badge badge-primary'
-                : 'font-size-12 badge badge-default',
-            ]"
-            >{{ text }}</span
-          >
+          <span slot="status" slot-scope="text" :class="statusClassName(text)">{{ text }}</span>
           <span slot="action" slot-scope="record">
             <a @click="handleViewRecord(record.id)" class="btn btn-sm btn-light mr-2">
               <i class="fe fe-edit mr-2" />
@@ -132,6 +124,14 @@ import { message } from 'ant-design-vue'
 import EditPanel from './EditPanel'
 import * as _ from 'lodash'
 
+const STATUS = {
+  PENDING: 'PENDING',
+  PICKED: 'PICKED',
+  DELIVERED: 'DELIVERED',
+  RETURNED: 'RETURNED',
+  EXPIRED: 'EXPIRED',
+}
+
 const columns = [
   {
     title: 'Name',
@@ -161,6 +161,13 @@ const columns = [
     title: 'Zip Code',
     dataIndex: 'zip',
     key: 'zip',
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
+  {
+    title: 'Statuse',
+    dataIndex: 'status',
+    key: 'status',
+    scopedSlots: { customRender: 'status' },
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
@@ -224,7 +231,9 @@ export default {
     handleClickEdit() {
       this.isEditing = true
     },
-
+    handleClickCancelEdit() {
+      this.isEditing = false
+    },
     async handleSubmit(values) {
       try {
         if (!this.selected.id) await API.createOrder(values)
@@ -267,6 +276,14 @@ export default {
         message.error(e.message)
         this.fetching = false
       }
+    },
+
+    statusClassName(status) {
+      if (status === STATUS.PENDING) return 'font-size-12 badge badge-warning'
+      if (status === STATUS.PICKED) return 'font-size-12 badge badge-primary'
+      if (status === STATUS.DELIVERED) return 'font-size-12 badge badge-success'
+      if (status === STATUS.RETURNED) return 'font-size-12 badge badge-default'
+      if (status === STATUS.EXPIRED) return 'font-size-12 badge badge-default'
     },
   },
 }

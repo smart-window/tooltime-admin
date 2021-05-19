@@ -14,54 +14,64 @@
               v-decorator="[
                 'name',
                 {
-                  rules: [{ required: true, message: 'Location name required' }],
+                  initialValue: item.name,
+                  rules: [{ required: true, message: 'order name required' }],
                 },
               ]"
-              placeholder="Please enter location name"
               :disabled="!editing"
             />
           </a-form-item>
         </a-col>
+        <a-col :span="12" v-if="!editing">
+          <a-form-item label="Status">
+            <a-tag color="pink"> {{ item.status }} </a-tag>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12" v-if="editing">
+          <a-form-item label="Status">
+            <a-select
+              v-decorator="[
+                'status',
+                {
+                  initialValue: item.status,
+                  rules: [{ required: true, message: 'status required' }],
+                },
+              ]"
+            >
+              <a-select-option value="PENDING"> PENDING </a-select-option>
+              <a-select-option value="PICKED"> PICKED </a-select-option>
+              <a-select-option value="DELIVERED"> DELIVERED </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+      </a-row>
+      <a-row>
         <a-col :span="12">
-          <a-form-item label="Phone">
+          <a-form-item label="Email">
             <a-input
               v-decorator="[
-                'phone',
+                'email',
                 {
+                  initialValue: item.email,
                   rules: [{ required: false }],
                 },
               ]"
-              placeholder="Please enter phone"
               :disabled="!editing"
             />
           </a-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="16">
-        <a-col :span="12">
+        <a-col :span="24">
           <a-form-item label="Address">
             <a-input
               v-decorator="[
-                'address_1',
+                'address',
                 {
+                  initialValue: item.address,
                   rules: [{ required: true, message: 'Address required' }],
                 },
               ]"
-              placeholder="Please enter Address"
-              :disabled="!editing"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label="Address 2">
-            <a-input
-              v-decorator="[
-                'address_2',
-                {
-                  rules: [{ required: false }],
-                },
-              ]"
-              placeholder="Please enter City"
               :disabled="!editing"
             />
           </a-form-item>
@@ -74,10 +84,10 @@
               v-decorator="[
                 'state',
                 {
+                  initialValue: item.state,
                   rules: [{ required: true, message: 'State required' }],
                 },
               ]"
-              placeholder="Please enter state"
               :disabled="!editing"
             />
           </a-form-item>
@@ -88,10 +98,10 @@
               v-decorator="[
                 'city',
                 {
+                  initialValue: item.city,
                   rules: [{ required: true, message: 'City required' }],
                 },
               ]"
-              placeholder="Please enter City"
               :disabled="!editing"
             />
           </a-form-item>
@@ -102,10 +112,10 @@
               v-decorator="[
                 'zip',
                 {
+                  zip: item.zip,
                   rules: [{ required: true, message: 'ZipCode required' }],
                 },
               ]"
-              placeholder="Please enter Zip Code"
               :disabled="!editing"
             />
           </a-form-item>
@@ -113,30 +123,19 @@
       </a-row>
       <a-row :gutter="16">
         <a-col :span="24">
-          <a-form-item label="Description">
+          <a-form-item label="Notes">
             <a-textarea
               v-decorator="[
-                'description',
+                'notes',
                 {
-                  rules: [{ required: true, message: 'Please enter url description' }],
+                  initialValue: item.notes,
+                  rules: [{ required: false }],
                 },
               ]"
               :rows="4"
-              placeholder="please enter url description"
               :disabled="!editing"
             />
           </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="16">
-        <a-col :span="24">
-          <GmapMap
-            :center="{ lat: 10, lng: 10 }"
-            :zoom="7"
-            map-type-id="terrain"
-            style="width: 100%; height: 300px"
-          >
-          </GmapMap>
         </a-col>
       </a-row>
     </a-form>
@@ -161,7 +160,12 @@
       >
         Edit
       </a-button>
-      <a-button :style="{ marginRight: '8px' }" @click="handleCloseEditingPanel"> Cancel </a-button>
+      <a-button v-if="editing" :style="{ marginRight: '8px' }" @click="handleCancelEditing">
+        Cancel
+      </a-button>
+      <a-button v-if="!editing" :style="{ marginRight: '8px' }" @click="handleCloseEditingPanel">
+        Close
+      </a-button>
       <a-button type="primary" @click="handleSubmit" :disabled="!editing"> Submit </a-button>
     </div>
   </a-drawer>
@@ -177,15 +181,15 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this, this.item),
-      fields: ['name', 'address_1', 'address_2', 'phone', 'city', 'state', 'zip', 'description'],
+      fields: ['name', 'email', 'address', 'city', 'state', 'zip', 'notes', 'status'],
     }
   },
 
   computed: {
     title() {
-      if (this.item.id && !this.editing) return 'View Location'
-      else if (this.item.id && this.editing) return 'Edit Location'
-      return 'Create Location'
+      if (this.item.id && !this.editing) return 'View order'
+      else if (this.item.id && this.editing) return 'Edit order'
+      return 'Create order'
     },
   },
   methods: {
@@ -202,6 +206,11 @@ export default {
     handleEdit(event) {
       event.preventDefault()
       this.$emit('onEdit')
+    },
+
+    handleCancelEditing(event) {
+      event.preventDefault()
+      this.$emit('onCancelEdit')
     },
     handleCloseEditingPanel() {
       this.$emit('close')

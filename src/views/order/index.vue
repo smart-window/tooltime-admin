@@ -1,158 +1,27 @@
 <template>
   <div>
-    <a-drawer
-      title="Create a new account"
-      :width="720"
-      :visible="showEditPanel"
-      :body-style="{ paddingBottom: '80px' }"
+    <edit-panel
+      :showPanel="showEditPanel"
+      :item="selected"
+      :editing="isEditing"
+      @submit="handleSubmit"
       @close="handleCloseEditingPanel"
-    >
-      <a-form :form="form" layout="vertical" hide-required-mark>
-        <a-row :gutter="16">
-          <a-col :span="12">
-            <a-form-item label="Name">
-              <a-input
-                v-decorator="[
-                  'name',
-                  {
-                    rules: [{ required: true, message: 'Please enter user name' }],
-                  },
-                ]"
-                placeholder="Please enter user name"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="Url">
-              <a-input
-                v-decorator="[
-                  'url',
-                  {
-                    rules: [{ required: true, message: 'please enter url' }],
-                  },
-                ]"
-                style="width: 100%"
-                addon-before="http://"
-                addon-after=".com"
-                placeholder="please enter url"
-              />
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="16">
-          <a-col :span="12">
-            <a-form-item label="Owner">
-              <a-select
-                v-decorator="[
-                  'owner',
-                  {
-                    rules: [{ required: true, message: 'Please select an owner' }],
-                  },
-                ]"
-                placeholder="Please a-s an owner"
-              >
-                <a-select-option value="xiao"> Xiaoxiao Fu </a-select-option>
-                <a-select-option value="mao"> Maomao Zhou </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="Type">
-              <a-select
-                v-decorator="[
-                  'type',
-                  {
-                    rules: [{ required: true, message: 'Please choose the type' }],
-                  },
-                ]"
-                placeholder="Please choose the type"
-              >
-                <a-select-option value="private"> Private </a-select-option>
-                <a-select-option value="public"> Public </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="16">
-          <a-col :span="12">
-            <a-form-item label="Approver">
-              <a-select
-                v-decorator="[
-                  'approver',
-                  {
-                    rules: [{ required: true, message: 'Please choose the approver' }],
-                  },
-                ]"
-                placeholder="Please choose the approver"
-              >
-                <a-select-option value="jack"> Jack Ma </a-select-option>
-                <a-select-option value="tom"> Tom Liu </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="DateTime">
-              <a-date-picker
-                v-decorator="[
-                  'dateTime',
-                  {
-                    rules: [{ required: true, message: 'Please choose the dateTime' }],
-                  },
-                ]"
-                style="width: 100%"
-                :get-popup-container="(trigger) => trigger.parentNode"
-              />
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="16">
-          <a-col :span="24">
-            <a-form-item label="Description">
-              <a-textarea
-                v-decorator="[
-                  'description',
-                  {
-                    rules: [{ required: true, message: 'Please enter url description' }],
-                  },
-                ]"
-                :rows="4"
-                placeholder="please enter url description"
-              />
-            </a-form-item>
-          </a-col>
-        </a-row>
-      </a-form>
-      <div
-        :style="{
-          position: 'absolute',
-          right: 0,
-          bottom: 0,
-          width: '100%',
-          borderTop: '1px solid #e9e9e9',
-          padding: '10px 16px',
-          background: '#fff',
-          textAlign: 'right',
-          zIndex: 1,
-        }"
-      >
-        <a-button :style="{ marginRight: '8px' }" @click="onClose"> Cancel </a-button>
-        <a-button type="primary" @click="onClose"> Submit </a-button>
-      </div>
-    </a-drawer>
+      @onEdit="handleClickEdit"
+    />
     <div class="cui__utils__heading">
-      <strong>Ecommerce: Orders</strong>
+      <strong>Orders</strong>
     </div>
     <div class="card">
       <div class="card-header card-header-flex">
         <div class="d-flex flex-column justify-content-center mr-auto">
-          <h5 class="mb-0">Latest Orders</h5>
+          <h5 class="mb-0">Orders</h5>
         </div>
         <div class="d-flex flex-column justify-content-center">
           <a class="btn btn-primary" @click="handleNewOrder">New Order</a>
         </div>
       </div>
       <div class="card-body">
-        <a-table :columns="columns" :dataSource="data">
+        <a-table :columns="columns" :dataSource="orders">
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
@@ -219,6 +88,7 @@
             text
           }}</a>
           <span slot="total" slot-scope="text">${{ text }}</span>
+          <span slot="updatedAt" slot-scope="date">{{ formatDate(date) }}</span>
           <span slot="tax" slot-scope="text">${{ text }}</span>
           <span slot="shipping" slot-scope="text">${{ text }}</span>
           <span
@@ -231,17 +101,24 @@
             ]"
             >{{ text }}</span
           >
-          <span slot="action">
-            <a href="javascript: void(0);" class="btn btn-sm btn-light mr-2">
+          <span slot="action" slot-scope="record">
+            <a @click="handleViewRecord(record.id)" class="btn btn-sm btn-light mr-2">
               <i class="fe fe-edit mr-2" />
               View
             </a>
-            <a href="javascript: void(0);" class="btn btn-sm btn-light">
-              <small>
-                <i class="fe fe-trash mr-2" />
-              </small>
-              Remove
-            </a>
+            <a-popconfirm
+              title="Are you sure delete this location?"
+              ok-text="Yes"
+              cancel-text="No"
+              @confirm="handleRemoveRecord(record.id)"
+            >
+              <a href="#" class="btn btn-sm btn-danger">
+                <small>
+                  <i class="fe fe-trash mr-2" />
+                </small>
+                Remove
+              </a>
+            </a-popconfirm>
           </span>
         </a-table>
       </div>
@@ -249,58 +126,48 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import data from './data.json'
+import * as API from '@/services/api'
+import moment from 'moment'
+import { message } from 'ant-design-vue'
+import EditPanel from './EditPanel'
+import * as _ from 'lodash'
+
 const columns = [
   {
-    title: 'ID',
-    dataIndex: 'id',
-    scopedSlots: { customRender: 'id' },
-    sorter: (a, b) => a.id - b.id,
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'Purchase Date',
-    dataIndex: 'date',
+    title: 'City',
+    dataIndex: 'city',
+    key: 'city',
+    sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'Customer',
-    dataIndex: 'customer',
-    sorter: (a, b) => a.customer.length - b.customer.length,
-    scopedSlots: {
-      filterDropdown: 'filterDropdown',
-      filterIcon: 'filterIcon',
-      customRender: 'customer',
-    },
-    onFilter: (value, record) => record.customer.toLowerCase().includes(value.toLowerCase()),
+    title: 'State',
+    dataIndex: 'state',
+    key: 'state',
+    sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'Grand Total',
-    dataIndex: 'total',
-    sorter: (a, b) => a.total - b.total,
-    scopedSlots: { customRender: 'total' },
+    title: 'Address',
+    dataIndex: 'address',
+    key: 'address',
+    sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'Tax',
-    dataIndex: 'tax',
-    sorter: (a, b) => a.tax - b.tax,
-    scopedSlots: { customRender: 'tax' },
+    title: 'Zip Code',
+    dataIndex: 'zip',
+    key: 'zip',
+    sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'Shipping',
-    dataIndex: 'shipping',
-    sorter: (a, b) => a.shipping - b.shipping,
-    scopedSlots: { customRender: 'shipping' },
-  },
-  {
-    title: 'Quantity',
-    dataIndex: 'quantity',
-    sorter: (a, b) => a.quantity - b.quantity,
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    sorter: (a, b) => a.status.length - b.status.length,
-    scopedSlots: { customRender: 'status' },
+    title: 'Last Update',
+    dataIndex: 'updatedAt',
+    key: 'updatedAt',
+    scopedSlots: { customRender: 'updatedAt' },
   },
   {
     title: 'Action',
@@ -308,18 +175,29 @@ const columns = [
   },
 ]
 export default {
+  components: { EditPanel },
   data: function () {
     return {
       searchText: '',
       searchInput: null,
-      data,
+      orders: [],
       columns,
       showEditPanel: false,
+      isEditing: false,
+      isCreating: false,
+      fetching: false,
+      selected: {},
     }
   },
 
+  mounted() {
+    this.fetchOrders()
+  },
+
   computed: {
-    ...mapState(['settings']),
+    panelTitle() {
+      return this.isEditing ? 'Edit a order' : 'Create a new order'
+    },
   },
   methods: {
     handleSearch(selectedKeys, confirm) {
@@ -331,13 +209,64 @@ export default {
       clearFilters()
       this.searchText = ''
     },
+
     handleNewOrder(event) {
       event.preventDefault()
+      this.isEditing = true
       this.showEditPanel = true
+      this.selected = {}
     },
-    handleCloseEditingPanel(event) {
-      event.preventDefault()
+
+    handleCloseEditingPanel() {
       this.showEditPanel = false
+    },
+
+    handleClickEdit() {
+      this.isEditing = true
+    },
+
+    async handleSubmit(values) {
+      try {
+        if (!this.selected.id) await API.createOrder(values)
+        else await API.updateOrder(this.selected.id, values)
+        this.showEditPanel = false
+        message.success('New loation created')
+        this.fetchOrders()
+      } catch (e) {
+        message.error(e.message)
+      }
+    },
+
+    handleViewRecord(orderId) {
+      this.selected = this.orders.find((order) => order.id === orderId)
+      this.showEditPanel = true
+      this.isEditing = false
+    },
+
+    async handleRemoveRecord(orderId) {
+      try {
+        await API.removeOrder(orderId)
+        message.info('Location Removed!')
+        this.orders = _.cloneDeep(this.orders).filter((order) => order.id !== orderId)
+      } catch (e) {
+        message.error(e.message)
+      }
+    },
+
+    formatDate(date) {
+      return moment(date).format('YYYY MMM DD HH:mm')
+    },
+
+    async fetchOrders() {
+      this.fetching = true
+      try {
+        this.orders = await API.getOrders()
+        this.fetching = false
+      } catch (e) {
+        console.log(e.message)
+        message.error(e.message)
+        this.fetching = false
+      }
     },
   },
 }
@@ -354,8 +283,4 @@ export default {
   background-color: rgb(255, 192, 105);
   padding: 0px;
 }
-</style>
-
-<style lang="scss" module>
-@import './style.module.scss';
 </style>

@@ -24,3 +24,19 @@ export const updateLocation = async (id, newLocation) => {
 export const removeLocation = async (id) => {
   return axiosClient.delete(`/location/${id}`).then(successFunc).catch(failFunc)
 }
+
+export const getOrders = async () => {
+  return axiosClient.get('/order').then(successFunc).catch(failFunc)
+}
+
+export const createOrder = async (newOrder) => {
+  return axiosClient.post('/order', newOrder).then(successFunc).catch(failFunc)
+}
+
+export const updateOrder = async (id, newOrder) => {
+  return axiosClient.patch(`/order/${id}`, newOrder).then(successFunc).catch(failFunc)
+}
+
+export const removeOrder = async (id) => {
+  return axiosClient.delete(`/order/${id}`).then(successFunc).catch(failFunc)
+}

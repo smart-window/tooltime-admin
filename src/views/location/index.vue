@@ -15,7 +15,7 @@
     <div class="card">
       <div class="card-header card-header-flex">
         <div class="d-flex flex-column justify-content-center mr-auto">
-          <h5 class="mb-0">Latest Orders</h5>
+          <h5 class="mb-0">Locations</h5>
         </div>
         <div class="d-flex flex-column justify-content-center">
           <a class="btn btn-primary" @click="handleNewOrder">New Location</a>

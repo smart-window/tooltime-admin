@@ -10,19 +10,19 @@
       @onCancelEdit="handleClickCancelEdit"
     />
     <div class="cui__utils__heading">
-      <strong>Orders</strong>
+      <strong>Customers</strong>
     </div>
     <div class="card">
       <div class="card-header card-header-flex">
         <div class="d-flex flex-column justify-content-center mr-auto">
-          <h5 class="mb-0">Orders</h5>
+          <h5 class="mb-0">Customers</h5>
         </div>
         <div class="d-flex flex-column justify-content-center">
-          <a class="btn btn-primary" @click="handleNewOrder">New Order</a>
+          <a class="btn btn-primary" @click="handleNewCustomer">New Customer</a>
         </div>
       </div>
       <div class="card-body">
-        <a-table :columns="columns" :dataSource="orders">
+        <a-table :columns="columns" :dataSource="customers">
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
@@ -88,6 +88,7 @@
           <a slot="id" slot-scope="text" href="javascript: void(0);" class="btn btn-sm btn-light">{{
             text
           }}</a>
+          <span slot="createdAt" slot-scope="date">{{ formatDate(date) }}</span>
           <span slot="updatedAt" slot-scope="date">{{ formatDate(date) }}</span>
           <span slot="status" slot-scope="text" :class="statusClassName(text)">{{ text }}</span>
           <span slot="action" slot-scope="record">
@@ -137,6 +138,12 @@ const columns = [
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
+    title: 'Email',
+    dataIndex: 'email',
+    key: 'email',
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
+  {
     title: 'City',
     dataIndex: 'city',
     key: 'city',
@@ -168,6 +175,12 @@ const columns = [
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
+    title: 'Created',
+    dataIndex: 'createdAt',
+    key: 'createdAt',
+    scopedSlots: { customRender: 'createdAt' },
+  },
+  {
     title: 'Last Update',
     dataIndex: 'updatedAt',
     key: 'updatedAt',
@@ -184,7 +197,7 @@ export default {
     return {
       searchText: '',
       searchInput: null,
-      orders: [],
+      customers: [],
       columns,
       showEditPanel: false,
       isEditing: false,
@@ -195,12 +208,12 @@ export default {
   },
 
   mounted() {
-    this.fetchOrders()
+    this.fetchCustomers()
   },
 
   computed: {
     panelTitle() {
-      return this.isEditing ? 'Edit a order' : 'Create a new order'
+      return this.isEditing ? 'Edit a customer' : 'Create a new customer'
     },
   },
   methods: {
@@ -214,7 +227,7 @@ export default {
       this.searchText = ''
     },
 
-    handleNewOrder(event) {
+    handleNewCustomer(event) {
       event.preventDefault()
       this.isEditing = true
       this.showEditPanel = true
@@ -233,27 +246,29 @@ export default {
     },
     async handleSubmit(values) {
       try {
-        if (!this.selected.id) await API.createOrder(values)
-        else await API.updateOrder(this.selected.id, { ...this.selected, ...values })
+        if (!this.selected.id) await API.createCustomer(values)
+        else await API.updateCustomer(this.selected.id, { ...this.selected, ...values })
         this.showEditPanel = false
-        message.success(this.selected.id ? 'Order has updated' : 'New order has created')
-        this.fetchOrders()
+        message.success(this.selected.id ? 'Customer has updated' : 'New customer has created')
+        this.fetchCustomers()
       } catch (e) {
         message.error(e.message)
       }
     },
 
-    handleViewRecord(orderId) {
-      this.selected = this.orders.find((order) => order.id === orderId)
+    handleViewRecord(customerId) {
+      this.selected = this.customers.find((customer) => customer.id === customerId)
       this.showEditPanel = true
       this.isEditing = false
     },
 
-    async handleRemoveRecord(orderId) {
+    async handleRemoveRecord(customerId) {
       try {
-        await API.removeOrder(orderId)
+        await API.removeCustomer(customerId)
         message.info('Location Removed!')
-        this.orders = _.cloneDeep(this.orders).filter((order) => order.id !== orderId)
+        this.customers = _.cloneDeep(this.customers).filter(
+          (customer) => customer.id !== customerId,
+        )
       } catch (e) {
         message.error(e.message)
       }
@@ -263,10 +278,10 @@ export default {
       return moment(date).format('YYYY MMM DD HH:mm')
     },
 
-    async fetchOrders() {
+    async fetchCustomers() {
       this.fetching = true
       try {
-        this.orders = await API.getOrders()
+        this.customers = await API.getCustomers()
         this.fetching = false
       } catch (e) {
         console.log(e.message)

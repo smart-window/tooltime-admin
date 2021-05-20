@@ -137,6 +137,12 @@ const columns = [
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
+    title: 'Email',
+    dataIndex: 'email',
+    key: 'email',
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
+  {
     title: 'City',
     dataIndex: 'city',
     key: 'city',

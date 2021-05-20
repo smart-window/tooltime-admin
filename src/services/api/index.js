@@ -40,3 +40,7 @@ export const updateOrder = async (id, newOrder) => {
 export const removeOrder = async (id) => {
   return axiosClient.delete(`/order/${id}`).then(successFunc).catch(failFunc)
 }
+
+export const getProducts = async () => {
+  return axiosClient.get('/product').then(successFunc).catch(failFunc)
+}

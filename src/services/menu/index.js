@@ -29,9 +29,9 @@ export const getMenuData = [
   },
   {
     title: 'Products',
-    icon: 'fas fa-truck-monster',
+    icon: 'fas fa-tools',
     key: 'Products',
-    url: '/ecommerce/product-catalog',
+    url: '/product/list',
   },
   {
     category: true,

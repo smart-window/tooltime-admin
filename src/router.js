@@ -45,6 +45,13 @@ const router = new Router({
           component: () => import('./views/order'),
         },
         {
+          path: '/product/list',
+          meta: {
+            title: 'Products Dashboard',
+          },
+          component: () => import('./views/products'),
+        },
+        {
           path: '/offer',
           meta: {
             title: 'Offers Dashboard',

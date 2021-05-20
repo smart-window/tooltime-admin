@@ -60,3 +60,19 @@ export const updateCustomer = async (id, newCustomer) => {
 export const removeCustomer = async (id) => {
   return axiosClient.delete(`/customer/${id}`).then(successFunc).catch(failFunc)
 }
+
+export const getCategorys = async () => {
+  return axiosClient.get('/category').then(successFunc).catch(failFunc)
+}
+
+export const createCategory = async (newCategory) => {
+  return axiosClient.post('/category', newCategory).then(successFunc).catch(failFunc)
+}
+
+export const updateCategory = async (id, newCategory) => {
+  return axiosClient.patch(`/category/${id}`, newCategory).then(successFunc).catch(failFunc)
+}
+
+export const removeCategory = async (id) => {
+  return axiosClient.delete(`/category/${id}`).then(successFunc).catch(failFunc)
+}

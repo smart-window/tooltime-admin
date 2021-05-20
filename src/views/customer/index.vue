@@ -97,7 +97,7 @@
               View
             </a>
             <a-popconfirm
-              title="Are you sure delete this location?"
+              title="Are you sure delete this customer?"
               ok-text="Yes"
               cancel-text="No"
               @confirm="handleRemoveRecord(record.id)"
@@ -168,7 +168,7 @@ const columns = [
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'Statuse',
+    title: 'Status',
     dataIndex: 'status',
     key: 'status',
     scopedSlots: { customRender: 'status' },

@@ -7,6 +7,9 @@
   &:active {
     border-color: $primary;
   }
+  &:disabled {
+    color: $primary;
+  }
 }
 
 .ant-input-affix-wrapper {

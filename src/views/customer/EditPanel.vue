@@ -8,40 +8,18 @@
   >
     <a-form :form="form" layout="vertical" hide-required-mark>
       <a-row :gutter="16">
-        <a-col :span="12">
+        <a-col :span="24">
           <a-form-item label="Name">
             <a-input
               v-decorator="[
                 'name',
                 {
                   initialValue: item.name,
-                  rules: [{ required: true, message: 'order name required' }],
+                  rules: [{ required: true, message: 'Name required' }],
                 },
               ]"
-              disabled
+              :disabled="!editing"
             />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12" v-if="!editing">
-          <a-form-item label="Status">
-            <a-tag color="pink"> {{ item.status }} </a-tag>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12" v-if="editing">
-          <a-form-item label="Status">
-            <a-select
-              v-decorator="[
-                'status',
-                {
-                  initialValue: item.status,
-                  rules: [{ required: true, message: 'status required' }],
-                },
-              ]"
-            >
-              <a-select-option value="PENDING"> PENDING </a-select-option>
-              <a-select-option value="PICKED"> PICKED </a-select-option>
-              <a-select-option value="DELIVERED"> DELIVERED </a-select-option>
-            </a-select>
           </a-form-item>
         </a-col>
       </a-row>
@@ -53,10 +31,26 @@
                 'email',
                 {
                   initialValue: item.email,
-                  rules: [{ required: false }],
+                  rules: [{ required: true, message: 'Email required' }],
                 },
               ]"
-              disabled
+              :disabled="!editing"
+            />
+          </a-form-item>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="24">
+          <a-form-item label="Phone">
+            <a-input
+              v-decorator="[
+                'phone',
+                {
+                  initialValue: item.phone,
+                  rules: [{ required: true, message: 'Phone required' }],
+                },
+              ]"
+              :disabled="!editing"
             />
           </a-form-item>
         </a-col>
@@ -72,7 +66,7 @@
                   rules: [{ required: true, message: 'Address required' }],
                 },
               ]"
-              disabled
+              :disabled="!editing"
             />
           </a-form-item>
         </a-col>
@@ -88,7 +82,7 @@
                   rules: [{ required: true, message: 'State required' }],
                 },
               ]"
-              disabled
+              :disabled="!editing"
             />
           </a-form-item>
         </a-col>
@@ -102,7 +96,7 @@
                   rules: [{ required: true, message: 'City required' }],
                 },
               ]"
-              disabled
+              :disabled="!editing"
             />
           </a-form-item>
         </a-col>
@@ -115,7 +109,7 @@
                   zip: item.zip,
                 },
               ]"
-              disabled
+              :disabled="!editing"
             />
           </a-form-item>
         </a-col>
@@ -144,7 +138,7 @@
         right: 0,
         bottom: 0,
         width: '100%',
-        borderTop: '1px solid #e9e9e9',
+        bcustomerTop: '1px solid #e9e9e9',
         padding: '10px 16px',
         background: '#fff',
         textAlign: 'right',
@@ -186,9 +180,9 @@ export default {
 
   computed: {
     title() {
-      if (this.item.id && !this.editing) return 'View order'
-      else if (this.item.id && this.editing) return 'Edit order'
-      return 'Create order'
+      if (this.item.id && !this.editing) return 'View customer'
+      else if (this.item.id && this.editing) return 'Edit customer'
+      return 'Create customer'
     },
   },
   methods: {

@@ -31,6 +31,13 @@ const router = new Router({
           component: () => import('./views/dashboard/alpha'),
         },
         {
+          path: '/customer',
+          meta: {
+            title: 'Customer Dashboard',
+          },
+          component: () => import('./views/customer'),
+        },
+        {
           path: '/location',
           meta: {
             title: 'Location Dashboard',

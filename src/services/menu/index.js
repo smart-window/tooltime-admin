@@ -10,6 +10,12 @@ export const getMenuData = [
     url: '/dashboard/alpha',
   },
   {
+    title: 'Customer',
+    icon: 'fas fa-users',
+    key: 'customer',
+    url: '/customer',
+  },
+  {
     title: 'Location',
     icon: 'fas fa-map-marker-alt',
     key: 'location',

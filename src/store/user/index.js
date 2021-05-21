@@ -99,7 +99,7 @@ export default {
             authorized: true,
           })
 
-          dispatch('LOAD_CATEGORYS', {}, { root: true })
+          dispatch('LOAD_CATEGORIES', {}, { root: true })
           dispatch('LOAD_LOCATIONS', {}, { root: true })
         }
         commit('SET_STATE', {

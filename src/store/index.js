@@ -31,7 +31,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async LOAD_CATEGORYS({ commit }) {
+    async LOAD_CATEGORIES({ commit }) {
       try {
         const categories = await API.getCategories()
         commit(Types.SET_CATEGORYS, categories)

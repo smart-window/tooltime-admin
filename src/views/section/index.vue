@@ -159,6 +159,7 @@ const columns = [
     scopedSlots: { customRender: 'action' },
   },
 ]
+
 export default {
   components: { EditPanel },
   data: function () {

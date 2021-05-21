@@ -10,15 +10,15 @@
       @onCancelEdit="handleClickCancelEdit"
     />
     <div class="cui__utils__heading">
-      <strong>Categorys</strong>
+      <strong>Sections</strong>
     </div>
     <div class="card">
       <div class="card-header card-header-flex">
         <div class="d-flex flex-column justify-content-center mr-auto">
-          <h5 class="mb-0">Categorys</h5>
+          <h5 class="mb-0">Sections</h5>
         </div>
         <div class="d-flex flex-column justify-content-center">
-          <a class="btn btn-primary" @click="handleNewCategory">New Category</a>
+          <a class="btn btn-primary" @click="handleNewSection">New Section</a>
         </div>
       </div>
       <div class="card-body">
@@ -171,7 +171,7 @@ export default {
   },
 
   mounted() {
-    this.fetchCategorys()
+    this.fetchSections()
   },
 
   computed: {
@@ -190,7 +190,7 @@ export default {
       this.searchText = ''
     },
 
-    handleNewCategory(event) {
+    handleNewSection(event) {
       event.preventDefault()
       this.isEditing = true
       this.showEditPanel = true
@@ -209,11 +209,11 @@ export default {
     },
     async handleSubmit(values) {
       try {
-        if (!this.selected.id) await API.createCategory(values)
-        else await API.updateCategory(this.selected.id, { ...this.selected, ...values })
+        if (!this.selected.id) await API.createSection(values)
+        else await API.updateSection(this.selected.id, { ...this.selected, ...values })
         this.showEditPanel = false
-        message.success(this.selected.id ? 'Category has updated' : 'New category has created')
-        this.fetchCategorys()
+        message.success(this.selected.id ? 'Section has updated' : 'New category has created')
+        this.fetchSections()
       } catch (e) {
         message.error(e.message)
       }
@@ -227,7 +227,7 @@ export default {
 
     async handleRemoveRecord(categoryId) {
       try {
-        await API.removeCategory(categoryId)
+        await API.removeSection(categoryId)
         message.info('Location Removed!')
         this.categorys = _.cloneDeep(this.categorys).filter(
           (category) => category.id !== categoryId,
@@ -241,10 +241,10 @@ export default {
       return moment(date).format('YYYY MMM DD HH:mm')
     },
 
-    async fetchCategorys() {
+    async fetchSections() {
       this.fetching = true
       try {
-        this.categorys = await API.getCategorys()
+        this.categorys = await API.getSections()
         this.fetching = false
       } catch (e) {
         console.log(e.message)

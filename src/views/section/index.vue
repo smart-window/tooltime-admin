@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="card-body">
-        <a-table :columns="columns" :dataSource="categorys">
+        <a-table :columns="columns" :dataSource="categories">
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
@@ -160,7 +160,7 @@ export default {
     return {
       searchText: '',
       searchInput: null,
-      categorys: [],
+      categories: [],
       columns,
       showEditPanel: false,
       isEditing: false,
@@ -220,7 +220,7 @@ export default {
     },
 
     handleViewRecord(categoryId) {
-      this.selected = this.categorys.find((category) => category.id === categoryId)
+      this.selected = this.categories.find((category) => category.id === categoryId)
       this.showEditPanel = true
       this.isEditing = false
     },
@@ -229,7 +229,7 @@ export default {
       try {
         await API.removeSection(categoryId)
         message.info('Location Removed!')
-        this.categorys = _.cloneDeep(this.categorys).filter(
+        this.categories = _.cloneDeep(this.categories).filter(
           (category) => category.id !== categoryId,
         )
       } catch (e) {
@@ -244,7 +244,7 @@ export default {
     async fetchSections() {
       this.fetching = true
       try {
-        this.categorys = await API.getSections()
+        this.categories = await API.getSections()
         this.fetching = false
       } catch (e) {
         console.log(e.message)

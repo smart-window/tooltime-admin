@@ -10,19 +10,19 @@
       @onCancelEdit="handleClickCancelEdit"
     />
     <div class="cui__utils__heading">
-      <strong>Categorys</strong>
+      <strong>Categories</strong>
     </div>
     <div class="card">
       <div class="card-header card-header-flex">
         <div class="d-flex flex-column justify-content-center mr-auto">
-          <h5 class="mb-0">Categorys</h5>
+          <h5 class="mb-0">Categories</h5>
         </div>
         <div class="d-flex flex-column justify-content-center">
           <a class="btn btn-primary" @click="handleNewCategory">New Category</a>
         </div>
       </div>
       <div class="card-body">
-        <a-table :columns="columns" :dataSource="categorys">
+        <a-table :columns="columns" :dataSource="categories">
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
@@ -160,7 +160,7 @@ export default {
     return {
       searchText: '',
       searchInput: null,
-      categorys: [],
+      categories: [],
       columns,
       showEditPanel: false,
       isEditing: false,
@@ -171,7 +171,7 @@ export default {
   },
 
   mounted() {
-    this.fetchCategorys()
+    this.fetchCategories()
   },
 
   computed: {
@@ -213,14 +213,14 @@ export default {
         else await API.updateCategory(this.selected.id, { ...this.selected, ...values })
         this.showEditPanel = false
         message.success(this.selected.id ? 'Category has updated' : 'New category has created')
-        this.fetchCategorys()
+        this.fetchCategories()
       } catch (e) {
         message.error(e.message)
       }
     },
 
     handleViewRecord(categoryId) {
-      this.selected = this.categorys.find((category) => category.id === categoryId)
+      this.selected = this.categories.find((category) => category.id === categoryId)
       this.showEditPanel = true
       this.isEditing = false
     },
@@ -229,7 +229,7 @@ export default {
       try {
         await API.removeCategory(categoryId)
         message.info('Location Removed!')
-        this.categorys = _.cloneDeep(this.categorys).filter(
+        this.categories = _.cloneDeep(this.categories).filter(
           (category) => category.id !== categoryId,
         )
       } catch (e) {
@@ -241,10 +241,10 @@ export default {
       return moment(date).format('YYYY MMM DD HH:mm')
     },
 
-    async fetchCategorys() {
+    async fetchCategories() {
       this.fetching = true
       try {
-        this.categorys = await API.getCategorys()
+        this.categories = await API.getCategories()
         this.fetching = false
       } catch (e) {
         console.log(e.message)

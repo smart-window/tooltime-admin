@@ -83,7 +83,7 @@ export default {
         }
       })
     },
-    LOAD_CURRENT_ACCOUNT({ commit, rootState }) {
+    LOAD_CURRENT_ACCOUNT({ commit, rootState, dispatch }) {
       commit('SET_STATE', {
         loading: true,
       })
@@ -98,6 +98,9 @@ export default {
             role,
             authorized: true,
           })
+
+          dispatch('LOAD_CATEGORYS', {}, { root: true })
+          dispatch('LOAD_LOCATIONS', {}, { root: true })
         }
         commit('SET_STATE', {
           loading: false,

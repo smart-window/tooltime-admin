@@ -61,7 +61,7 @@ export const removeCustomer = async (id) => {
   return axiosClient.delete(`/customer/${id}`).then(successFunc).catch(failFunc)
 }
 
-export const getCategorys = async () => {
+export const getCategories = async () => {
   return axiosClient.get('/category').then(successFunc).catch(failFunc)
 }
 

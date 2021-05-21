@@ -23,6 +23,26 @@
           </a-form-item>
         </a-col>
       </a-row>
+      <a-row :gutter="16">
+        <a-col :span="24">
+          <a-form-item label="Category">
+            <a-select
+              v-decorator="[
+                'categoryId',
+                {
+                  initialValue: item.categoryId,
+                  rules: [{ required: true, message: 'required' }],
+                },
+              ]"
+              :disabled="!editing"
+            >
+              <a-select-option v-for="cat in categories" :key="cat.id" :value="cat.id">
+                {{ cat.name }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+      </a-row>
     </a-form>
     <div
       :style="{
@@ -57,6 +77,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'EditPanel',
   props: ['showPanel', 'close', 'submit', 'item', 'editing', 'onEdit'],
@@ -66,11 +87,12 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this, this.item),
-      fields: ['name'],
+      fields: ['name', 'categoryId'],
     }
   },
 
   computed: {
+    ...mapState(['categories']),
     title() {
       if (this.item.id && !this.editing) return 'View section'
       else if (this.item.id && this.editing) return 'Edit section'
@@ -82,7 +104,6 @@ export default {
       event.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
           this.$emit('submit', values)
         }
       })

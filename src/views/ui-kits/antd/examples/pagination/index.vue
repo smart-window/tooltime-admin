@@ -28,7 +28,7 @@
       <a-pagination size="small" :total="50" showSizeChanger showQuickJumper />
     </div>
     <div class="mb-5">
-      <a-pagination size="small" :total="50" :showTotal="total => `Total ${total} items`" />
+      <a-pagination size="small" :total="50" :showTotal="(total) => `Total ${total} items`" />
     </div>
   </div>
 </template>

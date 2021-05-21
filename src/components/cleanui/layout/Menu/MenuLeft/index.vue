@@ -16,8 +16,14 @@
     <div
       :class="$style.menuOuter"
       :style="{
-        width: settings.isMenuCollapsed && !settings.isMobileView ? '80px' : settings.leftMenuWidth + 'px',
-        height: settings.isMobileView || settings.isMenuUnfixed ? 'calc(100% - 64px)' : 'calc(100% - 110px)',
+        width:
+          settings.isMenuCollapsed && !settings.isMobileView
+            ? '80px'
+            : settings.leftMenuWidth + 'px',
+        height:
+          settings.isMobileView || settings.isMenuUnfixed
+            ? 'calc(100% - 64px)'
+            : 'calc(100% - 110px)',
       }"
     >
       <div :class="$style.logoContainer">
@@ -29,7 +35,10 @@
       </div>
       <vue-custom-scrollbar
         :style="{
-          height: settings.isMobileView || settings.isMenuUnfixed ? 'calc(100vh - 64px)' : 'calc(100vh - 110px)',
+          height:
+            settings.isMobileView || settings.isMenuUnfixed
+              ? 'calc(100vh - 64px)'
+              : 'calc(100vh - 110px)',
         }"
       >
         <a-menu
@@ -58,15 +67,6 @@
             </template>
           </template>
         </a-menu>
-        <div :class="$style.banner">
-          <p>More components, more style, more themes, and premium support!</p>
-          <a
-            href="https://themeforest.net/item/clean-ui-react-admin-template/21938700"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-sm btn-success btn-rounded px-3"
-          >Buy Bundle</a>
-        </div>
       </vue-custom-scrollbar>
     </div>
   </a-layout-sider>
@@ -104,7 +104,7 @@ export default {
     'settings.isMenuCollapsed'() {
       this.openKeys = []
     },
-    '$route'() {
+    $route() {
       this.setSelectedKeys()
     },
   },
@@ -136,10 +136,7 @@ export default {
           }
           return flattenedItems
         }, [])
-      const selectedItem = find(flattenItems(menuData, 'children'), [
-        'url',
-        pathname,
-      ])
+      const selectedItem = find(flattenItems(menuData, 'children'), ['url', pathname])
       this.selectedKeys = selectedItem ? [selectedItem.key] : []
     },
   },
@@ -147,5 +144,5 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import "./style.module.scss";
+@import './style.module.scss';
 </style>

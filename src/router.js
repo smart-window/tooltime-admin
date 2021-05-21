@@ -15,7 +15,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: 'dashboard/alpha',
+      redirect: 'ecommerce/dashboard',
       component: MainLayout,
       meta: {
         authRequired: true,

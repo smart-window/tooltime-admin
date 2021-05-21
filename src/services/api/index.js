@@ -76,3 +76,19 @@ export const updateCategory = async (id, newCategory) => {
 export const removeCategory = async (id) => {
   return axiosClient.delete(`/category/${id}`).then(successFunc).catch(failFunc)
 }
+
+export const getSections = async () => {
+  return axiosClient.get('/section').then(successFunc).catch(failFunc)
+}
+
+export const createSection = async (newSection) => {
+  return axiosClient.post('/section', newSection).then(successFunc).catch(failFunc)
+}
+
+export const updateSection = async (id, newSection) => {
+  return axiosClient.patch(`/section/${id}`, newSection).then(successFunc).catch(failFunc)
+}
+
+export const removeSection = async (id) => {
+  return axiosClient.delete(`/section/${id}`).then(successFunc).catch(failFunc)
+}

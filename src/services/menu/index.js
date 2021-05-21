@@ -34,6 +34,12 @@ export const getMenuData = [
     url: '/category/list',
   },
   {
+    title: 'Sections',
+    icon: 'fas fa-tags',
+    key: 'sections',
+    url: '/section/list',
+  },
+  {
     title: 'Offer',
     icon: 'fas fa-truck-monster',
     key: 'Offers',

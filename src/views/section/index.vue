@@ -85,9 +85,7 @@
           <template slot="value" slot-scope="text">
             <span class="font-weight-bold">{{ text }}</span>
           </template>
-          <a slot="id" slot-scope="text" href="javascript: void(0);" class="btn btn-sm btn-light">{{
-            text
-          }}</a>
+          <a-tag color="green" slot="category" slot-scope="category">{{ category.name }}</a-tag>
           <span slot="createdAt" slot-scope="date">{{ formatDate(date) }}</span>
           <span slot="updatedAt" slot-scope="date">{{ formatDate(date) }}</span>
           <span slot="status" slot-scope="text" :class="statusClassName(text)">{{ text }}</span>
@@ -136,6 +134,13 @@ const columns = [
     dataIndex: 'name',
     key: 'name',
     sorter: (a, b) => (a > b ? 1 : -1),
+  },
+  {
+    title: 'Category',
+    dataIndex: 'category',
+    key: 'categoryId',
+    sorter: (a, b) => (a.name > b.name ? 1 : -1),
+    scopedSlots: { customRender: 'category' },
   },
   {
     title: 'Created',

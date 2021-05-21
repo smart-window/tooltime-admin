@@ -85,12 +85,13 @@
           <template slot="value" slot-scope="text">
             <span class="font-weight-bold">{{ text }}</span>
           </template>
-          <a slot="id" slot-scope="text" href="javascript: void(0);" class="btn btn-sm btn-light">{{
-            text
-          }}</a>
+          <div slot="sections" slot-scope="sections">
+            <a-tag color="blue" v-for="section in sections" :key="section.id">
+              {{ section.name }}
+            </a-tag>
+          </div>
           <span slot="createdAt" slot-scope="date">{{ formatDate(date) }}</span>
           <span slot="updatedAt" slot-scope="date">{{ formatDate(date) }}</span>
-          <span slot="status" slot-scope="text" :class="statusClassName(text)">{{ text }}</span>
           <span slot="action" slot-scope="record">
             <a @click="handleViewRecord(record.id)" class="btn btn-sm btn-light mr-2">
               <i class="fe fe-edit mr-2" />
@@ -136,6 +137,12 @@ const columns = [
     dataIndex: 'name',
     key: 'name',
     sorter: (a, b) => (a > b ? 1 : -1),
+  },
+  {
+    title: 'Sections',
+    dataIndex: 'sections',
+    key: 'id',
+    scopedSlots: { customRender: 'sections' },
   },
   {
     title: 'Created',

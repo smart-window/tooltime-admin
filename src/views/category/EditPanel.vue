@@ -23,6 +23,13 @@
           </a-form-item>
         </a-col>
       </a-row>
+      <a-row :gutter="16">
+        <a-col :span="24">
+          <a-tag color="blue" v-for="section in item.sections" :key="section.id">
+            {{ section.name }}
+          </a-tag>
+        </a-col>
+      </a-row>
     </a-form>
     <div
       :style="{
@@ -66,7 +73,7 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this, this.item),
-      fields: ['name'],
+      fields: ['name', 'sections'],
     }
   },
 

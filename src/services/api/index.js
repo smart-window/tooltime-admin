@@ -92,3 +92,19 @@ export const updateSection = async (id, newSection) => {
 export const removeSection = async (id) => {
   return axiosClient.delete(`/section/${id}`).then(successFunc).catch(failFunc)
 }
+
+export const getServiceAreas = async () => {
+  return axiosClient.get('/service-area').then(successFunc).catch(failFunc)
+}
+
+export const createServiceArea = async (newServiceArea) => {
+  return axiosClient.post('/service-area', newServiceArea).then(successFunc).catch(failFunc)
+}
+
+export const updateServiceArea = async (id, newServiceArea) => {
+  return axiosClient.patch(`/service-area/${id}`, newServiceArea).then(successFunc).catch(failFunc)
+}
+
+export const removeServiceArea = async (id) => {
+  return axiosClient.delete(`/service-area/${id}`).then(successFunc).catch(failFunc)
+}

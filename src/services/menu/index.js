@@ -22,6 +22,12 @@ export const getMenuData = [
     url: '/location',
   },
   {
+    title: 'Service Area',
+    icon: 'fas fa-truck-pickup',
+    key: 'service-area',
+    url: '/service-area/list',
+  },
+  {
     title: 'Orders',
     icon: 'fas fa-bookmark',
     key: 'orders',

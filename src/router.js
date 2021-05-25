@@ -22,14 +22,6 @@ const router = new Router({
         hidden: true,
       },
       children: [
-        // Dashboards
-        {
-          path: '/dashboard/alpha',
-          meta: {
-            title: 'Dashboard',
-          },
-          component: () => import('./views/dashboard/alpha'),
-        },
         {
           path: '/customer',
           meta: {

@@ -19,7 +19,7 @@
           <h5 class="mb-0">Service Areas</h5>
         </div>
         <div class="d-flex flex-column justify-content-center">
-          <a class="btn btn-primary" @click="handleNewOrder">New ServiceArea</a>
+          <a class="btn btn-primary" @click="handleClickNew">New ServiceArea</a>
         </div>
       </div>
       <div class="card-body">
@@ -217,7 +217,7 @@ export default {
       this.searchText = ''
     },
 
-    handleNewOrder(event) {
+    handleClickNew(event) {
       event.preventDefault()
       this.isEditing = true
       this.showEditPanel = true

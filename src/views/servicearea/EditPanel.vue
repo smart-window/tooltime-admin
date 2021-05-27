@@ -135,6 +135,19 @@
           </a-form-item>
         </a-col>
       </a-row>
+      <a-row>
+        <a-col :xs="24">
+          <a-form-item label="AAAA">
+            <input
+              ref="autocomplete"
+              placeholder="Search"
+              class="search-location"
+              onfocus="value = ''"
+              type="text"
+            />
+          </a-form-item>
+        </a-col>
+      </a-row>
       <a-row :gutter="16">
         <a-col :span="24">
           <GmapMap
@@ -182,11 +195,16 @@
 </template>
 
 <script>
+import { gmapApi } from 'vue2-google-maps'
 export default {
   name: 'EditPanel',
   props: ['showPanel', 'close', 'submit', 'item', 'editing', 'onEdit'],
 
-  mounted() {},
+  mounted() {
+    this.autocomplete = gmapApi.maps.places.Autocomplete(this.$refs.autocomplete, {
+      types: ['geocode'],
+    })
+  },
 
   data() {
     return {
@@ -197,9 +215,9 @@ export default {
 
   computed: {
     title() {
-      if (this.item.id && !this.editing) return 'View Location'
-      else if (this.item.id && this.editing) return 'Edit Location'
-      return 'Create Location'
+      if (this.item.id && !this.editing) return 'View Service area'
+      else if (this.item.id && this.editing) return 'Edit Service area'
+      return 'Create Service area'
     },
   },
   methods: {
@@ -223,6 +241,17 @@ export default {
     },
     handleCloseEditingPanel() {
       this.$emit('close')
+    },
+
+    /**
+     * When the location found
+     * @param {Object} addressData Data of the found location
+     * @param {Object} placeResultData PlaceResult object
+     * @param {String} id Input container ID
+     */
+    getAddressData: function (addressData, placeResultData, id) {
+      console.log({ addressData })
+      // this.address = addressData
     },
   },
 

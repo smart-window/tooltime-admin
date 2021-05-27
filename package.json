@@ -33,6 +33,7 @@
     "vue-custom-scrollbar": "^1.1.0",
     "vue-draggable-nested-tree": "^3.0.0-beta2",
     "vue-echarts": "^4.0.3",
+    "vue-google-autocomplete": "^1.1.1",
     "vue-i18n": "^8.17.4",
     "vue-nprogress": "^0.1.5",
     "vue-page-title": "^1.2.1",

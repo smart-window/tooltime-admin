@@ -53,35 +53,6 @@
             type="search"
             :style="{ color: filtered ? '#108ee9' : undefined }"
           />
-          <template slot="category" slot-scope="text">
-            <span v-if="searchText">
-              <template
-                v-for="(fragment, i) in text
-                  .toString()
-                  .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))"
-              >
-                <mark
-                  v-if="fragment.toLowerCase() === searchText.toLowerCase()"
-                  :key="i"
-                  class="highlight"
-                  >{{ fragment }}</mark
-                >
-                <template v-else>{{ fragment }}</template>
-              </template>
-            </span>
-            <template v-else>
-              <a class="btn btn-sm btn-light" href="javascript: void(0);">{{ text }}</a>
-            </template>
-          </template>
-          <template slot="progress" slot-scope="bar">
-            <div class="progress">
-              <div
-                :class="['progress-bar', bar.color]"
-                :style="{ width: bar.value + '%' }"
-                role="progressbar"
-              ></div>
-            </div>
-          </template>
           <template slot="value" slot-scope="text">
             <span class="font-weight-bold">{{ text }}</span>
           </template>

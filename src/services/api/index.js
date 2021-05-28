@@ -45,6 +45,18 @@ export const getProducts = async () => {
   return axiosClient.get('/product').then(successFunc).catch(failFunc)
 }
 
+export const createProduct = async (newProduct) => {
+  return axiosClient.post('/product', newProduct).then(successFunc).catch(failFunc)
+}
+
+export const updateProduct = async (id, newProduct) => {
+  return axiosClient.patch(`/product/${id}`, newProduct).then(successFunc).catch(failFunc)
+}
+
+export const removeProduct = async (id) => {
+  return axiosClient.delete(`/product/${id}`).then(successFunc).catch(failFunc)
+}
+
 export const getCustomers = async () => {
   return axiosClient.get('/customer').then(successFunc).catch(failFunc)
 }

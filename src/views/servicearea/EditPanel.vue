@@ -90,7 +90,7 @@
                 },
               ]"
               placeholder="Please enter state"
-              :disabled="!editing"
+              disabled
             />
           </a-form-item>
         </a-col>
@@ -105,7 +105,7 @@
                 },
               ]"
               placeholder="Please enter City"
-              :disabled="!editing"
+              disabled
             />
           </a-form-item>
         </a-col>
@@ -120,7 +120,7 @@
                 },
               ]"
               placeholder="Please enter Zip Code"
-              :disabled="!editing"
+              disabled
             />
           </a-form-item>
         </a-col>
@@ -143,23 +143,10 @@
           </a-form-item>
         </a-col>
       </a-row>
-      <a-row>
-        <a-col :xs="24">
-          <a-form-item label="AAAA">
-            <input
-              ref="autocomplete"
-              placeholder="Search"
-              class="search-location"
-              onfocus="value = ''"
-              type="text"
-            />
-          </a-form-item>
-        </a-col>
-      </a-row>
       <a-row :gutter="16">
         <a-col :span="24">
           <GmapMap
-            :center="{ lat: 10, lng: 10 }"
+            :center="{ lat: position.lon, lng: position.lan }"
             :zoom="7"
             map-type-id="terrain"
             style="width: 100%; height: 300px"
@@ -218,7 +205,7 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this, this.item),
-      fields: ['name', 'locationId', 'address_2', 'phone', 'city', 'state', 'zip', 'description'],
+      fields: ['name', '', 'locationId', 'city', 'state', 'zip', 'description'],
     }
   },
 
@@ -228,6 +215,13 @@ export default {
       if (this.item.id && !this.editing) return 'View Service area'
       else if (this.item.id && this.editing) return 'Edit Service area'
       return 'Create Service area'
+    },
+    position() {
+      const formObj = this.form.getFieldsValue(['longitude', 'latitude'])
+      return {
+        lon: formObj.longitude,
+        lat: formObj.latitude,
+      }
     },
   },
   methods: {

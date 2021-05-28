@@ -1,7 +1,7 @@
 <template>
   <div>
     <edit-panel
-      title="Edit Location"
+      title="Edit ServiceArea"
       :showPanel="showEditPanel"
       :item="selected"
       :editing="isEditing"
@@ -237,8 +237,8 @@ export default {
 
     async handleSubmit(values) {
       try {
-        if (!this.selected.id) await API.createLocation(values)
-        else await API.updateLocation(this.selected.id, values)
+        if (!this.selected.id) await API.createServiceArea(values)
+        else await API.updateServiceArea(this.selected.id, values)
         this.showEditPanel = false
         message.success('New loation created')
         this.fetchServiceAreas()
@@ -255,8 +255,8 @@ export default {
 
     async handleRemoveRecord(serviceAreaId) {
       try {
-        await API.removeLocation(serviceAreaId)
-        message.info('Location Removed!')
+        await API.removeServiceArea(serviceAreaId)
+        message.info('ServiceArea Removed!')
         this.data = _.cloneDeep(this.data).filter((serviceArea) => serviceArea.id !== serviceAreaId)
       } catch (e) {
         message.error(e.message)

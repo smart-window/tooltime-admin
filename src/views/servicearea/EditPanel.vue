@@ -30,7 +30,7 @@
               v-decorator="[
                 'longitude',
                 {
-                  initialValue: item.name,
+                  initialValue: item.longitude,
                   rules: [{ required: true, message: 'Required field' }],
                 },
               ]"
@@ -44,7 +44,7 @@
               v-decorator="[
                 'latitude',
                 {
-                  initialValue: item.name,
+                  initialValue: item.latitude,
                   rules: [{ required: true, message: 'Required field' }],
                 },
               ]"

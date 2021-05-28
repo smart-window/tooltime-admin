@@ -143,21 +143,27 @@ const columns = [
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'Address 1',
-    dataIndex: 'address_1',
-    key: 'address_1',
+    title: 'Lat',
+    dataIndex: 'latitude',
+    key: 'latitude',
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'City',
-    dataIndex: 'city',
-    key: 'city',
+    title: 'Lng',
+    dataIndex: 'longitude',
+    key: 'longitude',
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
     title: 'State',
     dataIndex: 'state',
     key: 'state',
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
+  {
+    title: 'City',
+    dataIndex: 'city',
+    key: 'city',
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
@@ -170,11 +176,6 @@ const columns = [
     title: 'Zip Code',
     dataIndex: 'zip',
     key: 'zip',
-  },
-  {
-    title: 'Phone',
-    dataIndex: 'phone',
-    key: 'phone',
   },
   {
     title: 'Action',
@@ -248,7 +249,7 @@ export default {
     },
 
     handleViewRecord(serviceAreaId) {
-      this.selected = this.data.find((serviceArea) => serviceArea.id === serviceAreaId)
+      this.selected = this.serviceAreas.find((serviceArea) => serviceArea.id === serviceAreaId)
       this.showEditPanel = true
       this.isEditing = false
     },
@@ -257,7 +258,9 @@ export default {
       try {
         await API.removeServiceArea(serviceAreaId)
         message.info('ServiceArea Removed!')
-        this.data = _.cloneDeep(this.data).filter((serviceArea) => serviceArea.id !== serviceAreaId)
+        this.serviceAreas = _.cloneDeep(this.serviceAreas).filter(
+          (serviceArea) => serviceArea.id !== serviceAreaId,
+        )
       } catch (e) {
         message.error(e.message)
       }
@@ -270,8 +273,7 @@ export default {
     async fetchServiceAreas() {
       this.fetching = true
       try {
-        const res = await API.getServiceAreas()
-        this.data = res
+        this.serviceAreas = await API.getServiceAreas()
         this.fetching = false
       } catch (e) {
         console.log(e.message)

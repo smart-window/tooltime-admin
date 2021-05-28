@@ -24,18 +24,57 @@
         </a-col>
       </a-row>
       <a-row :gutter="16">
-        <a-col :span="24">
+        <a-col :span="12">
           <a-form-item label="Longitutde">
             <a-input
               v-decorator="[
                 'longitude',
                 {
                   initialValue: item.name,
-                  rules: [{ required: true, message: 'Longitude' }],
+                  rules: [{ required: true, message: 'Required field' }],
                 },
               ]"
               :disabled="!editing"
             />
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label="Latitude">
+            <a-input
+              v-decorator="[
+                'latitude',
+                {
+                  initialValue: item.name,
+                  rules: [{ required: true, message: 'Required field' }],
+                },
+              ]"
+              :disabled="!editing"
+            />
+          </a-form-item>
+        </a-col>
+      </a-row>
+      <a-row :gutter="16">
+        <a-col :span="12">
+          <a-form-item label="Location">
+            <a-select
+              v-decorator="[
+                'locationId',
+                {
+                  initialValue: item.locationId,
+                  rules: [{ required: true, message: 'Longitude' }],
+                },
+              ]"
+              :disabled="!editing"
+              @change="handleLocationChange"
+            >
+              <a-select-option
+                :key="location.id"
+                :value="location.id"
+                v-for="location in locations"
+              >
+                {{ location.name }}
+              </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
       </a-row>
@@ -165,6 +204,7 @@
 
 <script>
 import { gmapApi } from 'vue2-google-maps'
+import { mapState } from 'vuex'
 export default {
   name: 'EditPanel',
   props: ['showPanel', 'close', 'submit', 'item', 'editing', 'onEdit'],
@@ -178,11 +218,12 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this, this.item),
-      fields: ['name', 'address_1', 'address_2', 'phone', 'city', 'state', 'zip', 'description'],
+      fields: ['name', 'locationId', 'address_2', 'phone', 'city', 'state', 'zip', 'description'],
     }
   },
 
   computed: {
+    ...mapState(['locations']),
     title() {
       if (this.item.id && !this.editing) return 'View Service area'
       else if (this.item.id && this.editing) return 'Edit Service area'
@@ -212,6 +253,16 @@ export default {
       this.$emit('close')
     },
 
+    handleLocationChange(locationId) {
+      console.log(locationId)
+      const location = this.locations.find((location) => location.id === locationId)
+      console.log(location)
+      this.form.setFieldsValue({
+        state: location.state,
+        city: location.city,
+        zip: location.zip,
+      })
+    },
     /**
      * When the location found
      * @param {Object} addressData Data of the found location

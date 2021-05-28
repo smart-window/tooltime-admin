@@ -5,7 +5,7 @@
     </div>
     <a-row gutter="16">
       <a-col :style="{ textAlign: 'right' }">
-        <a-button type="primary" @click="handleAddProduct"> Add product </a-button>
+        <a-button type="primary" @click="handeClickNew"> Add product </a-button>
       </a-col>
     </a-row>
     <div class="row">
@@ -50,7 +50,7 @@ export default {
       }
     },
 
-    handleAddProduct(event) {
+    handeClickNew(event) {
       event.preventDefault()
     },
   },

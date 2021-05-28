@@ -8,63 +8,32 @@
   >
     <a-form :form="form" layout="vertical" hide-required-mark>
       <a-row :gutter="16">
-        <a-col :span="12">
+        <a-col :span="24">
           <a-form-item label="Name">
             <a-input
               v-decorator="[
                 'name',
                 {
                   initialValue: item.name,
-                  rules: [{ required: true, message: 'Location name required' }],
+                  rules: [{ required: true, message: 'Name required' }],
                 },
               ]"
-              :disabled="!editing"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label="Phone">
-            <a-input
-              v-decorator="[
-                'phone',
-                {
-                  initialValue: item.phone,
-                  rules: [{ required: false }],
-                },
-              ]"
-              placeholder="Please enter phone"
               :disabled="!editing"
             />
           </a-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="16">
-        <a-col :span="12">
-          <a-form-item label="Address">
+        <a-col :span="24">
+          <a-form-item label="Longitutde">
             <a-input
               v-decorator="[
-                'address_1',
+                'longitude',
                 {
-                  initialValue: item.address_1,
-                  rules: [{ required: true, message: 'Address required' }],
+                  initialValue: item.name,
+                  rules: [{ required: true, message: 'Longitude' }],
                 },
               ]"
-              placeholder="Please enter Address"
-              :disabled="!editing"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label="Address 2">
-            <a-input
-              v-decorator="[
-                'address_2',
-                {
-                  initialValue: item.address_2,
-                  rules: [{ required: false }],
-                },
-              ]"
-              placeholder="Please enter City"
               :disabled="!editing"
             />
           </a-form-item>

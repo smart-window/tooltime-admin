@@ -59,6 +59,13 @@ export const getMenuData = [
   },
 
   {
+    title: 'Assets',
+    icon: 'fas fa-warehouse',
+    key: 'Assets',
+    url: '/asset/list',
+  },
+
+  {
     title: 'Ecommerce',
     key: 'ecommerce',
     icon: 'fe fe-shopping-cart',

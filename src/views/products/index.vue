@@ -122,7 +122,7 @@ const columns = [
   {
     title: 'Category',
     dataIndex: 'category',
-    key: 'category.id',
+    key: 'categoryId',
     scopedSlots: { customRender: 'category' },
   },
   // {
@@ -147,6 +147,7 @@ const columns = [
     scopedSlots: { customRender: 'action' },
   },
 ]
+
 export default {
   components: { EditPanel },
   data: function () {
@@ -203,6 +204,7 @@ export default {
 
     async handleSubmit(values) {
       try {
+        console.log(values)
         if (!this.selected.id) await API.createProduct(values)
         else await API.updateProduct(this.selected.id, values)
         this.showEditPanel = false

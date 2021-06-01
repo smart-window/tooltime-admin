@@ -196,7 +196,7 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this, this.item, this.products),
-      fields: ['name', 'sectionId', 'assetId', 'description'],
+      fields: ['name', 'productId', 'locationId', 'make', 'model', 'sn'],
       sections: [],
       previewVisible: false,
       previewImage: '',
@@ -275,6 +275,7 @@ export default {
 
   watch: {
     item(item) {
+      console.log(item)
       this.fileList = []
       if (item.images) {
         item.images.split(',').map((url, idx) => {

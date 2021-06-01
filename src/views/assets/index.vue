@@ -1,7 +1,7 @@
 <template>
   <div>
     <edit-panel
-      title="Edit Product"
+      title="Edit Asset"
       :showPanel="showEditPanel"
       :item="selected"
       :products="products"
@@ -88,7 +88,7 @@
               View
             </a>
             <a-popconfirm
-              title="Are you sure delete this product?"
+              title="Are you sure delete this asset?"
               ok-text="Yes"
               cancel-text="No"
               @confirm="handleRemoveRecord(record.id)"
@@ -219,7 +219,7 @@ export default {
     },
 
     handleViewRecord(assetId) {
-      this.selected = this.assets.find((product) => product.id === assetId)
+      this.selected = this.assets.find((asset) => asset.id === assetId)
       this.showEditPanel = true
       this.isEditing = false
     },
@@ -228,7 +228,7 @@ export default {
       try {
         await API.removeAsset(assetId)
         message.info('Asset Removed!')
-        this.assets = _.cloneDeep(this.assets).filter((product) => product.id !== assetId)
+        this.assets = _.cloneDeep(this.assets).filter((asset) => asset.id !== assetId)
       } catch (e) {
         message.error(e.message)
       }

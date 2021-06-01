@@ -4,6 +4,7 @@
       title="Edit Product"
       :showPanel="showEditPanel"
       :item="selected"
+      :products="products"
       :editing="isEditing"
       @submit="handleSubmit"
       @close="handleCloseEditingPanel"
@@ -11,19 +12,19 @@
       @onCancelEdit="handleClickCancelEdit"
     />
     <div class="cui__utils__heading">
-      <strong>Service Areas</strong>
+      <strong>Assets</strong>
     </div>
     <div class="card">
       <div class="card-header card-header-flex">
         <div class="d-flex flex-column justify-content-center mr-auto">
-          <h5 class="mb-0">Service Areas</h5>
+          <h5 class="mb-0">Assets</h5>
         </div>
         <div class="d-flex flex-column justify-content-center">
-          <a class="btn btn-primary" @click="handleClickNew">New Product</a>
+          <a class="btn btn-primary" @click="handleClickNew">New Asset</a>
         </div>
       </div>
       <div class="card-body">
-        <a-table :columns="columns" :dataSource="products">
+        <a-table :columns="columns" :dataSource="assets" rowKey="id">
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
@@ -62,11 +63,11 @@
             text
           }}</a>
           <a-tag color="green" slot="category" slot-scope="category">{{ category.name }}</a-tag>
-          <div slot="sections" slot-scope="sections">
+          <!-- <div slot="sections" slot-scope="sections">
             <a-tag color="blue" v-for="section in sections" :key="section.id">
               {{ section.name }}
             </a-tag>
-          </div>
+          </div> -->
           <span slot="total" slot-scope="text">${{ text }}</span>
           <!-- <span slot="updatedAt" slot-scope="date">{{ formatDate(date) }}</span> -->
           <span slot="tax" slot-scope="text">${{ text }}</span>
@@ -120,27 +121,25 @@ const columns = [
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'Category',
-    dataIndex: 'category',
-    key: 'category.id',
-    scopedSlots: { customRender: 'category' },
+    title: 'Manufacture',
+    dataIndex: 'make',
+    key: 'make',
   },
-  // {
-  //   title: 'Sections',
-  //   dataIndex: 'sections',
-  //   key: 'id',
-  //   scopedSlots: { customRender: 'sections' },
-  // },
+  {
+    title: 'Model',
+    dataIndex: 'model',
+    key: 'model',
+  },
+  {
+    title: 'Serial Number',
+    dataIndex: 'sn',
+    key: 'sn',
+  },
   {
     title: 'Last Update',
     dataIndex: 'updatedAt',
     key: 'updatedAt',
     scopedSlots: { customRender: 'updatedAt' },
-  },
-  {
-    title: 'Zip Code',
-    dataIndex: 'zip',
-    key: 'zip',
   },
   {
     title: 'Action',
@@ -153,6 +152,7 @@ export default {
     return {
       searchText: '',
       searchInput: null,
+      assets: [],
       products: [],
       columns,
       showEditPanel: false,
@@ -164,12 +164,13 @@ export default {
   },
 
   mounted() {
+    this.fetchAssets()
     this.fetchProducts()
   },
 
   computed: {
     panelTitle() {
-      return this.isEditing ? 'Edit a product' : 'Create a new product'
+      return this.isEditing ? 'Edit a asset' : 'Create a new asset'
     },
   },
   methods: {
@@ -203,27 +204,31 @@ export default {
 
     async handleSubmit(values) {
       try {
-        if (!this.selected.id) await API.createProduct(values)
-        else await API.updateProduct(this.selected.id, values)
+        if (!this.selected.id) {
+          await API.createAsset(values)
+          message.success('New asset created')
+        } else {
+          await API.updateAsset(this.selected.id, values)
+          message.success('Asset is updated')
+        }
         this.showEditPanel = false
-        message.success('New loation created')
-        this.fetchProducts()
+        this.fetchAssets()
       } catch (e) {
         message.error(e.message)
       }
     },
 
-    handleViewRecord(productId) {
-      this.selected = this.products.find((product) => product.id === productId)
+    handleViewRecord(assetId) {
+      this.selected = this.assets.find((product) => product.id === assetId)
       this.showEditPanel = true
       this.isEditing = false
     },
 
-    async handleRemoveRecord(productId) {
+    async handleRemoveRecord(assetId) {
       try {
-        await API.removeProduct(productId)
-        message.info('Product Removed!')
-        this.products = _.cloneDeep(this.products).filter((product) => product.id !== productId)
+        await API.removeAsset(assetId)
+        message.info('Asset Removed!')
+        this.assets = _.cloneDeep(this.assets).filter((product) => product.id !== assetId)
       } catch (e) {
         message.error(e.message)
       }
@@ -233,13 +238,23 @@ export default {
       return moment(date).format('YYYY MMM DD HH:mm')
     },
 
+    async fetchAssets() {
+      this.fetching = true
+      try {
+        this.assets = await API.getAssets()
+        this.fetching = false
+      } catch (e) {
+        message.error(e.message)
+        this.fetching = false
+      }
+    },
+
     async fetchProducts() {
       this.fetching = true
       try {
         this.products = await API.getProducts()
         this.fetching = false
       } catch (e) {
-        console.log(e.message)
         message.error(e.message)
         this.fetching = false
       }

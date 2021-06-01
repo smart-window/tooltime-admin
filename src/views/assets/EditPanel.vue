@@ -25,52 +25,114 @@
       </a-row>
       <a-row :gutter="16">
         <a-col :span="24">
-          <a-form-item label="Category">
+          <a-form-item label="Product">
             <a-select
               v-decorator="[
-                'category',
+                'productId',
                 {
-                  initialValue: item.categoryId,
-                  rules: [{ required: true, message: 'Name required' }],
+                  initialValue: item.productId,
+                  rules: [{ required: true, message: 'Product required' }],
                 },
               ]"
               :disabled="!editing"
-              @change="handleCategoryChange"
             >
-              <a-select-option v-for="cat in categories" :key="cat.id">
-                {{ cat.name }}</a-select-option
-              >
+              <a-select-option v-for="pro in products" :key="pro.id">
+                {{ pro.name }}
+              </a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="16">
         <a-col :span="24">
-          <a-form-item label="Sections">
+          <a-form-item label="Location">
             <a-select
-              mode="multiple"
               v-decorator="[
-                'sections',
+                'locationId',
                 {
-                  initialValue: '',
-                  rules: [{ required: true, message: 'Name required' }],
+                  initialValue: item.locationId,
+                  rules: [{ required: true, message: 'Location required' }],
                 },
               ]"
               :disabled="!editing"
-              @change="handleCategoryChange"
             >
-              <a-select-option v-for="sec in sections" :key="sec.id">
-                {{ sec.name }}</a-select-option
-              >
+              <a-select-option v-for="loc in locations" :key="loc.id">
+                {{ loc.name }}
+              </a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="16">
         <a-col :span="24">
-          <a-tag color="blue" v-for="section in item.sections" :key="section.id">
-            {{ section.name }}
-          </a-tag>
+          <a-form-item label="Manufacture">
+            <a-input
+              v-decorator="[
+                'make',
+                {
+                  initialValue: item.make,
+                },
+              ]"
+              :disabled="!editing"
+            />
+          </a-form-item>
+        </a-col>
+      </a-row>
+      <a-row :gutter="16">
+        <a-col :span="24">
+          <a-form-item label="Model">
+            <a-input
+              v-decorator="[
+                'model',
+                {
+                  initialValue: item.model,
+                },
+              ]"
+              :disabled="!editing"
+            />
+          </a-form-item>
+        </a-col>
+      </a-row>
+      <a-row :gutter="16">
+        <a-col :span="24">
+          <a-form-item label="Serial Number">
+            <a-input
+              v-decorator="[
+                'sn',
+                {
+                  initialValue: item.sn,
+                },
+              ]"
+              :disabled="!editing"
+            />
+          </a-form-item>
+        </a-col>
+      </a-row>
+      <a-row :gutter="16">
+        <a-col :span="24">
+          <a-form-item label="Images">
+            <div class="clearfix">
+              <a-upload
+                name="image"
+                list-type="picture-card"
+                :file-list="fileList"
+                :headers="authorizationHeader"
+                :beforeUpload="beforeUpload"
+                :disabled="!editing"
+                action="http://localhost:3000/admin/asset/upload"
+                @preview="handleImagesPreview"
+                @change="handleImagesChange"
+              >
+                <div v-if="fileList.length < 5">
+                  <a-icon type="plus" />
+                  <div class="ant-upload-text">Upload</div>
+                </div>
+              </a-upload>
+              <a-modal :visible="previewVisible" :footer="null" @cancel="handleImagesCancel">
+                <img alt="Images" style="width: 100%" :src="previewImage" />
+              </a-modal>
+            </div>
+          </a-form-item>
         </a-col>
       </a-row>
     </a-form>
@@ -108,31 +170,89 @@
 
 <script>
 import { mapState } from 'vuex'
+import store from 'store'
+
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = (error) => reject(error)
+  })
+}
+
 export default {
   name: 'EditPanel',
-  props: ['showPanel', 'close', 'submit', 'item', 'editing', 'onEdit'],
+  props: ['showPanel', 'close', 'submit', 'item', 'editing', 'onEdit', 'products'],
 
-  mounted() {},
+  mounted() {
+    const accessToken = store.get('accessToken')
+    this.authorizationHeader = {
+      Authorization: `Bearer ${accessToken}`,
+      AccessToken: accessToken,
+    }
+  },
 
   data() {
     return {
-      form: this.$form.createForm(this, this.item),
-      fields: ['name', 'sections', 'products', ''],
+      form: this.$form.createForm(this, this.item, this.products),
+      fields: ['name', 'sectionId', 'assetId', 'description'],
+      sections: [],
+      previewVisible: false,
+      previewImage: '',
+      fileList: [],
+      authorizationHeader: {},
     }
   },
 
   computed: {
-    ...mapState(['categories']),
+    ...mapState(['categories', 'locations']),
     title() {
-      if (this.item.id && !this.editing) return 'View products'
-      else if (this.item.id && this.editing) return 'Edit products'
-      return 'Create products'
+      if (this.item.id && !this.editing) return 'View asset'
+      else if (this.item.id && this.editing) return 'Edit asset'
+      return 'Create asset'
     },
   },
   methods: {
+    handleImagesCancel() {
+      this.previewVisible = false
+    },
+
+    async handleImagesPreview(file) {
+      if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj)
+      }
+      this.previewImage = file.url || file.preview
+      this.previewVisible = true
+    },
+
+    handleImagesChange({ fileList }) {
+      this.fileList = fileList
+    },
+
+    beforeUpload(file) {
+      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+      if (!isJpgOrPng) {
+        this.$message.error('You can only upload image file!')
+        return false
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isLt2M) {
+        this.$message.error('Image must smaller than 2MB!')
+        return false
+      }
+      this.fileList = [...this.fileList, file]
+      return true
+    },
+
     handleSubmit(event) {
       event.preventDefault()
       this.form.validateFields((err, values) => {
+        values.images = ''
+        this.fileList.map((file, idx) => {
+          values.images += file.response ? file.response.fullPath : file.url
+          values.images += idx === this.fileList.length - 1 ? '' : ','
+        })
         if (!err) {
           this.$emit('submit', values)
         }
@@ -151,16 +271,23 @@ export default {
     handleCloseEditingPanel() {
       this.$emit('close')
     },
-
-    handleCategoryChange(categoryId) {
-      //   const cat = this.categories.find((cat) => cat.id === categoryId)
-      //   this.form.setFieldsValue([{}])
-    },
   },
 
   watch: {
     item(item) {
-      console.log({ item })
+      this.fileList = []
+      if (item.images) {
+        item.images.split(',').map((url, idx) => {
+          const tmp = {
+            uid: idx,
+            name: 'image' + idx,
+            status: 'done',
+            url: url,
+          }
+          this.fileList.push(tmp)
+        })
+      }
+
       this.fields.forEach((field) => {
         this.form.setFieldsValue({ [field]: item[field] })
       })

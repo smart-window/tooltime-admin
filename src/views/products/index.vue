@@ -11,19 +11,19 @@
       @onCancelEdit="handleClickCancelEdit"
     />
     <div class="cui__utils__heading">
-      <strong>Service Areas</strong>
+      <strong>Products</strong>
     </div>
     <div class="card">
       <div class="card-header card-header-flex">
         <div class="d-flex flex-column justify-content-center mr-auto">
-          <h5 class="mb-0">Service Areas</h5>
+          <h5 class="mb-0">Products</h5>
         </div>
         <div class="d-flex flex-column justify-content-center">
           <a class="btn btn-primary" @click="handleClickNew">New Product</a>
         </div>
       </div>
       <div class="card-body">
-        <a-table :columns="columns" :dataSource="products">
+        <a-table :columns="columns" :dataSource="products" rowKey="id">
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
@@ -67,10 +67,6 @@
               {{ section.name }}
             </a-tag>
           </div>
-          <span slot="total" slot-scope="text">${{ text }}</span>
-          <!-- <span slot="updatedAt" slot-scope="date">{{ formatDate(date) }}</span> -->
-          <span slot="tax" slot-scope="text">${{ text }}</span>
-          <span slot="shipping" slot-scope="text">${{ text }}</span>
           <span
             slot="status"
             slot-scope="text"
@@ -121,29 +117,18 @@ const columns = [
   },
   {
     title: 'Category',
-    dataIndex: 'category',
-    key: 'categoryId',
+    dataIndex: 'Category',
+    key: 'categoryName',
     scopedSlots: { customRender: 'category' },
   },
-  // {
-  //   title: 'Sections',
-  //   dataIndex: 'sections',
-  //   key: 'id',
-  //   scopedSlots: { customRender: 'sections' },
-  // },
   {
     title: 'Last Update',
     dataIndex: 'updatedAt',
     key: 'updatedAt',
-    scopedSlots: { customRender: 'updatedAt' },
-  },
-  {
-    title: 'Zip Code',
-    dataIndex: 'zip',
-    key: 'zip',
   },
   {
     title: 'Action',
+    key: 'action',
     scopedSlots: { customRender: 'action' },
   },
 ]
@@ -204,11 +189,14 @@ export default {
 
     async handleSubmit(values) {
       try {
-        console.log(values)
-        if (!this.selected.id) await API.createProduct(values)
-        else await API.updateProduct(this.selected.id, values)
+        if (!this.selected.id) {
+          await API.createProduct(values)
+          message.success('New product created')
+        } else {
+          await API.updateProduct(this.selected.id, values)
+          message.success('Product is updated.')
+        }
         this.showEditPanel = false
-        message.success('New loation created')
         this.fetchProducts()
       } catch (e) {
         message.error(e.message)
@@ -241,7 +229,6 @@ export default {
         this.products = await API.getProducts()
         this.fetching = false
       } catch (e) {
-        console.log(e.message)
         message.error(e.message)
         this.fetching = false
       }

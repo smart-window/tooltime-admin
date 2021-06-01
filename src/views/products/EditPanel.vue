@@ -51,7 +51,7 @@
               v-decorator="[
                 'sectionId',
                 {
-                  initialValue: item.categoryId,
+                  initialValue: item.sectionId,
                   rules: [{ required: true, message: 'Section required' }],
                 },
               ]"
@@ -73,6 +73,8 @@
                 list-type="picture-card"
                 :file-list="fileList"
                 :headers="authorizationHeader"
+                :beforeUpload="beforeUpload"
+                :disabled="!editing"
                 action="http://localhost:3000/admin/product/upload"
                 @preview="handleImagesPreview"
                 @change="handleImagesChange"
@@ -167,7 +169,7 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this, this.item),
-      fields: ['name', 'sections', 'products', ''],
+      fields: ['name', 'sectionId', 'productId', 'description'],
       sections: [],
       previewVisible: false,
       previewImage: '',
@@ -204,14 +206,16 @@ export default {
     beforeUpload(file) {
       const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
       if (!isJpgOrPng) {
-        this.$message.error('You can only upload JPG file!')
+        this.$message.error('You can only upload image file!')
+        return false
       }
       const isLt2M = file.size / 1024 / 1024 < 2
       if (!isLt2M) {
         this.$message.error('Image must smaller than 2MB!')
+        return false
       }
       this.fileList = [...this.fileList, file]
-      return false
+      return true
     },
 
     handleSubmit(event) {
@@ -219,7 +223,7 @@ export default {
       this.form.validateFields((err, values) => {
         values.images = ''
         this.fileList.map((file, idx) => {
-          values.images += 'http://localhost:3000/' + file.response.path
+          values.images += file.response ? file.response.fullPath : file.url
           values.images += idx === this.fileList.length - 1 ? '' : ','
         })
         if (!err) {
@@ -242,7 +246,6 @@ export default {
     },
 
     handleCategoryChange(categoryId) {
-      console.log(categoryId)
       var curCategory = this.categories.find((_value) => {
         return _value.id === categoryId
       })
@@ -252,7 +255,6 @@ export default {
 
   watch: {
     item(item) {
-      console.log({ item })
       this.fileList = []
       if (item.images) {
         item.images.split(',').map((url, idx) => {

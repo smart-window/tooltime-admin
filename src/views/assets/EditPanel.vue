@@ -65,6 +65,21 @@
       </a-row>
       <a-row :gutter="16">
         <a-col :span="24">
+          <a-form-item label="Purchase Date">
+            <a-date-picker
+              v-decorator="[
+                'purchaseDate',
+                {
+                  initialValue: item.purchaseDate,
+                },
+              ]"
+              :disabled="!editing"
+            />
+          </a-form-item>
+        </a-col>
+      </a-row>
+      <a-row :gutter="16">
+        <a-col :span="24">
           <a-form-item label="Manufacture">
             <a-input
               v-decorator="[
@@ -196,7 +211,7 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this, this.item, this.products),
-      fields: ['name', 'productId', 'locationId', 'make', 'model', 'sn'],
+      fields: ['name', 'productId', 'locationId', 'make', 'model', 'sn', 'purchaseDate'],
       sections: [],
       previewVisible: false,
       previewImage: '',

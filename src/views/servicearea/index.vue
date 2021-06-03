@@ -19,7 +19,7 @@
           <h5 class="mb-0">Service Areas</h5>
         </div>
         <div class="d-flex flex-column justify-content-center">
-          <a class="btn btn-primary" @click="handleClickNew">New ServiceArea</a>
+          <a class="btn btn-primary" @click="handleClickNew">New Service Area</a>
         </div>
       </div>
       <div class="card-body">
@@ -171,11 +171,13 @@ const columns = [
     dataIndex: 'updatedAt',
     key: 'updatedAt',
     scopedSlots: { customRender: 'updatedAt' },
+    sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
     title: 'Zip Code',
     dataIndex: 'zip',
     key: 'zip',
+    sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
     title: 'Action',

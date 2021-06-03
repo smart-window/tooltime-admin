@@ -62,6 +62,7 @@
             text
           }}</a>
           <a-tag color="green" slot="category" slot-scope="category">{{ category.name }}</a-tag>
+          <a-tag color="red" slot="section" slot-scope="section">{{ section.name }}</a-tag>
           <div slot="sections" slot-scope="sections">
             <a-tag color="blue" v-for="section in sections" :key="section.id">
               {{ section.name }}
@@ -120,11 +121,20 @@ const columns = [
     dataIndex: 'Category',
     key: 'categoryName',
     scopedSlots: { customRender: 'category' },
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
+  {
+    title: 'Section',
+    dataIndex: 'Section',
+    key: 'sectionName',
+    scopedSlots: { customRender: 'section' },
+    sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
     title: 'Last Update',
     dataIndex: 'updatedAt',
     key: 'updatedAt',
+    sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
     title: 'Action',
@@ -227,6 +237,7 @@ export default {
       this.fetching = true
       try {
         this.products = await API.getProducts()
+        console.log(this.products)
         this.fetching = false
       } catch (e) {
         message.error(e.message)

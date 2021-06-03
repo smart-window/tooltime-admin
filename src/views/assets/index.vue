@@ -16,15 +16,26 @@
     </div>
     <div class="card">
       <div class="card-header card-header-flex">
-        <div class="d-flex flex-column justify-content-center mr-auto">
+        <div class="d-flex flex-column justify-content-center">
           <h5 class="mb-0">Assets</h5>
+        </div>
+        <div class="d-flex flex-column justify-content-center mr-auto">
+          <a-select
+            default-value="*"
+            v-bind:style="{ width: '200px', marginLeft: '100px' }"
+            @change="handleLocationChange"
+          >
+            <a-select-option v-for="loc in tmpLocations" :key="loc.id" :value="loc.id">
+              {{ loc.name }}
+            </a-select-option>
+          </a-select>
         </div>
         <div class="d-flex flex-column justify-content-center">
           <a class="btn btn-primary" @click="handleClickNew">New Asset</a>
         </div>
       </div>
       <div class="card-body">
-        <a-table :columns="columns" :dataSource="assets" rowKey="id">
+        <a-table :columns="columns" :dataSource="filteredAssets" rowKey="id">
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
@@ -62,16 +73,8 @@
           <a slot="id" slot-scope="text" href="javascript: void(0);" class="btn btn-sm btn-light">{{
             text
           }}</a>
-          <a-tag color="green" slot="category" slot-scope="category">{{ category.name }}</a-tag>
-          <!-- <div slot="sections" slot-scope="sections">
-            <a-tag color="blue" v-for="section in sections" :key="section.id">
-              {{ section.name }}
-            </a-tag>
-          </div> -->
-          <span slot="total" slot-scope="text">${{ text }}</span>
-          <!-- <span slot="updatedAt" slot-scope="date">{{ formatDate(date) }}</span> -->
-          <span slot="tax" slot-scope="text">${{ text }}</span>
-          <span slot="shipping" slot-scope="text">${{ text }}</span>
+          <a-tag color="green" slot="product" slot-scope="product">{{ product.name }}</a-tag>
+          <span slot="location" slot-scope="location">{{ location.name }}</span>
           <span
             slot="status"
             slot-scope="text"
@@ -112,8 +115,16 @@ import moment from 'moment'
 import { message } from 'ant-design-vue'
 import EditPanel from './EditPanel'
 import * as _ from 'lodash'
+import { mapState } from 'vuex'
 
 const columns = [
+  {
+    title: 'Product Name',
+    dataIndex: 'Product',
+    key: 'productName',
+    scopedSlots: { customRender: 'product' },
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
   {
     title: 'Name',
     dataIndex: 'name',
@@ -124,22 +135,33 @@ const columns = [
     title: 'Manufacture',
     dataIndex: 'make',
     key: 'make',
+    sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
     title: 'Model',
     dataIndex: 'model',
     key: 'model',
+    sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
     title: 'Serial Number',
     dataIndex: 'sn',
     key: 'sn',
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
+  {
+    title: 'Location',
+    dataIndex: 'Location',
+    key: 'locationName',
+    scopedSlots: { customRender: 'location' },
+    sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
     title: 'Last Update',
     dataIndex: 'updatedAt',
     key: 'updatedAt',
     scopedSlots: { customRender: 'updatedAt' },
+    sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
     title: 'Action',
@@ -153,6 +175,7 @@ export default {
       searchText: '',
       searchInput: null,
       assets: [],
+      filteredAssets: [],
       products: [],
       columns,
       showEditPanel: false,
@@ -160,20 +183,36 @@ export default {
       isCreating: false,
       fetching: false,
       selected: {},
+      tmpLocations: [],
     }
   },
 
   mounted() {
     this.fetchAssets()
     this.fetchProducts()
+    this.tmpLocations = this.locations
+    this.tmpLocations.unshift({ name: 'all', id: '*' })
   },
 
   computed: {
+    ...mapState(['locations']),
     panelTitle() {
       return this.isEditing ? 'Edit a asset' : 'Create a new asset'
     },
   },
   methods: {
+    handleLocationChange(locationId) {
+      this.filteredAssets = []
+      if (locationId === '*') {
+        this.filteredAssets = this.assets
+      } else {
+        this.assets.find((_value) => {
+          if (_value.locationId === locationId) {
+            this.filteredAssets.push(_value)
+          }
+        })
+      }
+    },
     handleSearch(selectedKeys, confirm) {
       confirm()
       this.searchText = selectedKeys[0]
@@ -242,6 +281,7 @@ export default {
       this.fetching = true
       try {
         this.assets = await API.getAssets()
+        this.filteredAssets = this.assets
         this.fetching = false
       } catch (e) {
         message.error(e.message)

@@ -14,3 +14,8 @@
 
 @import 'components/kit/core/style'; // Clean UI KIT styles
 @import 'components/cleanui/styles/style'; // Clean UI styles
+
+
+[data-kit-theme="default"] .ant-input[disabled], [data-kit-theme="default"] .ant-select-disabled {
+    color: #595c97
+}

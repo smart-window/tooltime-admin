@@ -88,6 +88,8 @@
           <a slot="id" slot-scope="text" href="javascript: void(0);" class="btn btn-sm btn-light">{{
             text
           }}</a>
+          <span slot="customer" slot-scope="customer">{{ customer.name }}</span>
+          <span slot="location" slot-scope="location">{{ location.name }}</span>
           <span slot="updatedAt" slot-scope="date">{{ formatDate(date) }}</span>
           <span slot="status" slot-scope="text" :class="statusClassName(text)">{{ text }}</span>
           <span slot="action" slot-scope="record">
@@ -131,54 +133,68 @@ const STATUS = {
 
 const columns = [
   {
-    title: 'Name',
+    title: 'Order Name',
     dataIndex: 'name',
     key: 'name',
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'Email',
-    dataIndex: 'email',
-    key: 'email',
+    title: 'Customer Name',
+    dataIndex: 'Customer',
+    key: 'customerName',
+    scopedSlots: { customRender: 'customer' },
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'City',
-    dataIndex: 'city',
-    key: 'city',
+    title: 'Location',
+    dataIndex: 'Location',
+    key: 'locationName',
+    scopedSlots: { customRender: 'location' },
     sorter: (a, b) => (a > b ? 1 : -1),
   },
+  // {
+  //   title: 'Email',
+  //   dataIndex: 'email',
+  //   key: 'email',
+  //   sorter: (a, b) => (a > b ? 1 : -1),
+  // },
+  // {
+  //   title: 'City',
+  //   dataIndex: 'city',
+  //   key: 'city',
+  //   sorter: (a, b) => (a > b ? 1 : -1),
+  // },
+  // {
+  //   title: 'State',
+  //   dataIndex: 'state',
+  //   key: 'state',
+  //   sorter: (a, b) => (a > b ? 1 : -1),
+  // },
+  // {
+  //   title: 'Address',
+  //   dataIndex: 'address',
+  //   key: 'address',
+  //   sorter: (a, b) => (a > b ? 1 : -1),
+  // },
+  // {
+  //   title: 'Zip Code',
+  //   dataIndex: 'zip',
+  //   key: 'zip',
+  //   sorter: (a, b) => (a > b ? 1 : -1),
+  // },
   {
-    title: 'State',
-    dataIndex: 'state',
-    key: 'state',
-    sorter: (a, b) => (a > b ? 1 : -1),
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-    sorter: (a, b) => (a > b ? 1 : -1),
-  },
-  {
-    title: 'Zip Code',
-    dataIndex: 'zip',
-    key: 'zip',
-    sorter: (a, b) => (a > b ? 1 : -1),
-  },
-  {
-    title: 'Statuse',
+    title: 'Status',
     dataIndex: 'status',
     key: 'status',
     scopedSlots: { customRender: 'status' },
     sorter: (a, b) => (a > b ? 1 : -1),
   },
-  {
-    title: 'Last Update',
-    dataIndex: 'updatedAt',
-    key: 'updatedAt',
-    scopedSlots: { customRender: 'updatedAt' },
-  },
+  // {
+  //   title: 'Last Update',
+  //   dataIndex: 'updatedAt',
+  //   key: 'updatedAt',
+  //   scopedSlots: { customRender: 'updatedAt' },
+  // },
   {
     title: 'Action',
     scopedSlots: { customRender: 'action' },

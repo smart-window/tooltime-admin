@@ -73,6 +73,10 @@ export const removeAsset = async (id) => {
   return axiosClient.delete(`/asset/${id}`).then(successFunc).catch(failFunc)
 }
 
+export const setAsset = async (params) => {
+  return axiosClient.post('/asset/set_asset', params).then(successFunc).catch(failFunc)
+}
+
 export const getCustomers = async () => {
   return axiosClient.get('/customer').then(successFunc).catch(failFunc)
 }

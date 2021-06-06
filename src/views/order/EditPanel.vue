@@ -56,23 +56,25 @@
       </a-row>
       <a-row :gutter="16">
         <a-col :span="12">
-          <span>{{ item.Customer.name }},  </span>
-          <span>{{ item.phone }},  </span>
+          <span>{{ item.Customer.name }}, </span>
+          <span>{{ item.phone }}, </span>
           <span>{{ item.email }}</span>
           <a-table
             rowKey="id"
             :columns="columns"
             :data-source="data"
+            expandIconColumnIndex="2"
             class="components-table-demo-nested"
+            :expandIcon="expandIcon"
           >
             <a slot="operation">Publish</a>
             <span slot="productName" slot-scope="Product"> {{ Product.name }} </span>
 
-            <template v-slot:expandedRowRender="record">
+            <template v-slot:expandedRowRender="orderItem">
               <a-table
                 slot="expandedRowRender"
                 :columns="innerColumns"
-                :data-source="record.Product.Assets"
+                :data-source="orderItem.Product.Assets"
                 :pagination="false"
                 rowKey="id"
               >
@@ -80,8 +82,8 @@
                 <span slot="location" slot-scope="location">
                   {{ location.state + ', ' + location.city + ', ' + location.address_1 }}
                 </span>
-                <span slot="operation" class="table-operation">
-                  <a-button>Found it!</a-button>
+                <span slot="assetOperation" slot-scope="text, asset" class="table-operation">
+                  <a-button @click="pickAsset(orderItem.id, asset.id)">Found it!</a-button>
                 </span>
               </a-table>
             </template>
@@ -122,6 +124,9 @@
 </template>
 
 <script>
+import * as API from '@/services/api'
+import { message } from 'ant-design-vue'
+
 const columns = [
   {
     title: 'Product',
@@ -149,7 +154,7 @@ const innerColumns = [
     title: 'Action',
     dataIndex: 'operation',
     key: 'operation',
-    scopedSlots: { customRender: 'operation' },
+    scopedSlots: { customRender: 'assetOperation' },
   },
 ]
 
@@ -200,6 +205,33 @@ export default {
     },
     handleCloseEditingPanel() {
       this.$emit('close')
+    },
+    expandIcon(props) {
+      return (
+        <a-button
+          onClick={(e) => {
+            props.onExpand(props.record, e)
+          }}
+        >
+          Process
+        </a-button>
+      )
+    },
+
+    async pickAsset(orderItemId, assetId) {
+      const params = {
+        orderItemId: orderItemId,
+        id: assetId,
+      }
+      try {
+        // this.orders = await API.setAsset(params)
+        this.orders = await API.updateAsset(assetId, params)
+        this.fetching = false
+      } catch (e) {
+        console.log(e.message)
+        message.error(e.message)
+        this.fetching = false
+      }
     },
   },
 

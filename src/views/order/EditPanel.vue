@@ -60,12 +60,12 @@
           <span>{{ item.phone }}, </span>
           <span>{{ item.email }}</span>
           <a-table
+            :expandIcon="expandIcon"
+            :expandIconColumnIndex="2"
             rowKey="id"
             :columns="columns"
             :data-source="data"
-            expandIconColumnIndex="2"
             class="components-table-demo-nested"
-            :expandIcon="expandIcon"
           >
             <a slot="operation">Publish</a>
             <span slot="productName" slot-scope="Product"> {{ Product.name }} </span>
@@ -83,7 +83,13 @@
                   {{ location.state + ', ' + location.city + ', ' + location.address_1 }}
                 </span>
                 <span slot="assetOperation" slot-scope="text, asset" class="table-operation">
-                  <a-button @click="pickAsset(orderItem.id, asset.id)">Found it!</a-button>
+                  <a-button
+                    v-if="asset.orderItemId === orderItem.id"
+                    @click="pickAsset(null, asset.id)"
+                  >
+                    Cancel
+                  </a-button>
+                  <a-button v-else @click="pickAsset(orderItem.id, asset.id)">Found it!</a-button>
                 </span>
               </a-table>
             </template>
@@ -135,7 +141,8 @@ const columns = [
     scopedSlots: { customRender: 'productName' },
   },
   { title: 'Count', dataIndex: 'orderCount', key: 'orderCount' },
-  { title: 'Action', key: 'operation', scopedSlots: { customRender: 'operation' } },
+  // { title: 'Action', key: 'operation', scopedSlots: { customRender: 'operation' } },
+  { title: '', dataIndex: '', key: 'expand', width: 1 },
 ]
 
 const data = []
@@ -218,15 +225,28 @@ export default {
       )
     },
 
+    async fetchOrder(id) {
+      this.fetching = true
+      try {
+        this.item = await API.getOrder(id)
+        this.fetching = false
+      } catch (e) {
+        console.log(e.message)
+        message.error(e.message)
+        this.fetching = false
+      }
+    },
+
     async pickAsset(orderItemId, assetId) {
       const params = {
         orderItemId: orderItemId,
         id: assetId,
       }
       try {
-        // this.orders = await API.setAsset(params)
-        this.orders = await API.updateAsset(assetId, params)
+        // const asset =
+        await API.updateAsset(assetId, params)
         this.fetching = false
+        this.fetchOrder(this.item.id)
       } catch (e) {
         console.log(e.message)
         message.error(e.message)

@@ -29,6 +29,10 @@ export const getOrders = async () => {
   return axiosClient.get('/order').then(successFunc).catch(failFunc)
 }
 
+export const getOrder = async (id) => {
+  return axiosClient.get(`/order/${id}`).then(successFunc).catch(failFunc)
+}
+
 export const createOrder = async (newOrder) => {
   return axiosClient.post('/order', newOrder).then(successFunc).catch(failFunc)
 }
@@ -71,10 +75,6 @@ export const updateAsset = async (id, newAsset) => {
 
 export const removeAsset = async (id) => {
   return axiosClient.delete(`/asset/${id}`).then(successFunc).catch(failFunc)
-}
-
-export const setAsset = async (params) => {
-  return axiosClient.post('/asset/set_asset', params).then(successFunc).catch(failFunc)
 }
 
 export const getCustomers = async () => {

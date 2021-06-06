@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="card-body">
-        <a-table :columns="columns" :dataSource="orders">
+        <a-table rowKey="id" :columns="columns" :dataSource="orders">
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"

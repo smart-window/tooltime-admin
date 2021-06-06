@@ -51,27 +51,40 @@
       </a-row>
       <a-row :gutter="16">
         <a-col :span="12">
-          <a-table :columns="columns" :data-source="data" class="components-table-demo-nested">
+          <h5>Order Details</h5>
+        </a-col>
+      </a-row>
+      <a-row :gutter="16">
+        <a-col :span="12">
+          <span>{{ item.Customer.name }},  </span>
+          <span>{{ item.phone }},  </span>
+          <span>{{ item.email }}</span>
+          <a-table
+            rowKey="id"
+            :columns="columns"
+            :data-source="data"
+            class="components-table-demo-nested"
+          >
             <a slot="operation">Publish</a>
-            <a-table
-              slot="expandedRowRender"
-              :columns="innerColumns"
-              :data-source="innerData"
-              :pagination="false"
-            >
-              <span slot="status"> <a-badge status="success" />Finished </span>
-              <span slot="operation" class="table-operation">
-                <a>Pause</a>
-                <a>Stop</a>
-                <a-dropdown>
-                  <a-menu slot="overlay">
-                    <a-menu-item> Action 1 </a-menu-item>
-                    <a-menu-item> Action 2 </a-menu-item>
-                  </a-menu>
-                  <a> More <a-icon type="down" /> </a>
-                </a-dropdown>
-              </span>
-            </a-table>
+            <span slot="productName" slot-scope="Product"> {{ Product.name }} </span>
+
+            <template v-slot:expandedRowRender="record">
+              <a-table
+                slot="expandedRowRender"
+                :columns="innerColumns"
+                :data-source="record.Product.Assets"
+                :pagination="false"
+                rowKey="id"
+              >
+                <span slot="status"> <a-badge status="success" />Finished </span>
+                <span slot="location" slot-scope="location">
+                  {{ location.state + ', ' + location.city + ', ' + location.address_1 }}
+                </span>
+                <span slot="operation" class="table-operation">
+                  <a-button>Found it!</a-button>
+                </span>
+              </a-table>
+            </template>
           </a-table>
         </a-col>
       </a-row>
@@ -110,33 +123,28 @@
 
 <script>
 const columns = [
-  { title: 'Product', dataIndex: 'name', key: 'name' },
-  { title: 'Platform', dataIndex: 'platform', key: 'platform' },
-  { title: 'Version', dataIndex: 'version', key: 'version' },
-  { title: 'Upgraded', dataIndex: 'upgradeNum', key: 'upgradeNum' },
-  { title: 'Creator', dataIndex: 'creator', key: 'creator' },
-  { title: 'Date', dataIndex: 'createdAt', key: 'createdAt' },
+  {
+    title: 'Product',
+    dataIndex: 'Product',
+    key: 'productName',
+    scopedSlots: { customRender: 'productName' },
+  },
+  { title: 'Count', dataIndex: 'orderCount', key: 'orderCount' },
   { title: 'Action', key: 'operation', scopedSlots: { customRender: 'operation' } },
 ]
 
 const data = []
-for (let i = 0; i < 3; ++i) {
-  data.push({
-    key: i,
-    name: 'Screem',
-    platform: 'iOS',
-    version: '10.3.4.5654',
-    upgradeNum: 500,
-    creator: 'Jack',
-    createdAt: '2014-12-24 23:12:00',
-  })
-}
 
 const innerColumns = [
-  { title: 'Date', dataIndex: 'date', key: 'date' },
   { title: 'Name', dataIndex: 'name', key: 'name' },
-  { title: 'Status', key: 'state', scopedSlots: { customRender: 'status' } },
-  { title: 'Upgrade Status', dataIndex: 'upgradeNum', key: 'upgradeNum' },
+  { title: 'Make', dataIndex: 'make', key: 'make' },
+  { title: 'Serial', dataIndex: 'sn', key: 'sn' },
+  {
+    title: 'Location',
+    dataIndex: 'Location',
+    key: 'location',
+    scopedSlots: { customRender: 'location' },
+  },
   {
     title: 'Action',
     dataIndex: 'operation',
@@ -146,14 +154,7 @@ const innerColumns = [
 ]
 
 const innerData = []
-for (let i = 0; i < 3; ++i) {
-  innerData.push({
-    key: i,
-    date: '2014-12-24 23:12:00',
-    name: 'This is production name',
-    upgradeNum: 'Upgraded: 56',
-  })
-}
+
 export default {
   name: 'EditPanel',
   props: ['showPanel', 'close', 'submit', 'item', 'editing', 'onEdit'],
@@ -205,6 +206,7 @@ export default {
   watch: {
     item(item) {
       console.log({ item })
+      this.data = item.OrderItems
       this.fields.forEach((field) => {
         this.form.setFieldsValue({ [field]: item[field] })
       })

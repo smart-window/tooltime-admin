@@ -90,6 +90,16 @@
           }}</a>
           <span slot="customer" slot-scope="customer">{{ customer.name }}</span>
           <span slot="location" slot-scope="location">{{ location.name }}</span>
+          <span slot="productCount" slot-scope="orderItems" class="font-size-12 badge badge-danger">
+            {{
+              orderItems.reduce((productCount, orderItem) => {
+                return productCount + orderItem.orderCount
+              }, 0)
+            }}
+          </span>
+          <span slot="address" slot-scope="order">{{
+            order.state + ', ' + order.city + ', ' + order.address + ',' + order.zip
+          }}</span>
           <span slot="updatedAt" slot-scope="date">{{ formatDate(date) }}</span>
           <span slot="status" slot-scope="text" :class="statusClassName(text)">{{ text }}</span>
           <span slot="action" slot-scope="record">
@@ -152,36 +162,6 @@ const columns = [
     scopedSlots: { customRender: 'location' },
     sorter: (a, b) => (a > b ? 1 : -1),
   },
-  // {
-  //   title: 'Email',
-  //   dataIndex: 'email',
-  //   key: 'email',
-  //   sorter: (a, b) => (a > b ? 1 : -1),
-  // },
-  // {
-  //   title: 'City',
-  //   dataIndex: 'city',
-  //   key: 'city',
-  //   sorter: (a, b) => (a > b ? 1 : -1),
-  // },
-  // {
-  //   title: 'State',
-  //   dataIndex: 'state',
-  //   key: 'state',
-  //   sorter: (a, b) => (a > b ? 1 : -1),
-  // },
-  // {
-  //   title: 'Address',
-  //   dataIndex: 'address',
-  //   key: 'address',
-  //   sorter: (a, b) => (a > b ? 1 : -1),
-  // },
-  // {
-  //   title: 'Zip Code',
-  //   dataIndex: 'zip',
-  //   key: 'zip',
-  //   sorter: (a, b) => (a > b ? 1 : -1),
-  // },
   {
     title: 'Status',
     dataIndex: 'status',
@@ -189,12 +169,26 @@ const columns = [
     scopedSlots: { customRender: 'status' },
     sorter: (a, b) => (a > b ? 1 : -1),
   },
-  // {
-  //   title: 'Last Update',
-  //   dataIndex: 'updatedAt',
-  //   key: 'updatedAt',
-  //   scopedSlots: { customRender: 'updatedAt' },
-  // },
+  {
+    title: 'Product Count',
+    dataIndex: 'OrderItems',
+    key: 'productCount',
+    scopedSlots: { customRender: 'productCount' },
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
+  {
+    title: 'Email',
+    dataIndex: 'email',
+    key: 'email',
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
+  {
+    title: 'Address',
+    dataIndex: '',
+    key: 'address',
+    scopedSlots: { customRender: 'address' },
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
   {
     title: 'Action',
     scopedSlots: { customRender: 'action' },

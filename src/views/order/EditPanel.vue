@@ -9,132 +9,70 @@
     <a-form :form="form" layout="vertical" hide-required-mark>
       <a-row :gutter="16">
         <a-col :span="12">
-          <a-form-item label="Name">
-            <a-input
-              v-decorator="[
-                'name',
-                {
-                  initialValue: item.name,
-                  rules: [{ required: true, message: 'order name required' }],
-                },
-              ]"
-              disabled
-            />
-          </a-form-item>
+          <span>
+            <a-icon type="user" />
+            <span> {{ item.Customer.name }}</span>
+          </span>
         </a-col>
-        <a-col :span="12" v-if="!editing">
-          <a-form-item label="Status">
-            <a-tag color="pink"> {{ item.status }} </a-tag>
-          </a-form-item>
+      </a-row>
+      <a-row :gutter="16">
+        <a-col :span="12">
+          <span>
+            <a-icon type="mail" />
+            <span> {{ item.email }}</span>
+          </span>
         </a-col>
-        <a-col :span="12" v-if="editing">
-          <a-form-item label="Status">
-            <a-select
-              v-decorator="[
-                'status',
-                {
-                  initialValue: item.status,
-                  rules: [{ required: true, message: 'status required' }],
-                },
-              ]"
+      </a-row>
+      <a-row :gutter="16">
+        <a-col :span="12">
+          <span>
+            <a-icon type="phone" />
+            <span> {{ item.phone }}</span>
+          </span>
+        </a-col>
+      </a-row>
+      <a-row :gutter="16">
+        <a-col :span="12">
+          <span>
+            <a-icon type="environment" />
+            <span>
+              {{ item.state + ', ' + item.city + ', ' + item.address + ', ' + item.zip }}</span
             >
-              <a-select-option value="PENDING"> PENDING </a-select-option>
-              <a-select-option value="PICKED"> PICKED </a-select-option>
-              <a-select-option value="DELIVERED"> DELIVERED </a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row>
-        <a-col :span="24">
-          <a-form-item label="Email">
-            <a-input
-              v-decorator="[
-                'email',
-                {
-                  initialValue: item.email,
-                  rules: [{ required: false }],
-                },
-              ]"
-              disabled
-            />
-          </a-form-item>
+          </span>
         </a-col>
       </a-row>
       <a-row :gutter="16">
-        <a-col :span="24">
-          <a-form-item label="Address">
-            <a-input
-              v-decorator="[
-                'address',
-                {
-                  initialValue: item.address,
-                  rules: [{ required: true, message: 'Address required' }],
-                },
-              ]"
-              disabled
-            />
-          </a-form-item>
+        <a-col :span="12">
+          <span>
+            <a-icon type="calendar" />
+            <span> {{ item.pickupDate }}</span>
+          </span>
         </a-col>
       </a-row>
       <a-row :gutter="16">
-        <a-col :span="8">
-          <a-form-item label="State">
-            <a-input
-              v-decorator="[
-                'state',
-                {
-                  initialValue: item.state,
-                  rules: [{ required: true, message: 'State required' }],
-                },
-              ]"
-              disabled
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item label="City">
-            <a-input
-              v-decorator="[
-                'city',
-                {
-                  initialValue: item.city,
-                  rules: [{ required: true, message: 'City required' }],
-                },
-              ]"
-              disabled
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item label="Zip Code">
-            <a-input
-              v-decorator="[
-                'zip',
-                {
-                  zip: item.zip,
-                },
-              ]"
-              disabled
-            />
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="16">
-        <a-col :span="24">
-          <a-form-item label="Notes">
-            <a-textarea
-              v-decorator="[
-                'notes',
-                {
-                  initialValue: item.notes,
-                  rules: [{ required: false }],
-                },
-              ]"
-              :rows="4"
-              :disabled="!editing"
-            />
-          </a-form-item>
+        <a-col :span="12">
+          <a-table :columns="columns" :data-source="data" class="components-table-demo-nested">
+            <a slot="operation">Publish</a>
+            <a-table
+              slot="expandedRowRender"
+              :columns="innerColumns"
+              :data-source="innerData"
+              :pagination="false"
+            >
+              <span slot="status"> <a-badge status="success" />Finished </span>
+              <span slot="operation" class="table-operation">
+                <a>Pause</a>
+                <a>Stop</a>
+                <a-dropdown>
+                  <a-menu slot="overlay">
+                    <a-menu-item> Action 1 </a-menu-item>
+                    <a-menu-item> Action 2 </a-menu-item>
+                  </a-menu>
+                  <a> More <a-icon type="down" /> </a>
+                </a-dropdown>
+              </span>
+            </a-table>
+          </a-table>
         </a-col>
       </a-row>
     </a-form>
@@ -171,6 +109,51 @@
 </template>
 
 <script>
+const columns = [
+  { title: 'Product', dataIndex: 'name', key: 'name' },
+  { title: 'Platform', dataIndex: 'platform', key: 'platform' },
+  { title: 'Version', dataIndex: 'version', key: 'version' },
+  { title: 'Upgraded', dataIndex: 'upgradeNum', key: 'upgradeNum' },
+  { title: 'Creator', dataIndex: 'creator', key: 'creator' },
+  { title: 'Date', dataIndex: 'createdAt', key: 'createdAt' },
+  { title: 'Action', key: 'operation', scopedSlots: { customRender: 'operation' } },
+]
+
+const data = []
+for (let i = 0; i < 3; ++i) {
+  data.push({
+    key: i,
+    name: 'Screem',
+    platform: 'iOS',
+    version: '10.3.4.5654',
+    upgradeNum: 500,
+    creator: 'Jack',
+    createdAt: '2014-12-24 23:12:00',
+  })
+}
+
+const innerColumns = [
+  { title: 'Date', dataIndex: 'date', key: 'date' },
+  { title: 'Name', dataIndex: 'name', key: 'name' },
+  { title: 'Status', key: 'state', scopedSlots: { customRender: 'status' } },
+  { title: 'Upgrade Status', dataIndex: 'upgradeNum', key: 'upgradeNum' },
+  {
+    title: 'Action',
+    dataIndex: 'operation',
+    key: 'operation',
+    scopedSlots: { customRender: 'operation' },
+  },
+]
+
+const innerData = []
+for (let i = 0; i < 3; ++i) {
+  innerData.push({
+    key: i,
+    date: '2014-12-24 23:12:00',
+    name: 'This is production name',
+    upgradeNum: 'Upgraded: 56',
+  })
+}
 export default {
   name: 'EditPanel',
   props: ['showPanel', 'close', 'submit', 'item', 'editing', 'onEdit'],
@@ -181,6 +164,10 @@ export default {
     return {
       form: this.$form.createForm(this, this.item),
       fields: ['name', 'email', 'address', 'city', 'state', 'zip', 'notes', 'status'],
+      data,
+      columns,
+      innerColumns,
+      innerData,
     }
   },
 

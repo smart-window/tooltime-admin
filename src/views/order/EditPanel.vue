@@ -1,5 +1,6 @@
 <template>
   <a-drawer
+    v-if="item.id"
     :title="title"
     :width="720"
     :visible="showPanel"
@@ -9,92 +10,128 @@
     <a-form :form="form" layout="vertical" hide-required-mark>
       <a-row :gutter="16">
         <a-col :span="12">
-          <span>
+          <h5>
             <a-icon type="user" />
             <span> {{ item.Customer.name }}</span>
-          </span>
+          </h5>
         </a-col>
       </a-row>
       <a-row :gutter="16">
         <a-col :span="12">
-          <span>
+          <h5>
             <a-icon type="mail" />
             <span> {{ item.email }}</span>
-          </span>
+          </h5>
         </a-col>
       </a-row>
       <a-row :gutter="16">
         <a-col :span="12">
-          <span>
+          <h5>
             <a-icon type="phone" />
             <span> {{ item.phone }}</span>
-          </span>
+          </h5>
         </a-col>
       </a-row>
       <a-row :gutter="16">
         <a-col :span="12">
-          <span>
+          <h5>
             <a-icon type="environment" />
             <span>
               {{ item.state + ', ' + item.city + ', ' + item.address + ', ' + item.zip }}</span
             >
-          </span>
+          </h5>
         </a-col>
       </a-row>
       <a-row :gutter="16">
         <a-col :span="12">
-          <span>
+          <h5>
             <a-icon type="calendar" />
             <span> {{ item.pickupDate }}</span>
-          </span>
+          </h5>
         </a-col>
       </a-row>
       <a-row :gutter="16">
-        <a-col :span="12">
-          <h5>Order Details</h5>
-        </a-col>
+        <h4 class="text-center">Order Details</h4>
       </a-row>
-      <a-row :gutter="16">
-        <a-col :span="12">
-          <span>{{ item.Customer.name }}, </span>
-          <span>{{ item.phone }}, </span>
-          <span>{{ item.email }}</span>
-          <a-table
-            :expandIcon="expandIcon"
-            :expandIconColumnIndex="2"
-            rowKey="id"
-            :columns="columns"
-            :data-source="data"
-            class="components-table-demo-nested"
-          >
-            <a slot="operation">Publish</a>
-            <span slot="productName" slot-scope="Product"> {{ Product.name }} </span>
 
-            <template v-slot:expandedRowRender="orderItem">
-              <a-table
-                slot="expandedRowRender"
-                :columns="innerColumns"
-                :data-source="orderItem.Product.Assets"
-                :pagination="false"
-                rowKey="id"
-              >
-                <span slot="status"> <a-badge status="success" />Finished </span>
-                <span slot="location" slot-scope="location">
-                  {{ location.state + ', ' + location.city + ', ' + location.address_1 }}
-                </span>
-                <span slot="assetOperation" slot-scope="text, asset" class="table-operation">
-                  <a-button
-                    v-if="asset.orderItemId === orderItem.id"
-                    @click="pickAsset(null, asset.id)"
-                  >
-                    Cancel
-                  </a-button>
-                  <a-button v-else @click="pickAsset(orderItem.id, asset.id)">Found it!</a-button>
-                </span>
-              </a-table>
-            </template>
-          </a-table>
+      <a-row :gutter="16">
+        <a-col :span="24">
+          <p class="text-center">{{ item.Customer.name }}, {{ item.phone }}, {{ item.email }}</p>
         </a-col>
+      </a-row>
+      <a-row :gutter="16">
+        <a-col :span="24">
+          <p class="text-center">
+            {{
+              item.OrderItems.map((orderItem) => {
+                return orderItem.Product.Assets.reduce((count, asset) => {
+                  if (asset.orderItemId === orderItem.id) {
+                    count++
+                  }
+                  return count
+                }, 0)
+              }).reduce((a, b) => a + b, 0)
+            }}
+            /
+            {{
+              item.OrderItems.reduce((productCount, orderItem) => {
+                return productCount + orderItem.orderCount
+              }, 0)
+            }}
+          </p>
+        </a-col>
+      </a-row>
+      <a-row :gutter="16">
+        <a-table
+          :expandIcon="expandIcon"
+          :expandIconColumnIndex="2"
+          rowKey="id"
+          :columns="columns"
+          :data-source="data"
+          class="components-table-demo-nested"
+        >
+          <a slot="operation">Publish</a>
+          <span slot="productName" slot-scope="Product"> {{ Product.name }} </span>
+          <span slot="orderCount" slot-scope="orderItem">
+            {{
+              orderItem.Product.Assets.reduce((count, asset) => {
+                if (asset.orderItemId === orderItem.id) {
+                  count++
+                }
+                return count
+              }, 0)
+            }}
+            / {{ orderItem.orderCount }}
+          </span>
+
+          <template v-slot:expandedRowRender="orderItem">
+            <a-table
+              slot="expandedRowRender"
+              :columns="innerColumns"
+              :data-source="orderItem.Product.Assets"
+              :pagination="false"
+              rowKey="id"
+            >
+              <span slot="status"> <a-badge status="success" />Finished </span>
+              <span slot="location" slot-scope="location">
+                {{ location.state + ', ' + location.city + ', ' + location.address_1 }}
+              </span>
+              <span slot="assetOperation" slot-scope="text, asset" class="table-operation">
+                <a-button
+                  v-if="asset.orderItemId === orderItem.id"
+                  type="danger"
+                  ghost
+                  @click="pickAsset(null, asset.id)"
+                >
+                  Cancel
+                </a-button>
+                <a-button type="primary" ghost v-else @click="pickAsset(orderItem.id, asset.id)"
+                  >Found it!</a-button
+                >
+              </span>
+            </a-table>
+          </template>
+        </a-table>
       </a-row>
     </a-form>
     <div
@@ -110,21 +147,9 @@
         zIndex: 1,
       }"
     >
-      <a-button
-        type="secondary"
-        @click="handleEdit"
-        v-if="!editing"
-        :style="{ marginRight: 'auto' }"
-      >
-        Edit
-      </a-button>
-      <a-button v-if="editing" :style="{ marginRight: '8px' }" @click="handleCancelEditing">
-        Cancel
-      </a-button>
       <a-button v-if="!editing" :style="{ marginRight: '8px' }" @click="handleCloseEditingPanel">
         Close
       </a-button>
-      <a-button type="primary" @click="handleSubmit" :disabled="!editing"> Submit </a-button>
     </div>
   </a-drawer>
 </template>
@@ -140,9 +165,18 @@ const columns = [
     key: 'productName',
     scopedSlots: { customRender: 'productName' },
   },
-  { title: 'Count', dataIndex: 'orderCount', key: 'orderCount' },
-  // { title: 'Action', key: 'operation', scopedSlots: { customRender: 'operation' } },
-  { title: '', dataIndex: '', key: 'expand', width: 1 },
+  {
+    title: 'Count',
+    dataIndex: '',
+    key: 'orderCount',
+    scopedSlots: { customRender: 'orderCount' },
+  },
+  {
+    title: '',
+    dataIndex: '',
+    key: 'expand',
+    width: 1,
+  },
 ]
 
 const data = []
@@ -176,7 +210,7 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this, this.item),
-      fields: ['name', 'email', 'address', 'city', 'state', 'zip', 'notes', 'status'],
+      fields: [],
       data,
       columns,
       innerColumns,
@@ -210,19 +244,57 @@ export default {
       event.preventDefault()
       this.$emit('onCancelEdit')
     },
+
     handleCloseEditingPanel() {
       this.$emit('close')
     },
+
+    resetAssets(record) {
+      record.Product.Assets.map((asset) => {
+        this.pickAsset(null, asset.id)
+      })
+    },
+
     expandIcon(props) {
-      return (
-        <a-button
-          onClick={(e) => {
-            props.onExpand(props.record, e)
-          }}
-        >
-          Process
-        </a-button>
-      )
+      let resetShow = false
+      props.record.Product.Assets.map((asset) => {
+        if (asset.orderItemId === props.record.id) {
+          resetShow = true
+        }
+      })
+      if (resetShow === true) {
+        return (
+          <div>
+            <a-button
+              type="primary"
+              onClick={(e) => {
+                props.onExpand(props.record, e)
+              }}
+            >
+              Process
+            </a-button>
+            <a-button
+              onClick={(e) => {
+                this.resetAssets(props.record)
+              }}
+              type="danger"
+            >
+              Reset
+            </a-button>
+          </div>
+        )
+      } else {
+        return (
+          <a-button
+            type="primary"
+            onClick={(e) => {
+              props.onExpand(props.record, e)
+            }}
+          >
+            Process
+          </a-button>
+        )
+      }
     },
 
     async fetchOrder(id) {
@@ -243,10 +315,10 @@ export default {
         id: assetId,
       }
       try {
-        // const asset =
         await API.updateAsset(assetId, params)
         this.fetching = false
         this.fetchOrder(this.item.id)
+        // this.$emit('submit')
       } catch (e) {
         console.log(e.message)
         message.error(e.message)

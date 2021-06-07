@@ -190,7 +190,9 @@ export default {
   mounted() {
     this.fetchAssets()
     this.fetchProducts()
-    this.tmpLocations = this.locations
+    this.tmpLocations = this.locations.map((location) => {
+      return location
+    })
     this.tmpLocations.unshift({ name: 'all', id: '*' })
   },
 

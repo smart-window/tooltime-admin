@@ -14,15 +14,23 @@
     </div>
     <div class="card">
       <div class="card-header card-header-flex">
-        <div class="d-flex flex-column justify-content-center mr-auto">
+        <div class="d-flex flex-column justify-content-center">
           <h5 class="mb-0">Orders</h5>
         </div>
-        <div class="d-flex flex-column justify-content-center">
-          <a class="btn btn-primary" @click="handleClickNew">New Order</a>
+        <div class="d-flex flex-column justify-content-center mr-auto">
+          <a-select
+            default-value="All"
+            v-bind:style="{ width: '200px', marginLeft: '100px' }"
+            @change="handleStatusChange"
+          >
+            <a-select-option v-for="statusOption in statusOptions" :key="statusOption">
+              {{ statusOption }}
+            </a-select-option>
+          </a-select>
         </div>
       </div>
       <div class="card-body">
-        <a-table rowKey="id" :columns="columns" :dataSource="orders">
+        <a-table rowKey="id" :columns="columns" :dataSource="filteredOrders">
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
@@ -90,7 +98,20 @@
           }}</a>
           <span slot="customer" slot-scope="customer">{{ customer.name }}</span>
           <span slot="location" slot-scope="location">{{ location.name }}</span>
+          <!-- <a-progress slot="productCount" :percent="100" /> -->
           <span slot="productCount" slot-scope="orderItems" class="font-size-12 badge badge-danger">
+            {{
+              orderItems
+                .map((orderItem) => {
+                  return orderItem.Product.Assets.reduce((count, asset) => {
+                    if (asset.orderItemId === orderItem.id) {
+                      count++
+                    }
+                    return count
+                  }, 0)
+                })
+                .reduce((a, b) => a + b, 0)
+            }} /
             {{
               orderItems.reduce((productCount, orderItem) => {
                 return productCount + orderItem.orderCount
@@ -103,12 +124,36 @@
           <span slot="updatedAt" slot-scope="date">{{ formatDate(date) }}</span>
           <span slot="status" slot-scope="text" :class="statusClassName(text)">{{ text }}</span>
           <span slot="action" slot-scope="record">
+            <a
+              v-if="record.status === 'PENDING'"
+              class="btn btn-sm btn-primary mr-2"
+              @click="handleSubmit(record.id, { status: 'PICKED' })"
+            >
+              <a-icon type="shopping-cart" />
+              Pick
+            </a>
+            <a
+              v-if="record.status === 'PICKED'"
+              class="btn btn-sm btn-success mr-2"
+              @click="handleSubmit(record.id, { status: 'DELIVERED' })"
+            >
+              <a-icon tyflocationpe="cloud-upload" />
+              Delivery
+            </a>
+            <a
+              v-if="record.status === 'DELIVERED'"
+              class="btn btn-sm btn-default mr-2"
+              @click="handleSubmit(record.id, { status: 'RETURNED' })"
+            >
+              <a-icon type="sync" />
+              Return
+            </a>
             <a @click="handleViewRecord(record.id)" class="btn btn-sm btn-light mr-2">
               <i class="fe fe-edit mr-2" />
               View
             </a>
             <a-popconfirm
-              title="Are you sure delete this location?"
+              title="Are you sure delete this order?"
               ok-text="Yes"
               cancel-text="No"
               @confirm="handleRemoveRecord(record.id)"
@@ -140,6 +185,15 @@ const STATUS = {
   RETURNED: 'RETURNED',
   EXPIRED: 'EXPIRED',
 }
+
+const statusOptions = [
+  'All',
+  STATUS.PENDING,
+  STATUS.PICKED,
+  STATUS.DELIVERED,
+  STATUS.RETURNED,
+  STATUS.EXPIRED,
+]
 
 const columns = [
   {
@@ -207,6 +261,8 @@ export default {
       isCreating: false,
       fetching: false,
       selected: {},
+      statusOptions: statusOptions,
+      filteredOrders: [],
     }
   },
 
@@ -239,6 +295,7 @@ export default {
 
     handleCloseEditingPanel() {
       this.showEditPanel = false
+      this.fetchOrders()
     },
 
     handleClickEdit() {
@@ -247,12 +304,11 @@ export default {
     handleClickCancelEdit() {
       this.isEditing = false
     },
-    async handleSubmit(values) {
+    async handleSubmit(id, params) {
       try {
-        if (!this.selected.id) await API.createOrder(values)
-        else await API.updateOrder(this.selected.id, { ...this.selected, ...values })
+        await API.updateOrder(id, params)
+        message.success('Order is updated.')
         this.showEditPanel = false
-        message.success(this.selected.id ? 'Order has updated' : 'New order has created')
         this.fetchOrders()
       } catch (e) {
         message.error(e.message)
@@ -283,6 +339,7 @@ export default {
       this.fetching = true
       try {
         this.orders = await API.getOrders()
+        this.filteredOrders = this.orders
         this.fetching = false
       } catch (e) {
         console.log(e.message)
@@ -297,6 +354,19 @@ export default {
       if (status === STATUS.DELIVERED) return 'font-size-12 badge badge-success'
       if (status === STATUS.RETURNED) return 'font-size-12 badge badge-default'
       if (status === STATUS.EXPIRED) return 'font-size-12 badge badge-default'
+    },
+
+    handleStatusChange(status) {
+      this.filteredOrders = []
+      if (status === 'All') {
+        this.filteredOrders = this.orders
+      } else {
+        this.orders.find((_value) => {
+          if (_value.status === status) {
+            this.filteredOrders.push(_value)
+          }
+        })
+      }
     },
   },
 }

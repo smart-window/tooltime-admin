@@ -111,7 +111,8 @@
                   }, 0)
                 })
                 .reduce((a, b) => a + b, 0)
-            }} /
+            }}
+            /
             {{
               orderItems.reduce((productCount, orderItem) => {
                 return productCount + orderItem.orderCount
@@ -324,7 +325,7 @@ export default {
     async handleRemoveRecord(orderId) {
       try {
         await API.removeOrder(orderId)
-        message.info('Location Removed!')
+        message.info('Order Removed!')
         this.orders = _.cloneDeep(this.orders).filter((order) => order.id !== orderId)
       } catch (e) {
         message.error(e.message)

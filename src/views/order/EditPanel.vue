@@ -83,11 +83,13 @@
       </a-row>
       <a-row :gutter="16">
         <a-table
+          :rowClassName="rowClassName"
+          :expandIconAsCell="false"
           :expandIcon="expandIcon"
           :expandIconColumnIndex="2"
-          rowKey="id"
           :columns="columns"
           :data-source="data"
+          rowKey="id"
           class="components-table-demo-nested"
         >
           <a slot="operation">Publish</a>
@@ -296,6 +298,10 @@ export default {
         )
       }
     },
+    rowClassName(record, index) {
+      console.log(record, index)
+      return index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
+    },
 
     async fetchOrder(id) {
       this.fetching = true
@@ -338,3 +344,12 @@ export default {
   },
 }
 </script>
+<style scoped>
+.table-row-light {
+  background-color: #ff0000;
+}
+
+.table-row-dark {
+  background-color: #000000;
+}
+</style>

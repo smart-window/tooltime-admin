@@ -31,7 +31,10 @@
                 'email',
                 {
                   initialValue: item.email,
-                  rules: [{ required: true, message: 'Email required' }],
+                  rules: [
+                    { required: true, message: 'Email required' },
+                    { type: 'email', message: 'Email is not a valid email' },
+                  ],
                 },
               ]"
               :disabled="!editing"
@@ -102,11 +105,15 @@
         </a-col>
         <a-col :span="8">
           <a-form-item label="Zip Code">
-            <a-input
+            <a-input-number
               v-decorator="[
                 'zip',
                 {
                   zip: item.zip,
+                  rules: [
+                    { required: true, message: 'Zip required' },
+                    { type: 'number', message: 'Zip is not a number' },
+                  ],
                 },
               ]"
               :disabled="!editing"

@@ -15,7 +15,7 @@
                 'name',
                 {
                   initialValue: item.name,
-                  rules: [{ required: true, message: 'Name required' }],
+                  rules: [{ required: true, message: 'Category name is required' }],
                 },
               ]"
               :disabled="!editing"

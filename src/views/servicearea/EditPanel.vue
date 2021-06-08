@@ -15,7 +15,7 @@
                 'name',
                 {
                   initialValue: item.name,
-                  rules: [{ required: true, message: 'Name required' }],
+                  rules: [{ required: true, message: 'Name is required' }],
                 },
               ]"
               :disabled="!editing"
@@ -26,12 +26,15 @@
       <a-row :gutter="16">
         <a-col :span="12">
           <a-form-item label="Longitutde">
-            <a-input
+            <a-input-number
               v-decorator="[
                 'longitude',
                 {
                   initialValue: item.longitude,
-                  rules: [{ required: true, message: 'Required field' }],
+                  rules: [
+                    { required: true, message: 'Longitude is required' },
+                    { type: 'number', message: 'Longitude is not a number' },
+                  ],
                 },
               ]"
               :disabled="!editing"
@@ -40,12 +43,15 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label="Latitude">
-            <a-input
+            <a-input-number
               v-decorator="[
                 'latitude',
                 {
                   initialValue: item.latitude,
-                  rules: [{ required: true, message: 'Required field' }],
+                  rules: [
+                    { required: true, message: 'Latitude is required' },
+                    { type: 'number', message: 'Latitude is not a number' },
+                  ],
                 },
               ]"
               :disabled="!editing"
@@ -61,7 +67,7 @@
                 'locationId',
                 {
                   initialValue: item.locationId,
-                  rules: [{ required: true, message: 'Required field' }],
+                  rules: [{ required: true, message: 'Location is required' }],
                 },
               ]"
               :disabled="!editing"
@@ -86,7 +92,7 @@
                 'state',
                 {
                   initialValue: item.state,
-                  rules: [{ required: true, message: 'State required' }],
+                  rules: [{ required: true, message: 'State is required' }],
                 },
               ]"
               placeholder="Please enter state"
@@ -101,7 +107,7 @@
                 'city',
                 {
                   initialValue: item.city,
-                  rules: [{ required: true, message: 'City required' }],
+                  rules: [{ required: true, message: 'City is required' }],
                 },
               ]"
               placeholder="Please enter City"
@@ -116,7 +122,10 @@
                 'zip',
                 {
                   initialValue: item.zip,
-                  rules: [{ required: true, message: 'ZipCode required' }],
+                  rules: [
+                    { required: true, message: 'Zip Code is required' },
+                    { type: 'number', message: 'Zip code is not a number' },
+                  ],
                 },
               ]"
               placeholder="Please enter Zip Code"
@@ -133,7 +142,6 @@
                 'description',
                 {
                   initialValue: item.description,
-                  rules: [{ required: true, message: 'Please enter url description' }],
                 },
               ]"
               :rows="4"

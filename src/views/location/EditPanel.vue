@@ -103,12 +103,15 @@
         </a-col>
         <a-col :span="8">
           <a-form-item label="Zip Code">
-            <a-input
+            <a-input-number
               v-decorator="[
                 'zip',
                 {
                   initialValue: item.zip,
-                  rules: [{ required: true, message: 'ZipCode required' }],
+                  rules: [
+                    { required: true, message: 'Zip required' },
+                    { type: 'number', message: 'Zip is not a number' },
+                  ],
                 },
               ]"
               placeholder="Please enter Zip Code"
@@ -125,7 +128,6 @@
                 'description',
                 {
                   initialValue: item.description,
-                  rules: [{ required: true, message: 'Please enter url description' }],
                 },
               ]"
               :rows="4"

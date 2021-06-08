@@ -15,7 +15,7 @@
                 'name',
                 {
                   initialValue: item.name,
-                  rules: [{ required: true, message: 'Name required' }],
+                  rules: [{ required: true, message: 'Product name is required' }],
                 },
               ]"
               :disabled="!editing"
@@ -31,7 +31,7 @@
                 'categoryId',
                 {
                   initialValue: item.categoryId,
-                  rules: [{ required: true, message: 'Name required' }],
+                  rules: [{ required: true, message: 'Category is required' }],
                 },
               ]"
               :disabled="!editing"
@@ -52,7 +52,7 @@
                 'sectionId',
                 {
                   initialValue: item.sectionId,
-                  rules: [{ required: true, message: 'Section required' }],
+                  rules: [{ required: true, message: 'Section is required' }],
                 },
               ]"
               :disabled="!editing"

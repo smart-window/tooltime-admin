@@ -15,7 +15,7 @@
                 'name',
                 {
                   initialValue: item.name,
-                  rules: [{ required: true, message: 'Name required' }],
+                  rules: [{ required: true, message: 'Section name is required' }],
                 },
               ]"
               :disabled="!editing"
@@ -31,7 +31,7 @@
                 'categoryId',
                 {
                   initialValue: item.categoryId,
-                  rules: [{ required: true, message: 'required' }],
+                  rules: [{ required: true, message: 'Category is required' }],
                 },
               ]"
               :disabled="!editing"

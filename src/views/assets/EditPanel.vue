@@ -15,7 +15,7 @@
                 'name',
                 {
                   initialValue: item.name,
-                  rules: [{ required: true, message: 'Name required' }],
+                  rules: [{ required: true, message: 'Asset name is required' }],
                 },
               ]"
               :disabled="!editing"
@@ -31,7 +31,7 @@
                 'productId',
                 {
                   initialValue: item.productId,
-                  rules: [{ required: true, message: 'Product required' }],
+                  rules: [{ required: true, message: 'Product is required' }],
                 },
               ]"
               :disabled="!editing"
@@ -51,7 +51,7 @@
                 'locationId',
                 {
                   initialValue: item.locationId,
-                  rules: [{ required: true, message: 'Location required' }],
+                  rules: [{ required: true, message: 'Location is required' }],
                 },
               ]"
               :disabled="!editing"
@@ -71,6 +71,7 @@
                 'purchaseDate',
                 {
                   initialValue: item.purchaseDate,
+                  rules: [{ required: true, message: 'Purchase date is required' }],
                 },
               ]"
               :disabled="!editing"
@@ -86,6 +87,7 @@
                 'make',
                 {
                   initialValue: item.make,
+                  rules: [{ required: true, message: 'Manufacture is required' }],
                 },
               ]"
               :disabled="!editing"
@@ -101,6 +103,7 @@
                 'model',
                 {
                   initialValue: item.model,
+                  rules: [{ required: true, message: 'Model is required' }],
                 },
               ]"
               :disabled="!editing"
@@ -116,6 +119,7 @@
                 'sn',
                 {
                   initialValue: item.sn,
+                  rules: [{ required: true, message: 'Serial Number is required' }],
                 },
               ]"
               :disabled="!editing"

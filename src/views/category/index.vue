@@ -22,7 +22,10 @@
         </div>
       </div>
       <div class="card-body">
-        <a-table :columns="columns" :dataSource="categories">
+        <a-table :columns="columns" :dataSource="categories" rowKey="id">
+          <template slot="no" slot-scope="text, record, index">
+            {{ index + 1 }}
+          </template>
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
@@ -103,6 +106,12 @@ const STATUS = {
 }
 
 const columns = [
+  {
+    title: 'No',
+    key: 'no',
+    scopedSlots: { customRender: 'no' },
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
   {
     title: 'Name',
     dataIndex: 'name',

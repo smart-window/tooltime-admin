@@ -31,6 +31,9 @@
       </div>
       <div class="card-body">
         <a-table rowKey="id" :columns="columns" :dataSource="filteredOrders">
+          <template slot="no" slot-scope="text, record, index">
+            {{ index + 1 }}
+          </template>
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
@@ -128,7 +131,7 @@
             <a
               v-if="record.status === 'PENDING'"
               class="btn btn-sm btn-primary mr-2"
-              @click="handleSubmit(record.id, { status: 'PICKED' })"
+              @click="handleSubmit(record, { status: 'PICKED' })"
             >
               <a-icon type="shopping-cart" />
               Pick
@@ -136,15 +139,15 @@
             <a
               v-if="record.status === 'PICKED'"
               class="btn btn-sm btn-success mr-2"
-              @click="handleSubmit(record.id, { status: 'DELIVERED' })"
+              @click="handleSubmit(record, { status: 'DELIVERED' })"
             >
-              <a-icon tyflocationpe="cloud-upload" />
+              <a-icon type="cloud-upload" />
               Delivery
             </a>
             <a
               v-if="record.status === 'DELIVERED'"
               class="btn btn-sm btn-default mr-2"
-              @click="handleSubmit(record.id, { status: 'RETURNED' })"
+              @click="handleSubmit(record, { status: 'RETURNED' })"
             >
               <a-icon type="sync" />
               Return
@@ -197,6 +200,12 @@ const statusOptions = [
 ]
 
 const columns = [
+  {
+    title: 'No',
+    key: 'no',
+    scopedSlots: { customRender: 'no' },
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
   {
     title: 'Order Name',
     dataIndex: 'name',
@@ -305,12 +314,27 @@ export default {
     handleClickCancelEdit() {
       this.isEditing = false
     },
-    async handleSubmit(id, params) {
+    async handleSubmit(record, params) {
       try {
-        await API.updateOrder(id, params)
-        message.success('Order is updated.')
-        this.showEditPanel = false
-        this.fetchOrders()
+        const pickCount = record.OrderItems.map((orderItem) => {
+          return orderItem.Product.Assets.reduce((count, asset) => {
+            if (asset.orderItemId === orderItem.id) {
+              count++
+            }
+            return count
+          }, 0)
+        }).reduce((a, b) => a + b, 0)
+        const totalCount = record.OrderItems.reduce((productCount, orderItem) => {
+          return productCount + orderItem.orderCount
+        }, 0)
+        if (totalCount === pickCount) {
+          await API.updateOrder(record.id, params)
+          message.success('Order is updated.')
+          this.showEditPanel = false
+          this.fetchOrders()
+        } else {
+          message.warning('Please pick items first.')
+        }
       } catch (e) {
         message.error(e.message)
       }
@@ -343,7 +367,6 @@ export default {
         this.filteredOrders = this.orders
         this.fetching = false
       } catch (e) {
-        console.log(e.message)
         message.error(e.message)
         this.fetching = false
       }

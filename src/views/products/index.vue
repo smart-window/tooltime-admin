@@ -24,6 +24,9 @@
       </div>
       <div class="card-body">
         <a-table :columns="columns" :dataSource="products" rowKey="id">
+          <template slot="no" slot-scope="text, record, index">
+            {{ index + 1 }}
+          </template>
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
@@ -110,6 +113,12 @@ import EditPanel from './EditPanel'
 import * as _ from 'lodash'
 
 const columns = [
+  {
+    title: 'No',
+    key: 'no',
+    scopedSlots: { customRender: 'no' },
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
   {
     title: 'Name',
     dataIndex: 'name',

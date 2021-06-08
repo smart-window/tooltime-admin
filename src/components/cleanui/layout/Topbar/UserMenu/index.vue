@@ -8,14 +8,7 @@
     <a-menu slot="overlay">
       <a-menu-item>
         <div>
-          <strong>{{ $t('topBar.profileMenu.hello') }}, {{ user.name || 'Anonymous' }}</strong>
-        </div>
-        <div>
-          <strong class="mr-1">{{ $t('topBar.profileMenu.billingPlan') }}:</strong> Professional
-        </div>
-        <div>
-          <strong class="mr-1">{{ $t('topBar.profileMenu.role') }}:</strong>
-          {{ user.role || '—' }}
+          <strong>{{ user.name || 'Anonymous' }}, {{ user.role || '—' }}</strong>
         </div>
       </a-menu-item>
       <a-menu-divider />

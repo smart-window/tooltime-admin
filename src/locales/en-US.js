@@ -9,7 +9,7 @@ const messages = {
     actions: 'Actions',
     status: 'Status',
     profileMenu: {
-      hello: 'Hello',
+      hello: '',
       billingPlan: 'Billing Plan',
       role: 'Role',
       email: 'Email',

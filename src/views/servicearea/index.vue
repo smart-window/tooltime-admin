@@ -23,7 +23,10 @@
         </div>
       </div>
       <div class="card-body">
-        <a-table :columns="columns" :dataSource="serviceAreas">
+        <a-table :columns="columns" :dataSource="serviceAreas" rowKey="id">
+          <template slot="no" slot-scope="text, record, index">
+            {{ index + 1 }}
+          </template>
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
@@ -94,6 +97,9 @@
           <span slot="updatedAt" slot-scope="date">{{ formatDate(date) }}</span>
           <span slot="tax" slot-scope="text">${{ text }}</span>
           <span slot="shipping" slot-scope="text">${{ text }}</span>
+          <span slot="homeLocation" slot-scope="location">{{
+            location.address_1 + ', ' + location.city + ', ' + location.state
+          }}</span>
           <span
             slot="status"
             slot-scope="text"
@@ -137,9 +143,22 @@ import * as _ from 'lodash'
 
 const columns = [
   {
+    title: 'No',
+    key: 'no',
+    scopedSlots: { customRender: 'no' },
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
+  {
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
+    sorter: (a, b) => (a > b ? 1 : -1),
+  },
+  {
+    title: 'Home Location',
+    dataIndex: 'Location',
+    key: 'homeLocation',
+    scopedSlots: { customRender: 'homeLocation' },
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {

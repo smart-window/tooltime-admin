@@ -123,11 +123,17 @@
                   v-if="asset.orderItemId === orderItem.id"
                   type="danger"
                   ghost
+                  :disabled="Editable"
                   @click="pickAsset(null, asset.id)"
                 >
                   Cancel
                 </a-button>
-                <a-button type="primary" ghost v-else @click="pickAsset(orderItem.id, asset.id)"
+                <a-button
+                  v-else
+                  type="primary"
+                  ghost
+                  :disabled="Editable"
+                  @click="pickAsset(orderItem.id, asset.id)"
                   >Found it!</a-button
                 >
               </span>
@@ -177,7 +183,7 @@ const columns = [
     title: '',
     dataIndex: '',
     key: 'expand',
-    width: 1,
+    width: '200px',
   },
 ]
 
@@ -217,6 +223,7 @@ export default {
       columns,
       innerColumns,
       innerData,
+      Editable: false,
     }
   },
 
@@ -257,16 +264,25 @@ export default {
       })
     },
 
+    getDisabled() {
+      console.log(this.item)
+      if (this.item.status !== 'PENDING' && this.item.status !== 'PICKED') {
+        return true
+      } else {
+        return false
+      }
+    },
+
     expandIcon(props) {
-      let resetShow = false
+      let resetShow = true
       props.record.Product.Assets.map((asset) => {
         if (asset.orderItemId === props.record.id) {
-          resetShow = true
+          resetShow = false
         }
       })
-      if (resetShow === true) {
-        return (
-          <div>
+      return (
+        <div>
+          <a-button-group>
             <a-button
               type="primary"
               onClick={(e) => {
@@ -280,26 +296,15 @@ export default {
                 this.resetAssets(props.record)
               }}
               type="danger"
+              disabled={this.Editable || resetShow}
             >
               Reset
             </a-button>
-          </div>
-        )
-      } else {
-        return (
-          <a-button
-            type="primary"
-            onClick={(e) => {
-              props.onExpand(props.record, e)
-            }}
-          >
-            Process
-          </a-button>
-        )
-      }
+          </a-button-group>
+        </div>
+      )
     },
     rowClassName(record, index) {
-      console.log(record, index)
       return index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
     },
 
@@ -309,7 +314,6 @@ export default {
         this.item = await API.getOrder(id)
         this.fetching = false
       } catch (e) {
-        console.log(e.message)
         message.error(e.message)
         this.fetching = false
       }
@@ -324,9 +328,7 @@ export default {
         await API.updateAsset(assetId, params)
         this.fetching = false
         this.fetchOrder(this.item.id)
-        // this.$emit('submit')
       } catch (e) {
-        console.log(e.message)
         message.error(e.message)
         this.fetching = false
       }
@@ -335,7 +337,7 @@ export default {
 
   watch: {
     item(item) {
-      console.log({ item })
+      this.Editable = this.getDisabled()
       this.data = item.OrderItems
       this.fields.forEach((field) => {
         this.form.setFieldsValue({ [field]: item[field] })

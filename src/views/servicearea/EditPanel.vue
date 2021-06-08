@@ -61,7 +61,7 @@
                 'locationId',
                 {
                   initialValue: item.locationId,
-                  rules: [{ required: true, message: 'Longitude' }],
+                  rules: [{ required: true, message: 'Required field' }],
                 },
               ]"
               :disabled="!editing"
@@ -190,16 +190,16 @@
 </template>
 
 <script>
-import { gmapApi } from 'vue2-google-maps'
+// import { gmapApi } from 'vue2-google-maps'
 import { mapState } from 'vuex'
 export default {
   name: 'EditPanel',
   props: ['showPanel', 'close', 'submit', 'item', 'editing', 'onEdit'],
 
   mounted() {
-    this.autocomplete = gmapApi.maps.places.Autocomplete(this.$refs.autocomplete, {
-      types: ['geocode'],
-    })
+    // this.autocomplete = gmapApi.maps.places.Autocomplete(this.$refs.autocomplete, {
+    //   types: ['geocode'],
+    // })
   },
 
   data() {

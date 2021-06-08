@@ -1,14 +1,13 @@
 <template>
   <div>
     <div class="cui__utils__heading">
-      <strong>Ecommerce: Dashboard</strong>
+      <strong>TOOLTIME: Dashboard</strong>
     </div>
     <div class="row">
       <div class="col-xl-8 col-lg-12">
         <div class="card">
-          <a-tabs defaultActiveKey="2" class="kit-tabs-bordered">
+          <a-tabs defaultActiveKey="1" class="kit-tabs-bordered">
             <a-tab-pane tab="Orders" key="1" />
-            <a-tab-pane tab="Revenue" key="2" />
           </a-tabs>
           <div class="card-body">
             <cui-chart-3 />
@@ -16,9 +15,7 @@
         </div>
         <div class="card">
           <a-tabs defaultActiveKey="1" class="kit-tabs-bordered">
-            <a-tab-pane tab="Bestsellers" key="1" />
-            <a-tab-pane tab="Most Viewed" key="2" />
-            <a-tab-pane tab="Highest Rated" key="3" />
+            <a-tab-pane tab="Featued Products" key="1" />
           </a-tabs>
           <div class="card-body">
             <div class="row">
@@ -39,27 +36,22 @@
       <div class="col-xl-4 col-lg-12">
         <div class="card text-white bg-success">
           <div class="card-body">
-            <cui-general-2v3 />
+            <total-products />
           </div>
         </div>
         <div class="card">
           <div class="card-body">
-            <cui-general-2 />
+            <total-assets />
           </div>
         </div>
         <div class="card">
           <div class="card-body">
-            <cui-general-2v1 />
+            <total-orders />
           </div>
         </div>
         <div class="card">
           <div class="card-body">
-            <cui-general-2v2 />
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <cui-list-11 />
+            <service-areas />
           </div>
         </div>
         <div class="card">
@@ -73,24 +65,22 @@
 </template>
 <script>
 import CuiChart3 from '@/components/kit/widgets/Charts/3/index'
-import CuiGeneral2 from '@/components/kit/widgets/General/2/index'
-import CuiGeneral2v1 from '@/components/kit/widgets/General/2v1/index'
-import CuiGeneral2v2 from '@/components/kit/widgets/General/2v2/index'
-import CuiGeneral2v3 from '@/components/kit/widgets/General/2v3/index'
+import TotalOrders from './totalOrders'
+import TotalProducts from './totalProducts'
+import TotalAssets from './totalAssets'
+import ServiceAreas from './serviceAreas'
 import CuiGeneral16 from '@/components/kit/widgets/General/16/index'
-import CuiList11 from '@/components/kit/widgets/Lists/11/index'
 import CuiList12 from '@/components/kit/widgets/Lists/12/index'
 import products from './data.json'
 
 export default {
   components: {
     CuiChart3,
-    CuiGeneral2,
-    CuiGeneral2v1,
-    CuiGeneral2v2,
-    CuiGeneral2v3,
+    TotalOrders,
+    TotalProducts,
+    TotalAssets,
+    ServiceAreas,
     CuiGeneral16,
-    CuiList11,
     CuiList12,
   },
   data: function () {

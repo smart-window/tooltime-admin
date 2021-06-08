@@ -94,7 +94,7 @@
         >
           <a slot="operation">Publish</a>
           <span slot="productName" slot-scope="Product"> {{ Product.name }} </span>
-          <span slot="orderCount" slot-scope="orderItem">
+          <span slot="orderCount" slot-scope="orderItem" :class="getBadge(orderItem)">
             {{
               orderItem.Product.Assets.reduce((count, asset) => {
                 if (asset.orderItemId === orderItem.id) {
@@ -331,6 +331,21 @@ export default {
       } catch (e) {
         message.error(e.message)
         this.fetching = false
+      }
+    },
+
+    getBadge(orderItem) {
+      const pickCount = orderItem.Product.Assets.reduce((count, asset) => {
+        if (asset.orderItemId === orderItem.id) {
+          count++
+        }
+        return count
+      }, 0)
+      const totalCount = orderItem.orderCount
+      if (totalCount === pickCount) {
+        return 'badge badge-success'
+      } else {
+        return 'badge badge-danger'
       }
     },
   },

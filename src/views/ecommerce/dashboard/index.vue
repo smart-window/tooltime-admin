@@ -58,7 +58,7 @@
         </div>
         <div class="card">
           <div class="card-body">
-            <cui-list-12 />
+            <order-list />
           </div>
         </div>
       </div>
@@ -67,21 +67,21 @@
 </template>
 <script>
 import OrderChart from './orderChart/orderChart'
+import OrderList from './orderList/orderList'
 import TotalOrders from './totalOrders'
 import TotalProducts from './totalProducts'
 import TotalAssets from './totalAssets'
 import ServiceAreas from './serviceAreas'
-import CuiList12 from '@/components/kit/widgets/Lists/12/index'
 import ProductCategory from '../product-catalog/index'
 
 export default {
   components: {
     OrderChart,
+    OrderList,
     TotalOrders,
     TotalProducts,
     TotalAssets,
     ServiceAreas,
-    CuiList12,
     ProductCategory,
   },
 }

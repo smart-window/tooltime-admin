@@ -10,7 +10,7 @@
             <a-tab-pane tab="Orders" key="1" />
           </a-tabs>
           <div class="card-body">
-            <cui-chart-3 />
+            <order-chart />
           </div>
         </div>
         <div class="card">
@@ -18,7 +18,9 @@
             <a-tab-pane tab="Featued Products" key="1" />
           </a-tabs>
           <div class="card-body">
-            <div class="row">
+            <product-category />
+
+            <!-- <div class="row">
               <div class="col-lg-6" v-for="(product, index) in products" :key="index">
                 <cui-general-16
                   :isNew="product.isNew"
@@ -29,7 +31,7 @@
                   :oldPrice="product.oldPrice"
                 />
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -64,29 +66,23 @@
   </div>
 </template>
 <script>
-import CuiChart3 from '@/components/kit/widgets/Charts/3/index'
+import OrderChart from './orderChart/orderChart'
 import TotalOrders from './totalOrders'
 import TotalProducts from './totalProducts'
 import TotalAssets from './totalAssets'
 import ServiceAreas from './serviceAreas'
-import CuiGeneral16 from '@/components/kit/widgets/General/16/index'
 import CuiList12 from '@/components/kit/widgets/Lists/12/index'
-import products from './data.json'
+import ProductCategory from '../product-catalog/index'
 
 export default {
   components: {
-    CuiChart3,
+    OrderChart,
     TotalOrders,
     TotalProducts,
     TotalAssets,
     ServiceAreas,
-    CuiGeneral16,
     CuiList12,
-  },
-  data: function () {
-    return {
-      products,
-    }
+    ProductCategory,
   },
 }
 </script>

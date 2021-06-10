@@ -14,7 +14,7 @@
         cui__layout__borderless: settings.isBorderless,
       }"
     >
-      <cui-sidebar />
+      <!-- <cui-sidebar /> -->
 
       <!-- left menu -->
       <cui-menu-left v-if="settings.menuLayoutType === 'left' && !settings.isMobileView" />
@@ -69,7 +69,7 @@ import { mapState } from 'vuex'
 import CuiTopbar from '@/components/cleanui/layout/Topbar'
 import CuiBreadcrumbs from '@/components/cleanui/layout/Breadcrumbs'
 import CuiFooter from '@/components/cleanui/layout/Footer'
-import CuiSidebar from '@/components/cleanui/layout/Sidebar'
+// import CuiSidebar from '@/components/cleanui/layout/Sidebar'
 import CuiMenuLeft from '@/components/cleanui/layout/Menu/MenuLeft'
 import CuiMenuTop from '@/components/cleanui/layout/Menu/MenuTop'
 
@@ -81,7 +81,7 @@ export default {
     CuiMenuLeft,
     CuiMenuTop,
     CuiBreadcrumbs,
-    CuiSidebar,
+    // CuiSidebar,
   },
   computed: mapState(['settings']),
   data: function () {

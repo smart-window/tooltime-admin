@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import List3 from '@/components/kit/widgets/Lists/3'
+import List3 from './orderList'
 
 export default {
   components: {

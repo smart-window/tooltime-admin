@@ -19,43 +19,38 @@
           </a-tabs>
           <div class="card-body">
             <product-category />
-
-            <!-- <div class="row">
-              <div class="col-lg-6" v-for="(product, index) in products" :key="index">
-                <cui-general-16
-                  :isNew="product.isNew"
-                  :isFavorite="product.isFavorite"
-                  :image="product.image"
-                  :name="product.name"
-                  :price="product.price"
-                  :oldPrice="product.oldPrice"
-                />
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
       <div class="col-xl-4 col-lg-12">
-        <div class="card text-white bg-success">
-          <div class="card-body">
-            <total-products />
+        <router-link to="/product/list">
+          <div class="card clickable-card text-white bg-success">
+            <div class="card-body">
+              <total-products class="clickable" />
+            </div>
           </div>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <total-assets />
+        </router-link>
+        <router-link to="/asset/list">
+          <div class="card clickable-card">
+            <div class="card-body">
+              <total-assets />
+            </div>
           </div>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <total-orders />
+        </router-link>
+        <router-link to="/order/list">
+          <div class="card clickable-card">
+            <div class="card-body">
+              <total-orders />
+            </div>
           </div>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <service-areas />
+        </router-link>
+        <router-link to="/service-area/list">
+          <div class="card clickable-card">
+            <div class="card-body">
+              <service-areas />
+            </div>
           </div>
-        </div>
+        </router-link>
         <div class="card">
           <div class="card-body">
             <order-list />
@@ -84,5 +79,16 @@ export default {
     ServiceAreas,
     ProductCategory,
   },
+  methods: {
+    // goPage() {
+    //   store.set('app.menu.selectedKeys', 'location')
+    //   console.log(111)
+    // },
+  },
 }
 </script>
+<style scoped>
+.clickable-card {
+  cursor: pointer;
+}
+</style>

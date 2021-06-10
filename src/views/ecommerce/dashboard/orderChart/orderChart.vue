@@ -25,18 +25,13 @@ import { message } from 'ant-design-vue'
 
 export default {
   name: 'OrderChart',
+  props: ['type'],
   components: {
     'vue-chartist': VueChartist,
   },
   data: function () {
     const options = {
       low: 0,
-      // chartPadding: {
-      //   right: 0,
-      //   left: 0,
-      //   top: 10,
-      //   bottom: 0,
-      // },
       fullWidth: true,
       showPoint: true,
       lineSmooth: true,
@@ -90,7 +85,7 @@ export default {
     async fetchOrders() {
       this.fetching = true
       try {
-        this.orders = await API.getOrderCount()
+        this.orders = await API.getOrderCount({ type: this.type })
         this.filteredOrders = this.orders
         this.fetching = false
 

@@ -11,7 +11,7 @@
       <div class="mr-5 mb-2">
         <div class="text-nowrap text-uppercase text-gray-4">
           <div :class="[$style.donut, $style.success]" />
-          Daily Orders
+          Orders Count
         </div>
       </div>
     </div>

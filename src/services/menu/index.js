@@ -10,6 +10,12 @@ export const getMenuData = [
     url: '/ecommerce/dashboard',
   },
   {
+    title: 'Report',
+    icon: 'fa fa-chart-bar',
+    key: 'report',
+    url: '/report',
+  },
+  {
     title: 'Customer',
     icon: 'fas fa-users',
     key: 'customer',

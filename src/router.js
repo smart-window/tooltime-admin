@@ -37,6 +37,13 @@ const router = new Router({
           component: () => import('./views/category'),
         },
         {
+          path: '/report',
+          meta: {
+            title: 'Report Dashboard',
+          },
+          component: () => import('./views/report'),
+        },
+        {
           path: '/section/list',
           meta: {
             title: 'Category Dashboard',

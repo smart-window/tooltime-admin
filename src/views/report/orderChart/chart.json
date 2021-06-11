@@ -1,0 +1,35 @@
+{
+  "labels": [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ],
+  "series": [
+    {
+      "className": "ct-series-b",
+      "data": [
+        5,
+        4,
+        3,
+        7,
+        5,
+        10,
+        3,
+        4,
+        8,
+        10,
+        6,
+        8
+      ]
+    }
+  ]
+}

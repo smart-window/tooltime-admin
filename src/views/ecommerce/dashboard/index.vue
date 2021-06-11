@@ -14,9 +14,9 @@
             <a-tab-pane tab="Monthly" key="2">
               <order-chart type="month" />
             </a-tab-pane>
-            <a-tab-pane tab="Yearly" key="3">
+            <!-- <a-tab-pane tab="Yearly" key="3">
               <order-chart type="year" />
-            </a-tab-pane>
+            </a-tab-pane> -->
           </a-tabs>
         </div>
         <h5>Deliver rate report</h5>

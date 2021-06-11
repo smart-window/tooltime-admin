@@ -21,7 +21,9 @@
           <a-tabs defaultActiveKey="1" class="kit-tabs-bordered">
             <a-tab-pane tab="Featued Products" key="1" />
           </a-tabs>
-          <div class="card-body"></div>
+          <div class="card-body">
+            <a-pie :data="salesPieData"></a-pie>
+          </div>
         </div>
       </div>
     </div>

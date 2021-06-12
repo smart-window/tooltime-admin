@@ -37,6 +37,10 @@ export const getOrderCount = async (type) => {
   return axiosClient.post('/order/get_order_count', type).then(successFunc).catch(failFunc)
 }
 
+export const getDeliveryCount = async (type) => {
+  return axiosClient.post('/order/get_delivery_count', type).then(successFunc).catch(failFunc)
+}
+
 export const createOrder = async (newOrder) => {
   return axiosClient.post('/order', newOrder).then(successFunc).catch(failFunc)
 }

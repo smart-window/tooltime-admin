@@ -56,19 +56,16 @@ export default {
     ...mapState(['categories']),
   },
   mounted() {
-    this.series = this.categories.map((category) => {
-      return category.Products.length
+    this.categories.map((category) => {
+      this.chartOptions.labels.push(category.name)
+      this.series.push(category.Products.length)
     })
-    this.chartOptions.labels = this.categories.map((category) => {
-      return category.name
-    })
-    console.log(this.chartOptions.labels)
   },
   data: function () {
     return {
-      series: [44, 55, 41, 17, 15],
+      series: [],
       chartOptions: {
-        labels: ['ACCESSORIES', 'HAND TOOLS', 'POWER TOOLS'],
+        labels: [],
         chart: {
           width: 380,
           type: 'donut',

@@ -44,6 +44,7 @@
 import VueApexCharts from 'vue-apexcharts'
 import OrderChart from './orderChart/orderChart'
 import DeliveryChart from './deliveryChart/deliveryChart'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -51,10 +52,23 @@ export default {
     OrderChart,
     DeliveryChart,
   },
+  computed: {
+    ...mapState(['categories']),
+  },
+  mounted() {
+    this.series = this.categories.map((category) => {
+      return category.Products.length
+    })
+    this.chartOptions.labels = this.categories.map((category) => {
+      return category.name
+    })
+    console.log(this.chartOptions.labels)
+  },
   data: function () {
     return {
       series: [44, 55, 41, 17, 15],
       chartOptions: {
+        labels: ['ACCESSORIES', 'HAND TOOLS', 'POWER TOOLS'],
         chart: {
           width: 380,
           type: 'donut',
@@ -72,12 +86,15 @@ export default {
           type: 'gradient',
         },
         legend: {
-          formatter: function (val, opts) {
-            return val + ' - ' + opts.w.globals.series[opts.seriesIndex]
-          },
+          position: 'right',
+          offsetY: 0,
+          height: 230,
+          // formatter: function (val, opts) {
+          //   return 'Product - ' + opts.w.globals.series[opts.seriesIndex]
+          // },
         },
         title: {
-          text: 'Gradient Donut with custom Start-angle',
+          text: 'Products by categories',
         },
         responsive: [
           {

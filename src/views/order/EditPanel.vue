@@ -111,8 +111,8 @@
               slot="expandedRowRender"
               :columns="innerColumns"
               :data-source="orderItem.Product.Assets"
-              :pagination="false"
               rowKey="id"
+              :pagination="false"
             >
               <span slot="status"> <a-badge status="success" />Finished </span>
               <span slot="location" slot-scope="location">

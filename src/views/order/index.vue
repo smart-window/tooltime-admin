@@ -101,8 +101,7 @@
           }}</a>
           <span slot="customer" slot-scope="customer">{{ customer.name }}</span>
           <span slot="location" slot-scope="location">{{ location.name }}</span>
-          <!-- <a-progress slot="productCount" :percent="100" /> -->
-          <span slot="productCount" slot-scope="orderItems" class="font-size-12 badge badge-danger">
+          <span slot="productCount" slot-scope="orderItems" :class="getCountClass(orderItems)">
             {{
               orderItems
                 .map((orderItem) => {
@@ -378,6 +377,28 @@ export default {
       if (status === STATUS.DELIVERED) return 'font-size-12 badge badge-success'
       if (status === STATUS.RETURNED) return 'font-size-12 badge badge-default'
       if (status === STATUS.EXPIRED) return 'font-size-12 badge badge-default'
+    },
+
+    getCountClass(orderItems) {
+      const pick = orderItems
+        .map((orderItem) => {
+          return orderItem.Product.Assets.reduce((count, asset) => {
+            if (asset.orderItemId === orderItem.id) {
+              count++
+            }
+            return count
+          }, 0)
+        })
+        .reduce((a, b) => a + b, 0)
+      const total = orderItems.reduce((productCount, orderItem) => {
+        return productCount + orderItem.orderCount
+      }, 0)
+
+      if (pick === total) {
+        return 'font-size-12 badge badge-success'
+      } else {
+        return 'font-size-12 badge badge-danger'
+      }
     },
 
     handleStatusChange(status) {

@@ -5,6 +5,25 @@ https://vue.cleanui.cloud
 Please read documentation here https://docs.sellpixels.com
 
 ### Quick Start ###
+- How to run 
+  ```
+  npm install
+  npm run serve
+  ```
+  or
+  ```
+  yarn install && yarn serve
+  ```
+
+- Example credentials
+  ```
+  email: admin1@gmail.com
+  password: admin
+
+  email: agent1@gmail.com
+  password: agent1@gmail.com
+  ```
+  
 * Install latest node.js: https://nodejs.org​
 * Install latest yarn package manager: https://yarnpkg.com/​
 * Install node modules by running terminal command `yarn install`

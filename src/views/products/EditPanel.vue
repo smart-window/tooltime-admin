@@ -68,6 +68,7 @@
         <a-col :span="24">
           <a-form-item label="Images">
             <div class="clearfix">
+              <!-- <crop-img /> -->
               <a-upload
                 name="image"
                 list-type="picture-card"
@@ -144,6 +145,7 @@
 <script>
 import { mapState } from 'vuex'
 import store from 'store'
+// import CropImg from './CropImg'
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -164,6 +166,10 @@ export default {
       Authorization: `Bearer ${accessToken}`,
       AccessToken: accessToken,
     }
+  },
+
+  components: {
+    // CropImg,
   },
 
   data() {

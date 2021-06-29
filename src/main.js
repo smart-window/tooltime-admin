@@ -14,15 +14,16 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { i18n } from './localization'
+import VueCropper from 'vue-cropper'
 import './antd'
 import './google-map'
 import './registerServiceWorker'
-
 // mocking api
 // import './services/axios/fakeApi'
 
 Vue.use(BootstrapVue)
 Vue.use(VueLayers)
+Vue.use(VueCropper)
 
 Vue.use(NProgress)
 Vue.use(VuePageTitle, {

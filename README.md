@@ -17,11 +17,11 @@ Please read documentation here https://docs.sellpixels.com
 
 - Example credentials
   ```
-  email: admin1@gmail.com
-  password: admin
+  email: admin@tt.com
+  password: a
 
-  email: agent1@gmail.com
-  password: agent1@gmail.com
+  email: agent@tt.com
+  password: a
   ```
   
 * Install latest node.js: https://nodejs.org​

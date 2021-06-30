@@ -1,7 +1,7 @@
 <template>
   <a-modal
     :visible="visible"
-    title="Modify avatar"
+    title="Crop Image"
     :maskClosable="false"
     :confirmLoading="confirmLoading"
     :width="800"
@@ -29,9 +29,8 @@
     </a-row>
     <template slot="footer">
       <a-button key="back" @click="cancelHandel">cancel</a-button>
-      <a-button key="submit" type="primary" :loading="confirmLoading" @click="okHandel"
-        >save</a-button
-      >
+      <a-button type="primary" @click="cancelHandel">save</a-button>
+      <!-- <a-button key="submit" type="primary" :loading="confirmLoading" @click="okHandel" >save</a-button > -->
     </template>
   </a-modal>
 </template>
@@ -124,14 +123,13 @@ export default {
 <style lang="scss" scoped>
 .avatar-upload-preview {
   border-radius: 0 !important;
-  border: 1px soild black !important;
-}
-.avatar-upload-preview {
+  border: 1px solid gray !important;
+
   position: absolute;
   top: 50%;
   transform: translate(50%, -50%);
-  width: 180px;
-  height: 180px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   box-shadow: 0 0 4px #ccc;
   overflow: hidden;

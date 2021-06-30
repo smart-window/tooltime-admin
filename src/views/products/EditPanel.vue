@@ -69,6 +69,13 @@
           <a-form-item label="Images">
             <div class="clearfix">
               <!-- <crop-img /> -->
+              <!-- <crop-gram ref="cropgram"></crop-gram> -->
+
+              <!-- <Demo /> -->
+              <!-- <img-crop /> -->
+              <!-- <crop-img /> -->
+              <!-- <vue-img-crop> -->
+              <!-- <crop-img></crop-img> -->
               <a-upload
                 name="image"
                 list-type="picture-card"
@@ -88,6 +95,8 @@
               <a-modal :visible="previewVisible" :footer="null" @cancel="handleImagesCancel">
                 <img alt="Images" style="width: 100%" :src="previewImage" />
               </a-modal>
+              <cropper-modal ref="CropperModal" @ok="handleCropperSuccess"></cropper-modal>
+              <!-- </vue-img-crop> -->
             </div>
           </a-form-item>
         </a-col>
@@ -145,7 +154,12 @@
 <script>
 import { mapState } from 'vuex'
 import store from 'store'
+import CropperModal from './CropperModal'
 // import CropImg from './CropImg'
+// import CropImg from './CropImg.vue'
+// import ImgCrop from 'antd-img-crop'
+// import { ReactInVue } from 'vuera'
+// const VueImgCrop = ReactInVue(ImgCrop)
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -169,6 +183,13 @@ export default {
   },
 
   components: {
+    CropperModal,
+    // CropImg,
+    // CropImg,
+    // 'vue-img-crop': VueImgCrop,
+    // 'img-crop': ImgCrop,
+    // Demo,
+    // ImgCrop,
     // CropImg,
   },
 
@@ -197,6 +218,15 @@ export default {
       this.previewVisible = false
     },
 
+    handleCropperSuccess(data) {
+      // Perform picture upload action
+      // Simulate a 2000 millisecond delay for backend requests
+      const that = this
+      // Echo the returned data
+      that.imageUrl = window._CONFIG['dot-notation'] + '/' + data
+      that.avatar = data
+    },
+
     async handleImagesPreview(file) {
       if (!file.url && !file.preview) {
         file.preview = await getBase64(file.originFileObj)
@@ -207,6 +237,16 @@ export default {
 
     handleImagesChange({ fileList }) {
       this.fileList = fileList
+
+      const info = {}
+      info.file = fileList[fileList.length - 1]
+      const { options } = this
+      this.getBase64(info.file.originFileObj, (imageUrl) => {
+        const target = Object.assign({}, options, {
+          img: imageUrl,
+        })
+        this.$refs.CropperModal.edit(target)
+      })
     },
 
     beforeUpload(file) {
@@ -256,6 +296,12 @@ export default {
         return _value.id === categoryId
       })
       this.sections = curCategory.sections
+    },
+
+    getBase64(img, callback) {
+      const reader = new FileReader()
+      reader.addEventListener('load', () => callback(reader.result))
+      reader.readAsDataURL(img)
     },
   },
 

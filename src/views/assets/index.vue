@@ -39,6 +39,9 @@
           <template slot="no" slot-scope="text, record, index">
             {{ index + 1 }}
           </template>
+          <template slot="thumbnail" slot-scope="text, record">
+            <img style="width: 100%" :src="record.images.split(',')[0]" />
+          </template>
           <div
             slot="filterDropdown"
             slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
@@ -126,6 +129,12 @@ const columns = [
     key: 'no',
     scopedSlots: { customRender: 'no' },
     sorter: (a, b) => (a > b ? 1 : -1),
+  },
+  {
+    title: 'Thumbnail',
+    key: 'thumbnail',
+    scopedSlots: { customRender: 'thumbnail' },
+    width: '10%',
   },
   {
     title: 'Product Name',

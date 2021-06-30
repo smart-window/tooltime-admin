@@ -150,6 +150,7 @@
               <a-modal :visible="previewVisible" :footer="null" @cancel="handleImagesCancel">
                 <img alt="Images" style="width: 100%" :src="previewImage" />
               </a-modal>
+              <cropper-modal ref="CropperModal" @ok="handleCropperSuccess"></cropper-modal>
             </div>
           </a-form-item>
         </a-col>
@@ -190,6 +191,7 @@
 <script>
 import { mapState } from 'vuex'
 import store from 'store'
+import CropperModal from './CropperModal'
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -203,6 +205,17 @@ function getBase64(file) {
 export default {
   name: 'EditPanel',
   props: ['showPanel', 'close', 'submit', 'item', 'editing', 'onEdit', 'products'],
+
+  components: {
+    CropperModal,
+    // CropImg,
+    // CropImg,
+    // 'vue-img-crop': VueImgCrop,
+    // 'img-crop': ImgCrop,
+    // Demo,
+    // ImgCrop,
+    // CropImg,
+  },
 
   mounted() {
     const accessToken = store.get('accessToken')
@@ -247,6 +260,31 @@ export default {
 
     handleImagesChange({ fileList }) {
       this.fileList = fileList
+
+      const info = {}
+      info.file = fileList[fileList.length - 1]
+      const { options } = this
+      this.getBase64(info.file.originFileObj, (imageUrl) => {
+        const target = Object.assign({}, options, {
+          img: imageUrl,
+        })
+        this.$refs.CropperModal.edit(target)
+      })
+    },
+
+    getBase64(img, callback) {
+      const reader = new FileReader()
+      reader.addEventListener('load', () => callback(reader.result))
+      reader.readAsDataURL(img)
+    },
+
+    handleCropperSuccess(data) {
+      // Perform picture upload action
+      // Simulate a 2000 millisecond delay for backend requests
+      const that = this
+      // Echo the returned data
+      that.imageUrl = window._CONFIG['dot-notation'] + '/' + data
+      that.avatar = data
     },
 
     beforeUpload(file) {

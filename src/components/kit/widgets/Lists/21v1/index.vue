@@ -14,13 +14,37 @@
           <li>512MB Memory</li>
           <li>2 GB Storage</li>
         </ul>
-        <a class="btn btn-primary width-100" href="javascript: void(0);">Get Access</a>
+        <input type="hidden" id="basicPrice" name="priceId" />
+        <a class="btn btn-primary width-100" @click="handleSubmit(priceId.basicPrice)">Get Access</a>
       </div>
     </div>
   </div>
 </template>
 <script>
+import * as API from '@/services/api'
+import { message } from 'ant-design-vue'
+
 export default {
   name: 'KitList21v1',
+  data() {
+    return {
+      priceId: {},
+    }
+  },
+  async created() {
+    this.priceId = await API.getPriceId()
+  },
+  methods: {
+    async handleSubmit(pId) {
+      try {
+        const params = {
+          priceId: pId,
+        }
+        await API.createCheckoutSession(params)
+      } catch (e) {
+        message.error(e.message)
+      }
+    },
+  },
 }
 </script>

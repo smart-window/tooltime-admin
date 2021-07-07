@@ -1,4 +1,5 @@
 import axiosClient from '../axios'
+import cors from 'cors'
 
 const successFunc = (response) => {
   return response.data
@@ -147,4 +148,12 @@ export const updateServiceArea = async (id, newServiceArea) => {
 
 export const removeServiceArea = async (id) => {
   return axiosClient.delete(`/service-area/${id}`).then(successFunc).catch(failFunc)
+}
+
+export const getPriceId = async () => {
+  return axiosClient.get('/stripe/config').then(successFunc).catch(failFunc)
+}
+
+export const createCheckoutSession = async (params) => {
+  return axiosClient.post('/stripe/create-checkout-session', params, cors()).then(successFunc).catch(failFunc)
 }

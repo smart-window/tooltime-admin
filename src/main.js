@@ -18,12 +18,15 @@ import VueCropper from 'vue-cropper'
 import './antd'
 import './google-map'
 import './registerServiceWorker'
+import cors from 'cors'
+
 // mocking api
 // import './services/axios/fakeApi'
 
 Vue.use(BootstrapVue)
 Vue.use(VueLayers)
 Vue.use(VueCropper)
+Vue.use(cors)
 
 Vue.use(NProgress)
 Vue.use(VuePageTitle, {

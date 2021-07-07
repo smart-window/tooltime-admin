@@ -1,5 +1,5 @@
 import axiosClient from '../axios'
-import cors from 'cors'
+// import cors from 'cors'
 
 const successFunc = (response) => {
   return response.data
@@ -155,5 +155,9 @@ export const getPriceId = async () => {
 }
 
 export const createCheckoutSession = async (params) => {
-  return axiosClient.post('/stripe/create-checkout-session', params, cors()).then(successFunc).catch(failFunc)
+  return axiosClient.post('/stripe/create-checkout-session', params, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+  }).then(successFunc).catch(failFunc)
 }

@@ -155,9 +155,5 @@ export const getPriceId = async () => {
 }
 
 export const createCheckoutSession = async (params) => {
-  return axiosClient.post('/stripe/create-checkout-session', params, {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-  }).then(successFunc).catch(failFunc)
+  return axiosClient.post('/stripe/create-checkout-session', params).then(successFunc).catch(failFunc)
 }

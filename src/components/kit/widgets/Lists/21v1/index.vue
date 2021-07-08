@@ -15,7 +15,16 @@
           <li>2 GB Storage</li>
         </ul>
         <input type="hidden" id="basicPrice" name="priceId" />
-        <a class="btn btn-primary width-100" @click="handleSubmit(priceId.basicPrice)">Get Access</a>
+        <form action="http://localhost:3000/admin/stripe/create-checkout-session" method="POST">
+          <!-- @click="handleSubmit(priceId.basicPrice)" -->
+          <input
+            type="hidden"
+            id="basicPrice"
+            value="price_1JASGOIzukQ9tag0dbLCdWWT"
+            name="priceId"
+          />
+          <button class="btn btn-primary width-100" type="submit">Get Access</button>
+        </form>
       </div>
     </div>
   </div>

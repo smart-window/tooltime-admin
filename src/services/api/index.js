@@ -157,3 +157,7 @@ export const getPriceId = async () => {
 export const createCheckoutSession = async (params) => {
   return axiosClient.post('/stripe/create-checkout-session', params).then(successFunc).catch(failFunc)
 }
+
+export const checkoutSession = async (sessionId) => {
+  return axiosClient.get('/stripe/checkout-session?sessionId=' + sessionId).then(successFunc).catch(failFunc)
+}

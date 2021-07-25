@@ -40,6 +40,13 @@ export async function register(email, password, name) {
     .catch((err) => console.log(err))
 }
 
+export async function verifyUser(code) {
+  return apiClient
+    .get('/auth/confirm/' + code).then((response) => {
+      return response.data
+    })
+}
+
 export async function currentAccount() {
   return apiClient
     .get('/auth/account')

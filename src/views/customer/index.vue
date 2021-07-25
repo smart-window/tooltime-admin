@@ -126,11 +126,8 @@ import EditPanel from './EditPanel'
 import * as _ from 'lodash'
 
 const STATUS = {
-  PENDING: 'PENDING',
-  PICKED: 'PICKED',
-  DELIVERED: 'DELIVERED',
-  RETURNED: 'RETURNED',
-  EXPIRED: 'EXPIRED',
+  PENDING: 'Pending',
+  ACTIVE: 'Active',
 }
 
 const columns = [
@@ -301,10 +298,7 @@ export default {
 
     statusClassName(status) {
       if (status === STATUS.PENDING) return 'font-size-12 badge badge-warning'
-      if (status === STATUS.PICKED) return 'font-size-12 badge badge-primary'
-      if (status === STATUS.DELIVERED) return 'font-size-12 badge badge-success'
-      if (status === STATUS.RETURNED) return 'font-size-12 badge badge-default'
-      if (status === STATUS.EXPIRED) return 'font-size-12 badge badge-default'
+      if (status === STATUS.ACTIVE) return 'font-size-12 badge badge-success'
     },
   },
 }

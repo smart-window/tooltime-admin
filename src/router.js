@@ -138,6 +138,13 @@ const router = new Router({
       redirect: 'auth/login',
       children: [
         {
+          path: '/auth/confirm/:confirmationCode',
+          meta: {
+            title: 'Confirmation Code',
+          },
+          component: () => import('./views/auth/confirm'),
+        },
+        {
           path: '/auth/404',
           meta: {
             title: 'Error 404',

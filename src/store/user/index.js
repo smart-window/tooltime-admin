@@ -89,24 +89,46 @@ export default {
       })
 
       const currentAccount = mapAuthProviders[rootState.settings.authProvider].currentAccount
-      currentAccount().then((response) => {
-        if (response) {
-          const { email, name, role } = response
-          commit('SET_STATE', {
-            name,
-            email,
-            role,
-            authorized: true,
-          })
+      currentAccount()
+        .then((response) => {
+          console.log({ response })
+          if (response) {
+            const { email, name, role } = response
+            commit('SET_STATE', {
+              name,
+              email,
+              role,
+              authorized: true,
+            })
 
-          dispatch('LOAD_CATEGORIES', {}, { root: true })
-          dispatch('LOAD_LOCATIONS', {}, { root: true })
-        }
-        commit('SET_STATE', {
-          loading: false,
+            dispatch('LOAD_CATEGORIES', {}, { root: true })
+            dispatch('LOAD_LOCATIONS', {}, { root: true })
+          } else {
+            commit('SET_STATE', {
+              name: '',
+              role: '',
+              email: '',
+              authorized: false,
+              loading: false,
+            })
+            router.push('/auth/login')
+          }
+          commit('SET_STATE', {
+            loading: false,
+          })
         })
-      })
+        .catch((e) => {
+          commit('SET_STATE', {
+            name: '',
+            role: '',
+            email: '',
+            authorized: false,
+            loading: false,
+          })
+          router.push('/auth/login')
+        })
     },
+
     LOGOUT({ commit, rootState }) {
       const logout = mapAuthProviders[rootState.settings.authProvider].logout
       logout().then(() => {

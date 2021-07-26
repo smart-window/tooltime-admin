@@ -174,7 +174,7 @@ const columns = [
     sorter: (a, b) => (a > b ? 1 : -1),
   },
   {
-    title: 'Status',
+    title: 'Email Verified',
     dataIndex: 'status',
     key: 'status',
     scopedSlots: { customRender: 'status' },
